@@ -2,232 +2,316 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Банк гипотез ЛАИ</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f9; color: #333; margin: 0; padding: 20px; }
-        header { text-align: center; margin-bottom: 30px; }
-        h1 { color: #2c3e50; margin-bottom: 5px; }
-        .subtitle { color: #7f8c8d; font-size: 0.9em; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f6f9; color: #333; margin: 0; padding: 20px; }
+        header { text-align: center; margin-bottom: 40px; }
+        h1 { color: #2c3e50; }
+        .filters { text-align: center; margin-bottom: 30px; }
+        .filter-btn { padding: 8px 16px; margin: 0 5px; border: none; background: #e0e0e0; cursor: pointer; border-radius: 20px; transition: 0.3s; }
+        .filter-btn:hover, .filter-btn.active { background: #3498db; color: white; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
+        .card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.2s; display: flex; flex-direction: column; justify-content: space-between; }
+        .card:hover { transform: translateY(-5px); }
+        .card h3 { margin-top: 0; color: #2980b9; font-size: 1.2em; }
+        .meta { font-size: 0.85em; color: #7f8c8d; margin-bottom: 10px; }
+        .status { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; font-weight: bold; margin-bottom: 10px; }
+        .status.draft { background: #f1c40f; color: #fff; }
+        .actions { margin-top: 15px; display: flex; gap: 10px; }
+        .btn { text-decoration: none; padding: 8px 12px; border-radius: 5px; font-size: 0.9em; font-weight: bold; text-align: center; flex: 1; cursor: pointer; border: none; }
+        .btn-edit { background: #ecf0f1; color: #2c3e50; }
+        .btn-view { background: #3498db; color: white; }
         
-        /* Навигация */
-        .nav-bar { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
-        .nav-btn {
-            padding: 8px 16px; border: none; background-color: #e0e0e0; cursor: pointer; border-radius: 20px;
-            transition: all 0.3s ease; font-weight: 600; color: #555;
-        }
-        .nav-btn:hover { background-color: #d0d0d0; }
-        .nav-btn.active { background-color: #3498db; color: white; box-shadow: 0 2px 5px rgba(52, 152, 219, 0.3); }
-        
-        /* Контейнер карточек */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-        .card {
-            background: white; border-radius: 10px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            transition: transform 0.2s; border-left: 5px solid #3498db; display: flex; flex-direction: column;
-        }
-        .card:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.1); }
-        .card-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px; }
-        .card-id { font-size: 0.75em; color: #95a5a6; font-family: monospace; }
-        .card-title { font-size: 1.1em; font-weight: bold; margin: 0 0 10px 0; color: #2c3e50; }
-        .card-synopsis { font-size: 0.9em; line-height: 1.5; color: #555; flex-grow: 1; margin-bottom: 15px; }
-        .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: auto; }
-        .tag { font-size: 0.75em; background: #ecf0f1; padding: 3px 8px; border-radius: 4px; color: #7f8c8d; }
-        
-        /* Модальное окно */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; }
-        .modal-content { background: white; margin: 10% auto; padding: 30px; width: 80%; max-width: 600px; border-radius: 10px; position: relative; }
-        .close { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #aaa; }
-        .close:hover { color: #333; }
-        
-        /* Статус загрузки */
-        #loading { text-align: center; color: #7f8c8d; margin-top: 20px; }
-        
-        /* Пароль (скрытый) */
-        .admin-panel { text-align: center; margin-top: 40px; opacity: 0.3; transition: opacity 0.3s; }
-        .admin-panel:hover { opacity: 1; }
-        input[type="password"] { padding: 5px; border-radius: 4px; border: 1px solid #ccc; }
+        /* Modal Styles */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); }
+        .modal-content { background-color: #fefefe; margin: 5% auto; padding: 30px; border: 1px solid #888; width: 80%; max-width: 800px; border-radius: 10px; position: relative; }
+        .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+        .close:hover { color: black; }
+        .modal-body h2 { color: #2c3e50; margin-top: 0; }
+        .modal-section { margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .modal-label { font-weight: bold; color: #555; display: block; margin-bottom: 5px; }
+        #loading { text-align: center; font-size: 1.2em; color: #7f8c8d; }
     </style>
 </head>
 <body>
 
 <header>
     <h1>🏛️ Банк гипотез ЛАИ</h1>
-    <div class="subtitle">Систематизация знаний Лаборатории Альтернативной Истории 7</div>
+    <p>Систематизация знаний Лаборатории Альтернативной Истории</p>
 </header>
 
-<div class="nav-bar" id="navBar">
-    <!-- Кнопки будут сгенерированы JS -->
+<div class="filters" id="segmentFilters">
+    <button class="filter-btn active" onclick="filterHypotheses('all')">Все</button>
 </div>
 
 <div id="loading">Загрузка гипотез...</div>
-<div class="grid" id="cardGrid"></div>
+<div class="grid" id="hypothesisGrid"></div>
 
-<!-- Модальное окно для деталей -->
-<div id="detailModal" class="modal">
+<!-- Modal -->
+<div id="hypothesisModal" class="modal">
     <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <h2 id="modalTitle"></h2>
-        <p id="modalId" style="color: #7f8c8d; font-family: monospace;"></p>
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
-        <p id="modalStatement" style="font-style: italic; color: #2c3e50;"></p>
-        <p id="modalSynopsis"></p>
-        <div id="modalAuthors" style="margin-top: 15px; font-size: 0.9em;"></div>
+        <span class="close">&times;</span>
+        <div id="modalBody" class="modal-body"></div>
     </div>
 </div>
 
-<div class="admin-panel">
-    <input type="password" id="editPass" placeholder="Пароль редактора" onchange="checkPass()">
-</div>
-
 <script>
-    const REPO_OWNER = 'qqmats';
-    const REPO_NAME = 'lai-hypothesis-bank';
-    const BRANCH = 'main';
-    
+    const repoUser = 'qqmats';
+    const repoName = 'lai-hypothesis-bank';
+    const branch = 'main';
+    const EDIT_PASSWORD = "3102"; 
+
+    const segments = {
+        "SEG01": "Мегалиты", "SEG02": "Геоинженерия", "SEG03": "Артефакты",
+        "SEG04": "Биология", "SEG05": "Физика", "SEG06": "Биоинженерия",
+        "SEG07": "IT и Вычисления", "SEG08": "Социальная инженерия",
+        "SEG09": "Прочее", "SEG10": "Фундаментальные знания"
+    };
+
     let allHypotheses = [];
-    let currentFilter = 'all';
+    let allAuthors = {}; 
 
-    // Инициализация навигации
-    function initNav() {
-        const nav = document.getElementById('navBar');
-        const segments = [
-            { id: 'all', name: 'Все' },
-            { id: 'authors', name: 'Авторы' }, // Новая кнопка
-            { id: 'SEG01', name: 'Мегалиты' },
-            { id: 'SEG02', name: 'Геоинженерия' },
-            { id: 'SEG03', name: 'Артефакты' },
-            { id: 'SEG04', name: 'Биология' },
-            { id: 'SEG05', name: 'Физика' },
-            { id: 'SEG06', name: 'Биоинженерия' },
-            { id: 'SEG07', name: 'IT' },
-            { id: 'SEG08', name: 'Социум' },
-            { id: 'SEG09', name: 'Резерв' },
-            { id: 'SEG10', name: 'Фундамент' }
-        ];
-
-        segments.forEach(seg => {
-            const btn = document.createElement('button');
-            btn.className = 'nav-btn';
-            if (seg.id === 'all') btn.classList.add('active');
-            btn.innerText = seg.name;
-            btn.onclick = () => filterData(seg.id, btn);
-            nav.appendChild(btn);
-        });
-    }
-
-    async function loadData() {
+    async function loadHypotheses() {
+        const loading = document.getElementById('loading');
         try {
-            // Получаем список файлов из папки hypotheses
-            const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/git/trees/${BRANCH}?recursive=1`);
-            const tree = await response.json();
+            const apiUrl = `https://api.github.com/repos/${repoUser}/${repoName}/git/trees/${branch}?recursive=1`;
+            const response = await fetch(apiUrl);
+            if (!response.ok) throw new Error('API Error');
             
-            const jsonFiles = tree.tree.filter(item => 
-                item.path.startsWith('hypotheses/') && item.path.endsWith('.json')
+            const data = await response.json();
+            // Фильтруем только JSON файлы из папки hypotheses
+            const jsonFiles = data.tree.filter(item => 
+                item.path.startsWith('hypotheses/') && item.path.endsWith('.json') && item.type === 'blob'
             );
 
-            for (const file of jsonFiles) {
+            const promises = jsonFiles.map(async file => {
+                const rawUrl = `https://raw.githubusercontent.com/${repoUser}/${repoName}/${branch}/${file.path}`;
+                const res = await fetch(rawUrl);
+                if (!res.ok) return null;
+                
+                // Проверка: пытаемся получить текст и распарсить его
+                const text = await res.text();
                 try {
-                    const contentResp = await fetch(`https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}/${file.path}`);
-                    const text = await contentResp.text();
-                    // Игнорируем ошибки парсинга, как просили
-                    try {
-                        const data = JSON.parse(text);
-                        allHypotheses.push(data);
-                    } catch (e) {
-                        console.warn(`Ошибка парсинга в файле ${file.path}:`, e);
-                    }
-                } catch (err) {
-                    console.error(`Не удалось загрузить ${file.path}`, err);
+                    return JSON.parse(text);
+                } catch (e) {
+                    console.warn(`Ошибка парсинга файла ${file.path}:`, e);
+                    return null;
                 }
-            }
+            });
+
+            const results = await Promise.all(promises);
+            allHypotheses = results.filter(h => h !== null);
             
-            document.getElementById('loading').style.display = 'none';
-            renderCards(allHypotheses);
+            createFilterButtons();
+            renderHypotheses(allHypotheses);
+            loading.style.display = 'none';
+
         } catch (error) {
-            document.getElementById('loading').innerText = 'Ошибка загрузки данных. Проверьте консоль.';
             console.error(error);
+            loading.innerText = 'Ошибка загрузки данных. Проверьте консоль.';
         }
     }
 
-    function renderCards(data) {
-        const grid = document.getElementById('cardGrid');
+    async function loadAuthors() {
+        try {
+            const apiUrl = `https://api.github.com/repos/${repoUser}/${repoName}/git/trees/${branch}?recursive=1`;
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+            
+            const authorFiles = data.tree.filter(item => 
+                item.path.startsWith('authors/') && item.path.endsWith('.json') && item.type === 'blob'
+            );
+
+            const promises = authorFiles.map(async file => {
+                const rawUrl = `https://raw.githubusercontent.com/${repoUser}/${repoName}/${branch}/${file.path}`;
+                const res = await fetch(rawUrl);
+                if (!res.ok) return null;
+                
+                const text = await res.text();
+                try {
+                    return JSON.parse(text);
+                } catch (e) {
+                    return null;
+                }
+            });
+
+            const profiles = await Promise.all(promises);
+            profiles.forEach(profile => {
+                if (profile && profile.id) allAuthors[profile.id] = profile;
+            });
+        } catch (error) {
+            console.error("Ошибка загрузки профилей:", error);
+        }
+    }
+
+    function createFilterButtons() {
+        const container = document.getElementById('segmentFilters');
+        container.innerHTML = '<button class="filter-btn active" onclick="filterHypotheses(\'all\')">Все</button>';
+        Object.keys(segments).forEach(seg => {
+            const btn = document.createElement('button');
+            btn.className = 'filter-btn';
+            btn.innerText = segments[seg];
+            btn.onclick = () => filterHypotheses(seg);
+            container.appendChild(btn);
+        });
+    }
+
+    function renderHypotheses(list) {
+        const grid = document.getElementById('hypothesisGrid');
         grid.innerHTML = '';
         
-        data.forEach(hyp => {
+        list.forEach(hyp => {
+            let segmentId = 'Unknown';
+            if (hyp.id && typeof hyp.id === 'string') {
+                const match = hyp.id.match(/SEG\d+/);
+                if (match) segmentId = match[0];
+            }
+
+            const filePath = (segmentId !== 'Unknown' && hyp.id) 
+                ? `hypotheses/${segmentId}/${hyp.id}.json` 
+                : '#';
+
             const card = document.createElement('div');
             card.className = 'card';
-            card.onclick = () => showDetails(hyp);
-            
-            const authors = hyp.authors ? hyp.authors.map(a => a.name).join(', ') : 'Неизвестно';
-            
             card.innerHTML = `
-                <div class="card-header">
-                    <span class="card-id">${hyp.id || 'NO-ID'}</span>
+                <div>
+                    <div class="meta">${hyp.id || 'Без ID'} | ${hyp.authors && hyp.authors[0] ? hyp.authors[0].name : 'Неизвестный автор'}</div>
+                    <h3>${hyp.title || 'Без названия'}</h3>
+                    <span class="status ${hyp.status || 'draft'}">${hyp.status || 'draft'}</span>
+                    <p>${hyp.synopsis ? hyp.synopsis.substring(0, 120) + '...' : 'Описание отсутствует'}</p>
                 </div>
-                <h3 class="card-title">${hyp.title || 'Без названия'}</h3>
-                <p class="card-synopsis">${hyp.synopsis ? hyp.synopsis.substring(0, 100) + '...' : ''}</p>
-                <div class="tags">
-                    <span class="tag">${authors}</span>
-                    <span class="tag">${hyp.status || 'draft'}</span>
+                <div class="actions">
+                    <a href="#" onclick="checkEditPermission('${filePath}'); return false;" class="btn btn-edit">Редактировать</a>
+                    <button onclick="openModal('${hyp.id}')" class="btn btn-view">Открыть карточку</button>
                 </div>
             `;
             grid.appendChild(card);
         });
     }
 
-    function filterData(filterId, btnElement) {
-        currentFilter = filterId;
-        
-        // Обновление активной кнопки
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        btnElement.classList.add('active');
-
-        if (filterId === 'all') {
-            renderCards(allHypotheses);
-        } else if (filterId === 'authors') {
-            // Здесь будет логика отображения авторов
-            alert('Раздел "Авторы" находится в разработке. Скоро здесь появится список исследователей.');
+    function filterHypotheses(segment) {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+        if (segment === 'all') {
+            renderHypotheses(allHypotheses);
         } else {
-            const filtered = allHypotheses.filter(h => h.id && h.id.includes(filterId));
-            renderCards(filtered);
+            const filtered = allHypotheses.filter(h => h.id && h.id.includes(segment));
+            renderHypotheses(filtered);
         }
     }
 
-    function showDetails(hyp) {
-        document.getElementById('modalTitle').innerText = hyp.title;
-        document.getElementById('modalId').innerText = hyp.id;
-        document.getElementById('modalStatement').innerText = hyp.hypothesis_statement || '';
-        document.getElementById('modalSynopsis').innerText = hyp.synopsis || '';
+    function checkEditPermission(path) {
+        const input = prompt("Введите пароль модератора для редактирования:");
+        if (input === EDIT_PASSWORD) {
+            window.open(`https://github.com/${repoUser}/${repoName}/edit/${branch}/${path}`, '_blank');
+        } else if (input !== null) {
+            alert("Неверный пароль. Доступ к редактированию запрещен.");
+        }
+    }
+
+    // Modal Logic
+    const modal = document.getElementById("hypothesisModal");
+    const span = document.getElementsByClassName("close")[0];
+    const modalBody = document.getElementById("modalBody");
+
+    span.onclick = function() { modal.style.display = "none"; }
+    window.onclick = function(event) { if (event.target == modal) { modal.style.display = "none"; } }
+
+    async function openModal(id) {
+        const hyp = allHypotheses.find(h => h.id === id);
+        if (!hyp) return;
+
+        const statusMap = {
+            "draft": "Черновик", "discussion": "Обсуждение", "in_progress": "В работе",
+            "confirmed": "Подтверждено", "refuted": "Опровергнуто", "archived": "Архив"
+        };
+        const statusRu = statusMap[hyp.status] || hyp.status;
+
+        let sourcesHtml = '';
+        if (hyp.main_source && hyp.main_source.url) {
+            sourcesHtml += `<div class="modal-section"><span class="modal-label">Основной источник:</span> <a href="${hyp.main_source.url}" target="_blank">${hyp.main_source.title}</a></div>`;
+        }
+        if (hyp.bibliography && hyp.bibliography.length > 0) {
+            sourcesHtml += `<div class="modal-section"><span class="modal-label">Библиография автора:</span><ul>`;
+            hyp.bibliography.forEach(item => {
+                sourcesHtml += `<li><a href="${item.url}" target="_blank">${item.title}</a> (${item.type})</li>`;
+            });
+            sourcesHtml += `</ul></div>`;
+        }
+        if (hyp.relationships) {
+            for (const [type, links] of Object.entries(hyp.relationships)) {
+                if (links && links.length > 0) {
+                    let typeRu = type;
+                    if (type === 'supports') typeRu = 'Поддерживает';
+                    if (type === 'contradicts') typeRu = 'Противоречит';
+                    if (type === 'correlates_with') typeRu = 'Коррелирует с';
+                    
+                    sourcesHtml += `<div class="modal-section"><span class="modal-label">${typeRu}:</span><ul>`;
+                    links.forEach(link => {
+                        sourcesHtml += `<li><strong>${link.id}</strong>: ${link.note || ''}</li>`;
+                    });
+                    sourcesHtml += `</ul></div>`;
+                }
+            }
+        }
+
+        modalBody.innerHTML = `
+            <h2>${hyp.title}</h2>
+            <div class="meta" style="margin-bottom: 20px;">
+                <strong>ID:</strong> ${hyp.id} &nbsp;|&nbsp; 
+                <span class="status ${hyp.status}">${statusRu}</span> &nbsp;|&nbsp; 
+                <strong>Авторы:</strong> ${hyp.authors ? hyp.authors.map(a => 
+                    `<a href="#" onclick="showAuthorProfile('${a.id || ''}'); return false;" style="color:#2980b9; text-decoration:none;">${a.name}</a>`
+                ).join(', ') : 'Не указаны'}
+            </div>
+            
+            <div class="modal-section">
+                <span class="modal-label">Формулировка гипотезы:</span>
+                <p style="font-style: italic; color: #444;">${hyp.hypothesis_statement || 'Не указана'}</p>
+            </div>
+            
+            <div class="modal-section">
+                <span class="modal-label">Краткое описание:</span>
+                <p>${hyp.synopsis || 'Не указано'}</p>
+            </div>
+
+            <div class="modal-section">
+                <span class="modal-label">Ключевые слова:</span>
+                <p>${hyp.keywords ? hyp.keywords.join(', ') : ''}</p>
+            </div>
+
+            ${sourcesHtml}
+        `;
+        modal.style.display = "block";
+    }
+
+    function showAuthorProfile(authorId) {
+        const author = allAuthors[authorId];
+        if (!author) {
+            alert("Профиль автора не найден.");
+            return;
+        }
         
-        const authorsDiv = document.getElementById('modalAuthors');
-        if (hyp.authors) {
-            authorsDiv.innerHTML = '<strong>Авторы:</strong> ' + hyp.authors.map(a => a.name).join(', ');
-        }
-        
-        document.getElementById('detailModal').style.display = 'block';
+        modalBody.innerHTML = `
+            <h2>${author.personal_info.name_ru}</h2>
+            <div class="modal-section">
+                <span class="modal-label">Роль в ЛАИ:</span> ${author.role_in_lai.join(', ')}
+            </div>
+            <div class="modal-section">
+                <span class="modal-label">Специализация:</span> ${author.specialization.join(', ')}
+            </div>
+            <div class="modal-section">
+                <span class="modal-label">Биография:</span>
+                <p>${author.bio_summary}</p>
+            </div>
+            ${author.contacts.official_page ? `<div class="modal-section"><a href="${author.contacts.official_page}" target="_blank">Официальная страница на сайте ЛАИ</a></div>` : ''}
+        `;
+        modal.style.display = "block";
     }
 
-    function closeModal() {
-        document.getElementById('detailModal').style.display = 'none';
-    }
-
-    function checkPass() {
-        const pass = document.getElementById('editPass').value;
-        if (pass === 'LAI_Admin_2026') { // Пример пароля
-            alert('Режим редактирования активирован!');
-            // Здесь можно добавить логику для появления кнопок редактирования
-        }
-    }
-
-    window.onclick = function(event) {
-        if (event.target == document.getElementById('detailModal')) {
-            closeModal();
-        }
-    }
-
-    // Запуск
-    initNav();
-    loadData();
+    // Запуск при загрузке страницы
+    loadHypotheses();
+    loadAuthors();
 </script>
 
 </body>
