@@ -11,6 +11,7 @@
  "domain": "Генетика",
  "authors": [
    {
+    "id": "AUTH-Sergeev",
      "name": "Степан Сергеев",
      "role": "основной"
    }
