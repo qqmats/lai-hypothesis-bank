@@ -1,0 +1,33 @@
+{
+ "id": "AUTH-Soldatov",
+ "version": "1.1",
+ "personal_info": {
+   "name_ru": "Максим Солдатов",
+   "name_en": "Maxim Soldatov",
+   "birth_year": null,
+   "death_year": null,
+   "education": "",
+   "profession": "Исследователь"
+ },
+ "role_in_lai": ["Автор гипотез", "Минералог-любитель"],
+ "specialization": ["Минералогия", "Структура камня", "Метамиктизация"],
+ "bio_summary": "Исследователь, обращающий внимание на изменения внутренней структуры минералов гранита и эффекты «шагреневой кожи».",
+ "contacts": {
+   "email": "",
+   "telegram": "",
+   "forum_profile": "https://laiforum.ru/",
+   "official_page": ""
+ },
+ "academic_ids": {
+   "spin_code": "",
+   "author_id_rinc": "",
+   "orcid": "",
+   "researcher_id": ""
+ },
+ "bibliography": [],
+ "related_hypotheses": [
+   "LAI_SEG05-Soldatov_01"
+ ],
+ "methodology_notes": "Фокусируется на рентгеноструктурном анализе и визуальной диагностике изменений кристаллической решетки.",
+ "license": "CC BY-SA 4.0"
+}
