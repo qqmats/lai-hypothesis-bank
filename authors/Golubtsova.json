@@ -1,0 +1,47 @@
+{
+ "id": "AUTH-Golubtsova",
+ "version": "1.1",
+ "personal_info": {
+   "name_ru": "Виктория Голубцова",
+   "name_en": "Victoria Golubtsova",
+   "birth_year": null,
+   "death_year": null,
+   "education": "",
+   "profession": "Исследователь"
+ },
+ "role_in_lai": [
+   "Участник экспедиций",
+   "Соавтор исследований"
+ ],
+ "specialization": [
+   "Археология",
+   "Инструментальный анализ",
+   "Южная Америка"
+ ],
+ "bio_summary": "Активный участник исследовательских экспедиций ЛАИ в Перу и Боливию. Вероятно, специализируется на сборе полевого материала и документировании артефактов. В соавторстве с А. Сабо выдвигала гипотезы о наличии фильтрующих элементов в конструкции древних террас.",
+ "contacts": {
+   "email": "",
+   "telegram": "",
+   "forum_profile": "https://laiforum.ru/",
+   "official_page": ""
+ },
+ "academic_ids": {
+   "spin_code": "",
+   "author_id_rinc": "",
+   "orcid": "",
+   "researcher_id": ""
+ },
+ "bibliography": [
+   {
+     "title": "Экспедиция в Перу 2018 (соавтор отчета)",
+     "year": 2018,
+     "type": "report",
+     "url": "https://project.lah.ru/expeditions/peru_2018/"
+   }
+ ],
+ "related_hypotheses": [
+   "LAI_SEG02-Sabo_01"
+ ],
+ "methodology_notes": "Участвует в полевых исследованиях, вероятно, отвечает за фотофиксацию и первичный анализ образцов.",
+ "license": "CC BY-SA 4.0"
+}
