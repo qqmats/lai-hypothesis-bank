@@ -11,6 +11,7 @@
  "domain": "Биоинженерия",
  "authors": [
    {
+    "id": "AUTH-Sergeev",
      "name": "Степан Сергеев",
      "role": "основной"
    }
