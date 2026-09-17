@@ -127,9 +127,18 @@
         }
 
         list.forEach(hyp => {
-            // Извлекаем сегмент из ID (например, LAI_SEG01-Sklyarov_01 -> SEG01)
-            const segmentId = hyp.id ? hyp.id.split('-')[0].split('_')[0] : 'Unknown';
-            
+            // Безопасное извлечение сегмента: LAI_SEG04-Sergeev_01 -> SEG04
+            let segmentId = 'Unknown';
+            if (hyp.id && typeof hyp.id === 'string') {
+                const match = hyp.id.match(/SEG\d+/);
+                if (match) segmentId = match[0];
+            }
+
+            // Формирование корректного пути к файлу
+            const filePath = (segmentId !== 'Unknown' && hyp.id) 
+                ? `hypotheses/${segmentId}/${hyp.id}.json` 
+                : '#';
+
             const card = document.createElement('div');
             card.className = 'card';
             card.innerHTML = `
@@ -137,7 +146,10 @@
                 <h3>${hyp.title || 'Без названия'}</h3>
                 <span class="status ${hyp.status || 'draft'}">${hyp.status || 'draft'}</span>
                 <p>${hyp.synopsis ? hyp.synopsis.substring(0, 150) + '...' : 'Описание отсутствует'}</p>
-                <a href="https://github.com/${repoUser}/${repoName}/blob/${branch}/hypotheses/${segmentId}/${hyp.id}.json" target="_blank" class="btn-link">Открыть карточку →</a>
+                ${filePath !== '#' 
+                    ? `<a href="https://github.com/${repoUser}/${repoName}/blob/${branch}/${filePath}" target="_blank" class="btn-link">Открыть карточку →</a>`
+                    : `<span class="btn-link" style="color:#999; cursor:not-allowed;">Ошибка ID</span>`
+                }
             `;
             grid.appendChild(card);
         });
