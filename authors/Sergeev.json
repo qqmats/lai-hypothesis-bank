@@ -1,0 +1,49 @@
+{
+ "id": "AUTH-Sergeev",
+ "version": "1.1",
+ "personal_info": {
+   "name_ru": "Степан Сергеев",
+   "name_en": "Stepan Sergeev",
+   "birth_year": null,
+   "death_year": null,
+   "education": "",
+   "profession": "Исследователь"
+ },
+ "role_in_lai": ["Автор гипотез", "Аналитик"],
+ "specialization": ["Генетика", "Биоинженерия", "Мифология", "Математическое моделирование"],
+ "bio_summary": "Исследователь ЛАИ, специализирующийся на синтетическом анализе информации о ДВЦ, разработке и сопоставлении формальных моделей с информацией из прошлого.",
+ "contacts": {
+   "email": "",
+   "telegram": "",
+   "forum_profile": "https://laiforum.ru/",
+   "official_page": ""
+ },
+ "academic_ids": {
+   "spin_code": "",
+   "author_id_rinc": "",
+   "orcid": "",
+   "researcher_id": ""
+ },
+ "bibliography": [
+   {
+     "title": "Генетические технологии богов, Фундаментальные знания древних, "Заказчик" мегалитического строительства, Следы инфраструктуры древней воздушной навигации",
+     "year": 2022-2026,
+     "type": "presentation",
+     "url": ""
+   },
+   {
+     "title": "По следам генетических экспериментов древних",
+     "year": 2025,
+     "type": "presentation",
+     "url": ""
+   }
+ ],
+ "related_hypotheses": [
+   "LAI_SEG04-Sergeev_01",
+   "LAI_SEG06-Sergeev_01",
+   "LAI_SEG07-Sergeev_01",
+   "LAI_SEG10-Sergeev_01"
+ ],
+ "methodology_notes": "Использует сравнительный семантический анализ мифов, геодезические особенности  расположения  объектов и сооружений, соответствие Космогонических текстов современным формальным описаниям.",
+ "license": "CC BY-SA 4.0"
+}
