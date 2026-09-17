@@ -11,6 +11,7 @@
  "domain": "Биология",
  "authors": [
    {
+    "id": "AUTH-Sklyarov"
      "name": "Андрей Скляров",
      "role": "основной"
    }
