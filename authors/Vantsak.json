@@ -1,0 +1,40 @@
+{
+ "id": "AUTH-Vantsak",
+ "version": "1.1",
+ "personal_info": {
+   "name_ru": "Сергей Ванцак",
+   "name_en": "Sergey Vantsak",
+   "birth_year": null,
+   "death_year": null,
+   "education": "",
+   "profession": "Исследователь, геоархеолог"
+ },
+ "role_in_lai": ["Автор гипотез", "Эксперт по геоархеологии"],
+ "specialization": ["Геоглифы", "Геомагнитные аномалии", "Древняя навигация", "Ландшафтный анализ"],
+ "bio_summary": "Исследователь ЛАИ, специализирующийся на изучении геоглифов и их возможной связи с геофизическими процессами. Рассматривает древние линии как элементы инженерной инфраструктуры.",
+ "contacts": {
+   "email": "",
+   "telegram": "",
+   "forum_profile": "https://laiforum.ru/",
+   "official_page": ""
+ },
+ "academic_ids": {
+   "spin_code": "",
+   "author_id_rinc": "",
+   "orcid": "",
+   "researcher_id": ""
+ },
+ "bibliography": [
+   {
+     "title": "Тайны линий Наска",
+     "year": 2015,
+     "type": "article",
+     "url": "https://lah.ru/articles/nasca_lines/"
+   }
+ ],
+ "related_hypotheses": [
+   "LAI_SEG02-Vantsak_01"
+ ],
+ "methodology_notes": "Использует методы наложения исторических карт на современные геофизические данные и спутниковые снимки.",
+ "license": "CC BY-SA 4.0"
+}
