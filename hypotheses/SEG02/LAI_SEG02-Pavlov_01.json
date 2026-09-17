@@ -11,6 +11,7 @@
  "domain": "Геоинженерия",
  "authors": [
    {
+     "id": "AUTH-Pavlov",
      "name": "Дмитрий Павлов",
      "role": "researcher"
    }
