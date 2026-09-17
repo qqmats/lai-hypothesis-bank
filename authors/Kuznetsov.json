@@ -1,0 +1,33 @@
+{
+ "id": "AUTH-Kuznetsov",
+ "version": "1.1",
+ "personal_info": {
+   "name_ru": "Андрей Кузнецов",
+   "name_en": "Andrey Kuznetsov",
+   "birth_year": null,
+   "death_year": null,
+   "education": "",
+   "profession": "Исследователь"
+ },
+ "role_in_lai": ["Автор гипотез", "Эксперт по следам инструмента"],
+ "specialization": ["Мегалитическая кладка", "Микроструктура камня", "Фрезеровка"],
+ "bio_summary": "Исследователь, специализирующийся на детальном анализе микрорельефа каменных поверхностей и выявлении следов машинной обработки.",
+ "contacts": {
+   "email": "",
+   "telegram": "",
+   "forum_profile": "https://laiforum.ru/",
+   "official_page": ""
+ },
+ "academic_ids": {
+   "spin_code": "",
+   "author_id_rinc": "",
+   "orcid": "",
+   "researcher_id": ""
+ },
+ "bibliography": [],
+ "related_hypotheses": [
+   "LAI_SEG01-Kuznetsov_02"
+ ],
+ "methodology_notes": "Использует фотограмметрию и 3D-сканирование для анализа геометрии борозд.",
+ "license": "CC BY-SA 4.0"
+}
