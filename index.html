@@ -39,7 +39,10 @@
 <div class="grid" id="hypothesisGrid"></div>
 
 <script>
-    // Конфигурация сегментов
+    const repoUser = 'qqmats';
+    const repoName = 'lai-hypothesis-bank';
+    const branch = 'main'; // Или 'master', если ваша основная ветка называется так
+
     const segments = {
         "SEG01": "Мегалиты", "SEG02": "Геоинженерия", "SEG03": "Артефакты",
         "SEG04": "Биология", "SEG05": "Физика", "SEG06": "Биоинженерия",
@@ -48,50 +51,61 @@
     };
 
     let allHypotheses = [];
-    const repoUser = 'qqmats';
-    const repoName = 'lai-hypothesis-bank';
 
     async function loadHypotheses() {
-        const grid = document.getElementById('hypothesisGrid');
         const loading = document.getElementById('loading');
         
         try {
-            // Получаем список файлов через GitHub API (это все еще нужно для списка)
-            // Но мы будем использовать raw ссылки для чтения контента
-            const apiUrl = `https://api.github.com/repos/${repoUser}/${repoName}/git/trees/main?recursive=1`;
-            
+            // 1. Получаем список всех файлов в репозитории
+            const apiUrl = `https://api.github.com/repos/${repoUser}/${repoName}/git/trees/${branch}?recursive=1`;
             const response = await fetch(apiUrl);
-            if (!response.ok) throw new Error('API Error');
             
+            if (!response.ok) {
+                throw new Error(`API Error: ${response.status}`);
+            }
+
             const data = await response.json();
             
-            // Фильтруем только JSON файлы из папки hypotheses
+            // 2. Фильтруем только JSON файлы из папки hypotheses
             const jsonFiles = data.tree.filter(item => 
-                item.path.startsWith('hypotheses/') && item.path.endsWith('.json')
+                item.path.startsWith('hypotheses/') && item.path.endsWith('.json') && item.type === 'blob'
             );
 
-            // Загружаем содержимое каждого файла напрямую через raw.githubusercontent.com
+            if (jsonFiles.length === 0) {
+                loading.innerText = 'В репозитории не найдено файлов гипотез.';
+                return;
+            }
+
+            // 3. Загружаем содержимое каждого файла параллельно
             const promises = jsonFiles.map(async file => {
-                const rawUrl = `https://raw.githubusercontent.com/${repoUser}/${repoName}/main/${file.path}`;
+                const rawUrl = `https://raw.githubusercontent.com/${repoUser}/${repoName}/${branch}/${file.path}`;
                 const res = await fetch(rawUrl);
+                if (!res.ok) return null;
                 return res.json();
             });
 
-            allHypotheses = await Promise.all(promises);
+            const results = await Promise.all(promises);
+            
+            // Фильтруем null (если какие-то файлы не загрузились)
+            allHypotheses = results.filter(h => h !== null);
             
             createFilterButtons();
             renderHypotheses(allHypotheses);
             loading.style.display = 'none';
 
         } catch (error) {
-            loading.innerText = 'Ошибка: не удалось загрузить гипотезы. Проверьте консоль браузера (F12).';
-            console.error('Ошибка загрузки:', error);
+            console.error(error);
+            loading.innerHTML = `
+                <p><strong>Ошибка загрузки данных.</strong></p>
+                <p>Возможно, превышен лимит запросов к GitHub API.</p>
+                <p>Попробуйте обновить страницу через пару минут.</p>
+                <small>${error.message}</small>
+            `;
         }
     }
 
     function createFilterButtons() {
         const container = document.getElementById('segmentFilters');
-        // Очищаем контейнер, оставляя кнопку "Все"
         container.innerHTML = '<button class="filter-btn active" onclick="filterHypotheses(\'all\')">Все</button>';
         
         Object.keys(segments).forEach(seg => {
@@ -108,20 +122,22 @@
         grid.innerHTML = '';
         
         if (list.length === 0) {
-            grid.innerHTML = '<p style="text-align:center; width:100%;">В этом сегменте пока нет гипотез.</p>';
+            grid.innerHTML = '<p style="text-align:center; width:100%;">Нет гипотез для отображения.</p>';
             return;
         }
 
         list.forEach(hyp => {
-            const segmentId = hyp.id.split('-')[0].split('_')[0]; // Извлекаем SEGxx
+            // Извлекаем сегмент из ID (например, LAI_SEG01-Sklyarov_01 -> SEG01)
+            const segmentId = hyp.id ? hyp.id.split('-')[0].split('_')[0] : 'Unknown';
+            
             const card = document.createElement('div');
             card.className = 'card';
             card.innerHTML = `
-                <div class="meta">${hyp.id} | ${hyp.authors[0].name}</div>
-                <h3>${hyp.title}</h3>
-                <span class="status ${hyp.status}">${hyp.status}</span>
+                <div class="meta">${hyp.id || 'Без ID'} | ${hyp.authors && hyp.authors[0] ? hyp.authors[0].name : 'Неизвестный автор'}</div>
+                <h3>${hyp.title || 'Без названия'}</h3>
+                <span class="status ${hyp.status || 'draft'}">${hyp.status || 'draft'}</span>
                 <p>${hyp.synopsis ? hyp.synopsis.substring(0, 150) + '...' : 'Описание отсутствует'}</p>
-                <a href="https://github.com/${repoUser}/${repoName}/blob/main/hypotheses/${segmentId}/${hyp.id}.json" target="_blank" class="btn-link">Открыть карточку →</a>
+                <a href="https://github.com/${repoUser}/${repoName}/blob/${branch}/hypotheses/${segmentId}/${hyp.id}.json" target="_blank" class="btn-link">Открыть карточку →</a>
             `;
             grid.appendChild(card);
         });
@@ -134,14 +150,13 @@
         if (segment === 'all') {
             renderHypotheses(allHypotheses);
         } else {
-            const filtered = allHypotheses.filter(h => h.id.includes(segment));
+            const filtered = allHypotheses.filter(h => h.id && h.id.includes(segment));
             renderHypotheses(filtered);
         }
     }
 
-    // Запуск при загрузке страницы
+    // Запуск
     loadHypotheses();
 </script>
-
 </body>
 </html>
