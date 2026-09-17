@@ -59,6 +59,17 @@
 </div>
 
 <script>
+        // Простой пароль для защиты от случайных изменений
+    const EDIT_PASSWORD = "3102"; 
+
+    function checkEditPermission(path) {
+        const input = prompt("Введите пароль модератора для редактирования:");
+        if (input === EDIT_PASSWORD) {
+            window.open(`https://github.com/${repoUser}/${repoName}/edit/${branch}/${path}`, '_blank');
+        } else if (input !== null) {
+            alert("Неверный пароль. Доступ к редактированию запрещен.");
+        }
+    }
     const repoUser = 'qqmats';
     const repoName = 'lai-hypothesis-bank';
     const branch = 'main';
