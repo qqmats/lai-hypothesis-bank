@@ -1,0 +1,43 @@
+{
+ "id": "AUTH-Pavlov",
+ "version": "1.1",
+ "personal_info": {
+   "name_ru": "Дмитрий Павлов",
+   "name_en": "Dmitry Pavlov",
+   "birth_year": null,
+   "death_year": null,
+   "education": "",
+   "profession": "Геофизик, исследователь"
+ },
+ "role_in_lai": ["Эксперт по геофизике", "Инструменталист"],
+ "specialization": ["Геоинженерия", "Пьезоэффект", "Геология", "Инструментальный анализ"],
+ "bio_summary": "Ключевой исследователь ЛАИ в области геофизики и инструментального анализа мегалитов. Специалист по энергетическим аспектам древних сооружений.",
+ "contacts": {
+   "email": "",
+   "telegram": "",
+   "forum_profile": "https://laiforum.ru/",
+   "official_page": ""
+ },
+ "academic_ids": {
+   "spin_code": "",
+   "author_id_rinc": "",
+   "orcid": "",
+   "researcher_id": ""
+ },
+ "bibliography": [
+   {
+     "title": "Энергетика пирамид: взгляд физика",
+     "year": 2022,
+     "type": "article",
+     "url": "https://lah.ru/articles/pavlov_energy/"
+   }
+ ],
+ "related_hypotheses": [
+   "LAI_SEG02-Pavlov_01",
+   "LAI_SEG02-Pavlov_02",
+   "LAI_SEG05-Pavlov_01",
+   "LAI_SEG05-Pavlov_02"
+ ],
+ "methodology_notes": "Опирается на данные георадарного сканирования, петрографического анализа и замеров электромагнитных полей.",
+ "license": "CC BY-SA 4.0"
+}
