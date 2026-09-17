@@ -29,24 +29,32 @@
  "field_definitions": {
    "id": "Уникальный идентификатор по схеме: Сегмент-Автор_Номер.",
    "status": "Текущий статус: draft, discussion, in_progress, confirmed, refuted, archived.",
-   "authors": "Массив объектов. Теперь каждый объект должен содержать 'id' (ссылка на профиль в папке authors/), 'name' и 'role'.",
-   "bibliography": "Массив объектов других работ автора: {title, url, type}. Используется для контекста.",
+   "bibliography": "Массив объектов других работ автора: {title, url, type}. Используется для контекста и ссылок на смежные труды.",
    "relationships": {
      "supports": "Гипотезы, которые эта карточка подтверждает.",
      "contradicts": "Гипотезы, которым эта карточка противоречит.",
-     "correlates_with": "Гипотезы, имеющие статистическую или логическую связь."
+     "correlates_with": "Гипотезы, имеющие статистическую или логическую связь, но не прямую причинно-следственную."
    }
  },
  "example_structure": {
    "id": "LAI_SEG04-Sergeev_01",
-   "version": "1.3",
-   "authors": [
+   "version": "1.2",
+   "status": "draft",
+   "title": "Пример заголовка",
+   "bibliography": [
      {
-       "id": "AUTH-Sergeev",
-       "name": "Степан Сергеев",
-       "role": "основной"
+       "title": "Другая книга автора",
+       "url": "https://example.com",
+       "type": "book"
      }
-   ]
- }
+   ],
+   "relationships": {
+     "correlates_with": [
+       {
+         "id": "LAI_SEG05-Lagun_01",
+         "note": "Обе гипотезы затрагивают тему резонанса"
+       }
+     ]
+   }
  }
 }
