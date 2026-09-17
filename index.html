@@ -152,7 +152,7 @@
                     <p>${hyp.synopsis ? hyp.synopsis.substring(0, 120) + '...' : 'Описание отсутствует'}</p>
                 </div>
                 <div class="actions">
-                    <a href="https://github.com/${repoUser}/${repoName}/edit/${branch}/${filePath}" target="_blank" class="btn btn-edit">Редактировать</a>
+                    <a href="#" onclick="checkEditPermission('${filePath}'); return false;" class="btn btn-edit">Редактировать</a>
                     <button onclick="openModal('${hyp.id}')" class="btn btn-view">Открыть карточку</button>
                 </div>
             `;
