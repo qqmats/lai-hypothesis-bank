@@ -11,6 +11,7 @@
  "domain": "Физика древних технологий",
  "authors": [
    {
+    "id": "AUTH-Soldatov",
      "name": "Максим Солдатов",
      "role": "researcher"
    }
