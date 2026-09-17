@@ -69,7 +69,8 @@
                 if (author.related_hypotheses && author.related_hypotheses.length > 0) {
                     hypothesesHtml = '<ul class="hypotheses-list">';
                     author.related_hypotheses.forEach(hypId => {
-                        hypothesesHtml += `<li><a href="index.html#${hypId}" target="_blank">📄 ${hypId}</a></li>`;
+                        // Передаем ID как параметр focus
+hypothesesHtml += `<li><a href="index.html?focus=${hypId}">📄 ${hypId}</a></li>`;
                     });
                     hypothesesHtml += '</ul>';
                 }
