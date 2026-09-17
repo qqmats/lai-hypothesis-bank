@@ -261,7 +261,9 @@
             <div class="meta" style="margin-bottom: 20px;">
                 <strong>ID:</strong> ${hyp.id} &nbsp;|&nbsp; 
                 <span class="status ${hyp.status}">${statusRu}</span> &nbsp;|&nbsp; 
-                <strong>Авторы:</strong> ${hyp.authors ? hyp.authors.map(a => a.name).join(', ') : 'Не указаны'}
+                <strong>Авторы:</strong> ${hyp.authors ? hyp.authors.map(a => 
+                    `<a href="#" onclick="showAuthorProfile('${a.id || ''}'); return false;" style="color:#2980b9; text-decoration:none;">${a.name}</a>`
+                ).join(', ') : 'Не указаны'}
             </div>
             
             <div class="modal-section">
@@ -285,6 +287,29 @@
     }
 
     loadHypotheses();
+        function showAuthorProfile(authorId) {
+        const author = allAuthors[authorId];
+        if (!author) {
+            alert("Профиль автора не найден.");
+            return;
+        }
+        
+        modalBody.innerHTML = `
+            <h2>${author.personal_info.name_ru}</h2>
+            <div class="modal-section">
+                <span class="modal-label">Роль в ЛАИ:</span> ${author.role_in_lai.join(', ')}
+            </div>
+            <div class="modal-section">
+                <span class="modal-label">Специализация:</span> ${author.specialization.join(', ')}
+            </div>
+            <div class="modal-section">
+                <span class="modal-label">Биография:</span>
+                <p>${author.bio_summary}</p>
+            </div>
+            ${author.contacts.official_page ? `<div class="modal-section"><a href="${author.contacts.official_page}" target="_blank">Официальная страница на сайте ЛАИ</a></div>` : ''}
+        `;
+        modal.style.display = "block";
+    }
 </script>
 
 </body>
