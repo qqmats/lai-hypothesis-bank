@@ -29,6 +29,7 @@
  "field_definitions": {
    "id": "Уникальный идентификатор по схеме: Сегмент-Автор_Номер.",
    "status": "Текущий статус: draft, discussion, in_progress, confirmed, refuted, archived.",
+   "authors": "Массив объектов. ВАЖНО: каждый объект автора должен содержать 'id' (ссылка на профиль из папки authors/, например AUTH-Sklyarov), 'name' и 'role'.",
    "bibliography": "Массив объектов других работ автора: {title, url, type}. Используется для контекста и ссылок на смежные труды.",
    "relationships": {
      "supports": "Гипотезы, которые эта карточка подтверждает.",
@@ -40,15 +41,42 @@
    "id": "LAI_SEG04-Sergeev_01",
    "version": "1.2",
    "status": "draft",
-   "title": "Пример заголовка",
+   "created_at": "2026-09-17",
+   "language": "ru",
+   "title": "Пример заголовка гипотезы",
+   "hypothesis_statement": "Краткая формулировка сути гипотезы...",
+   "synopsis": "Развернутое описание...",
+   "keywords": ["ключевое слово 1", "ключевое слово 2"],
+   "domain": "Биология человека",
+   "authors": [
+     {
+       "id": "AUTH-Sergeev",
+       "name": "Степан Сергеев",
+       "role": "основной"
+     }
+   ],
+   "curator": "",
+   "confirmation_criteria": [],
+   "refutation_criteria": [],
+   "main_source": {
+     "title": "Название источника",
+     "url": "https://example.com",
+     "type": "article",
+     "author": "Имя Автора",
+     "date": "2024-01-01"
+   },
    "bibliography": [
      {
-       "title": "Другая книга автора",
-       "url": "https://example.com",
+       "title": "Другая работа этого же автора",
+       "url": "https://example.com/book",
        "type": "book"
      }
    ],
+   "confidence_level": "средняя",
+   "license": "CC BY-SA 4.0",
    "relationships": {
+     "supports": [],
+     "contradicts": [],
      "correlates_with": [
        {
          "id": "LAI_SEG05-Lagun_01",
