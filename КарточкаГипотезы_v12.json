@@ -1,0 +1,60 @@
+{
+ "instruction_title": "Инструкция по созданию карточки гипотезы ЛАИ (JSON) v1.2",
+ "version": "1.2",
+ "format_rules": {
+   "encoding": "UTF-8",
+   "structure": "Объект JSON с фиксированным набором ключей",
+   "id_format": "LAI_SEG{Сегмент}-{Автор}_{Номер} (например, LAI_SEG04-Sergeev_01)"
+ },
+ "required_fields": [
+   "id",
+   "version",
+   "status",
+   "created_at",
+   "language",
+   "title",
+   "hypothesis_statement",
+   "synopsis",
+   "keywords",
+   "domain",
+   "authors",
+   "curator",
+   "confirmation_criteria",
+   "refutation_criteria",
+   "main_source",
+   "confidence_level",
+   "license",
+   "relationships"
+ ],
+ "field_definitions": {
+   "id": "Уникальный идентификатор по схеме: Сегмент-Автор_Номер.",
+   "status": "Текущий статус: draft, discussion, in_progress, confirmed, refuted, archived.",
+   "bibliography": "Массив объектов других работ автора: {title, url, type}. Используется для контекста и ссылок на смежные труды.",
+   "relationships": {
+     "supports": "Гипотезы, которые эта карточка подтверждает.",
+     "contradicts": "Гипотезы, которым эта карточка противоречит.",
+     "correlates_with": "Гипотезы, имеющие статистическую или логическую связь, но не прямую причинно-следственную."
+   }
+ },
+ "example_structure": {
+   "id": "LAI_SEG04-Sergeev_01",
+   "version": "1.2",
+   "status": "draft",
+   "title": "Пример заголовка",
+   "bibliography": [
+     {
+       "title": "Другая книга автора",
+       "url": "https://example.com",
+       "type": "book"
+     }
+   ],
+   "relationships": {
+     "correlates_with": [
+       {
+         "id": "LAI_SEG05-Lagun_01",
+         "note": "Обе гипотезы затрагивают тему резонанса"
+       }
+     ]
+   }
+ }
+}
