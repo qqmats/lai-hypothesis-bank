@@ -40,7 +40,7 @@
 
 <header>
     <h1>🏛️ Банк гипотез ЛАИ</h1>
-    <p>Систематизация знаний Лаборатории Альтернативной Истории (тестовый режим)</p>
+    <p>Систематизация знаний Лаборатории Альтернативной Истории</p>
 </header>
 
 <div class="filters" id="segmentFilters">
@@ -59,47 +59,10 @@
 </div>
 
 <script>
-        let allAuthors = {}; // Объект для хранения профилей
-
-    async function loadAuthors() {
-        try {
-            const apiUrl = `https://api.github.com/repos/${repoUser}/${repoName}/git/trees/${branch}?recursive=1`;
-            const response = await fetch(apiUrl);
-            const data = await response.json();
-            
-            const authorFiles = data.tree.filter(item => 
-                item.path.startsWith('authors/') && item.path.endsWith('.json') && item.type === 'blob'
-            );
-
-            const promises = authorFiles.map(async file => {
-                const rawUrl = `https://raw.githubusercontent.com/${repoUser}/${repoName}/${branch}/${file.path}`;
-                const res = await fetch(rawUrl);
-                return res.json();
-            });
-
-            const profiles = await Promise.all(promises);
-            profiles.forEach(profile => {
-                if (profile.id) allAuthors[profile.id] = profile;
-            });
-        } catch (error) {
-            console.error("Ошибка загрузки профилей:", error);
-        }
-    }
-    
-    // Простой пароль для защиты от случайных изменений
-    const EDIT_PASSWORD = "3102"; 
-
-    function checkEditPermission(path) {
-        const input = prompt("Введите пароль модератора для редактирования:");
-        if (input === EDIT_PASSWORD) {
-            window.open(`https://github.com/${repoUser}/${repoName}/edit/${branch}/${path}`, '_blank');
-        } else if (input !== null) {
-            alert("Неверный пароль. Доступ к редактированию запрещен.");
-        }
-    }
     const repoUser = 'qqmats';
     const repoName = 'lai-hypothesis-bank';
     const branch = 'main';
+    const EDIT_PASSWORD = "lai2026"; 
 
     const segments = {
         "SEG01": "Мегалиты", "SEG02": "Геоинженерия", "SEG03": "Артефакты",
@@ -109,6 +72,7 @@
     };
 
     let allHypotheses = [];
+    let allAuthors = {}; 
 
     async function loadHypotheses() {
         const loading = document.getElementById('loading');
@@ -139,6 +103,31 @@
         } catch (error) {
             console.error(error);
             loading.innerText = 'Ошибка загрузки данных. Проверьте консоль.';
+        }
+    }
+
+    async function loadAuthors() {
+        try {
+            const apiUrl = `https://api.github.com/repos/${repoUser}/${repoName}/git/trees/${branch}?recursive=1`;
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+            
+            const authorFiles = data.tree.filter(item => 
+                item.path.startsWith('authors/') && item.path.endsWith('.json') && item.type === 'blob'
+            );
+
+            const promises = authorFiles.map(async file => {
+                const rawUrl = `https://raw.githubusercontent.com/${repoUser}/${repoName}/${branch}/${file.path}`;
+                const res = await fetch(rawUrl);
+                return res.json();
+            });
+
+            const profiles = await Promise.all(promises);
+            profiles.forEach(profile => {
+                if (profile.id) allAuthors[profile.id] = profile;
+            });
+        } catch (error) {
+            console.error("Ошибка загрузки профилей:", error);
         }
     }
 
@@ -198,6 +187,15 @@
         }
     }
 
+    function checkEditPermission(path) {
+        const input = prompt("Введите пароль модератора для редактирования:");
+        if (input === EDIT_PASSWORD) {
+            window.open(`https://github.com/${repoUser}/${repoName}/edit/${branch}/${path}`, '_blank');
+        } else if (input !== null) {
+            alert("Неверный пароль. Доступ к редактированию запрещен.");
+        }
+    }
+
     // Modal Logic
     const modal = document.getElementById("hypothesisModal");
     const span = document.getElementsByClassName("close")[0];
@@ -206,30 +204,20 @@
     span.onclick = function() { modal.style.display = "none"; }
     window.onclick = function(event) { if (event.target == modal) { modal.style.display = "none"; } }
 
-      async function openModal(id) {
+    async function openModal(id) {
         const hyp = allHypotheses.find(h => h.id === id);
         if (!hyp) return;
 
-        // Перевод статусов
         const statusMap = {
-            "draft": "Черновик",
-            "discussion": "Обсуждение",
-            "in_progress": "В работе",
-            "confirmed": "Подтверждено",
-            "refuted": "Опровергнуто",
-            "archived": "Архив"
+            "draft": "Черновик", "discussion": "Обсуждение", "in_progress": "В работе",
+            "confirmed": "Подтверждено", "refuted": "Опровергнуто", "archived": "Архив"
         };
         const statusRu = statusMap[hyp.status] || hyp.status;
 
-        // Формирование блока источников и связей
         let sourcesHtml = '';
-        
-        // Основная ссылка
         if (hyp.main_source && hyp.main_source.url) {
             sourcesHtml += `<div class="modal-section"><span class="modal-label">Основной источник:</span> <a href="${hyp.main_source.url}" target="_blank">${hyp.main_source.title}</a></div>`;
         }
-
-        // Библиография
         if (hyp.bibliography && hyp.bibliography.length > 0) {
             sourcesHtml += `<div class="modal-section"><span class="modal-label">Библиография автора:</span><ul>`;
             hyp.bibliography.forEach(item => {
@@ -237,8 +225,6 @@
             });
             sourcesHtml += `</ul></div>`;
         }
-
-        // Связи с другими гипотезами
         if (hyp.relationships) {
             for (const [type, links] of Object.entries(hyp.relationships)) {
                 if (links && links.length > 0) {
@@ -286,9 +272,7 @@
         modal.style.display = "block";
     }
 
-    loadHypotheses();
-    loadAuthors();
-        function showAuthorProfile(authorId) {
+    function showAuthorProfile(authorId) {
         const author = allAuthors[authorId];
         if (!author) {
             alert("Профиль автора не найден.");
@@ -311,6 +295,10 @@
         `;
         modal.style.display = "block";
     }
+
+    // Запуск при загрузке страницы
+    loadHypotheses();
+    loadAuthors();
 </script>
 
 </body>
