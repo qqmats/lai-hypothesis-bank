@@ -168,43 +168,80 @@
     span.onclick = function() { modal.style.display = "none"; }
     window.onclick = function(event) { if (event.target == modal) { modal.style.display = "none"; } }
 
-    async function openModal(id) {
+      async function openModal(id) {
         const hyp = allHypotheses.find(h => h.id === id);
         if (!hyp) return;
 
-        let relationshipsHtml = '';
+        // Перевод статусов
+        const statusMap = {
+            "draft": "Черновик",
+            "discussion": "Обсуждение",
+            "in_progress": "В работе",
+            "confirmed": "Подтверждено",
+            "refuted": "Опровергнуто",
+            "archived": "Архив"
+        };
+        const statusRu = statusMap[hyp.status] || hyp.status;
+
+        // Формирование блока источников и связей
+        let sourcesHtml = '';
+        
+        // Основная ссылка
+        if (hyp.main_source && hyp.main_source.url) {
+            sourcesHtml += `<div class="modal-section"><span class="modal-label">Основной источник:</span> <a href="${hyp.main_source.url}" target="_blank">${hyp.main_source.title}</a></div>`;
+        }
+
+        // Библиография
+        if (hyp.bibliography && hyp.bibliography.length > 0) {
+            sourcesHtml += `<div class="modal-section"><span class="modal-label">Библиография автора:</span><ul>`;
+            hyp.bibliography.forEach(item => {
+                sourcesHtml += `<li><a href="${item.url}" target="_blank">${item.title}</a> (${item.type})</li>`;
+            });
+            sourcesHtml += `</ul></div>`;
+        }
+
+        // Связи с другими гипотезами
         if (hyp.relationships) {
             for (const [type, links] of Object.entries(hyp.relationships)) {
                 if (links && links.length > 0) {
-                    relationshipsHtml += `<div class="modal-section"><span class="modal-label">${type}:</span><ul>`;
+                    let typeRu = type;
+                    if (type === 'supports') typeRu = 'Поддерживает';
+                    if (type === 'contradicts') typeRu = 'Противоречит';
+                    if (type === 'correlates_with') typeRu = 'Коррелирует с';
+                    
+                    sourcesHtml += `<div class="modal-section"><span class="modal-label">${typeRu}:</span><ul>`;
                     links.forEach(link => {
-                        relationshipsHtml += `<li><strong>${link.id}</strong>: ${link.note || ''}</li>`;
+                        sourcesHtml += `<li><strong>${link.id}</strong>: ${link.note || ''}</li>`;
                     });
-                    relationshipsHtml += `</ul></div>`;
+                    sourcesHtml += `</ul></div>`;
                 }
             }
         }
 
         modalBody.innerHTML = `
             <h2>${hyp.title}</h2>
-            <div class="modal-section">
-                <span class="modal-label">ID:</span> ${hyp.id}
-                <span class="modal-label">Статус:</span> <span class="status ${hyp.status}">${hyp.status}</span>
-                <span class="modal-label">Авторы:</span> ${hyp.authors ? hyp.authors.map(a => a.name).join(', ') : 'Не указаны'}
+            <div class="meta" style="margin-bottom: 20px;">
+                <strong>ID:</strong> ${hyp.id} &nbsp;|&nbsp; 
+                <span class="status ${hyp.status}">${statusRu}</span> &nbsp;|&nbsp; 
+                <strong>Авторы:</strong> ${hyp.authors ? hyp.authors.map(a => a.name).join(', ') : 'Не указаны'}
             </div>
+            
             <div class="modal-section">
                 <span class="modal-label">Формулировка гипотезы:</span>
-                <p>${hyp.hypothesis_statement || 'Не указана'}</p>
+                <p style="font-style: italic; color: #444;">${hyp.hypothesis_statement || 'Не указана'}</p>
             </div>
+            
             <div class="modal-section">
                 <span class="modal-label">Краткое описание:</span>
                 <p>${hyp.synopsis || 'Не указано'}</p>
             </div>
+
             <div class="modal-section">
                 <span class="modal-label">Ключевые слова:</span>
                 <p>${hyp.keywords ? hyp.keywords.join(', ') : ''}</p>
             </div>
-            ${relationshipsHtml}
+
+            ${sourcesHtml}
         `;
         modal.style.display = "block";
     }
