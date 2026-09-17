@@ -37,23 +37,31 @@
     const REPO_NAME = 'lai-hypothesis-bank';
     const AUTHORS_PATH = 'authors';
 
-    async function loadAuthors() {
+       async function loadAuthors() {
         try {
-            // 1. Получаем список файлов из папки authors
             const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${AUTHORS_PATH}`);
             const files = await response.json();
-            
-            // Фильтруем только JSON файлы
             const authorFiles = files.filter(file => file.name.endsWith('.json'));
 
+            // Загружаем все профили параллельно для ускорения
+            const authorsData = await Promise.all(
+                authorFiles.map(async (file) => {
+                    const res = await fetch(file.download_url);
+                    return await res.json();
+                })
+            );
+
+            // СОРТИРОВКА: Скляров первый, остальные по алфавиту (по имени)
+            authorsData.sort((a, b) => {
+                if (a.id === 'AUTH-Sklyarov') return -1;
+                if (b.id === 'AUTH-Sklyarov') return 1;
+                return a.personal_info.name_ru.localeCompare(b.personal_info.name_ru, 'ru');
+            });
+
             const container = document.getElementById('authors-container');
+            container.innerHTML = ''; // Очистка перед рендерингом
 
-            for (const file of authorFiles) {
-                // 2. Загружаем содержимое каждого файла автора
-                const contentResponse = await fetch(file.download_url);
-                const author = await contentResponse.json();
-
-                // 3. Создаем HTML карточку
+            for (const author of authorsData) {
                 const card = document.createElement('div');
                 card.className = 'card';
                 
@@ -61,7 +69,6 @@
                 if (author.related_hypotheses && author.related_hypotheses.length > 0) {
                     hypothesesHtml = '<ul class="hypotheses-list">';
                     author.related_hypotheses.forEach(hypId => {
-                        // Ссылка ведет обратно на главную страницу с якорем (в будущем можно сделать фильтрацию)
                         hypothesesHtml += `<li><a href="index.html#${hypId}" target="_blank">📄 ${hypId}</a></li>`;
                     });
                     hypothesesHtml += '</ul>';
@@ -76,12 +83,11 @@
                     </div>
                     ${hypothesesHtml}
                 `;
-                
                 container.appendChild(card);
             }
         } catch (error) {
             console.error('Ошибка загрузки авторов:', error);
-            document.getElementById('authors-container').innerHTML = '<p>Не удалось загрузить данные. Проверьте консоль.</p>';
+            document.getElementById('authors-container').innerHTML = '<p>Не удалось загрузить данные.</p>';
         }
     }
 
