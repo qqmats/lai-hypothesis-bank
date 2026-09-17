@@ -1,0 +1,48 @@
+{
+ "id": "AUTH-Sklyarov",
+ "version": "1.1",
+ "personal_info": {
+   "name_ru": "Андрей Юрьевич Скляров",
+   "name_en": "Andrey Sklyarov",
+   "birth_year": 1961,
+   "death_year": 2016,
+   "education": "МФТИ, факультет аэрофизики и космических исследований",
+   "profession": "Инженер-физик"
+ },
+ "role_in_lai": ["Основатель", "Идейный лидер", "Эксперт по мегалитам"],
+ "specialization": ["Мегалитическая кладка", "Следы инструмента", "Генетика человека", "Космогония"],
+ "bio_summary": "Основатель проекта ЛАИ. Инженер-физик, применявший междисциплинарный подход к изучению древних артефактов. Автор десятков книг и фильмов.",
+ "contacts": {
+   "email": "",
+   "telegram": "",
+   "forum_profile": "https://laiforum.ru/memberlist.php?mode=viewprofile&u=1",
+   "official_page": "https://lah.ru/authors/sklyarov/"
+ },
+ "academic_ids": {
+   "spin_code": "",
+   "author_id_rinc": "",
+   "orcid": "",
+   "researcher_id": ""
+ },
+ "bibliography": [
+   {
+     "title": "Загадки Древнего Египта",
+     "year": 2009,
+     "type": "book",
+     "url": "https://lah.ru/books/sklyarov_egypt/"
+   },
+   {
+     "title": "Перу и Боливия до испанского завоевания",
+     "year": 2010,
+     "type": "book",
+     "url": "https://lah.ru/books/sklyarov_peru/"
+   }
+ ],
+ "related_hypotheses": [
+   "LAI_SEG01-Sklyarov_01",
+   "LAI_SEG01-Sklyarov_02",
+   "LAI_SEG01-Sklyarov_03"
+ ],
+ "methodology_notes": "Приверженец фактоцентричной методологии: 'Если факты противоречат теории, надо выбрасывать теорию, а не факты'.",
+ "license": "CC BY-SA 4.0"
+}
