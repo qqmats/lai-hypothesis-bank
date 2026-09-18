@@ -1,0 +1,74 @@
+{
+ "instruction_title": "Шаблон профиля исследователя ЛАИ v1.1",
+ "version": "1.1",
+ "format_rules": {
+   "encoding": "UTF-8",
+   "structure": "Объект JSON с фиксированным набором ключей",
+   "id_format": "AUTH-{ФамилияЛатиницей} (например, AUTH-Sklyarov)"
+ },
+ "required_fields": [
+   "id",
+   "version",
+   "personal_info",
+   "role_in_lai",
+   "specialization",
+   "bio_summary",
+   "contacts",
+   "bibliography",
+   "related_hypotheses",
+   "license"
+ ],
+ "field_definitions": {
+   "id": "Уникальный идентификатор автора. Используется в карточках гипотез для связи.",
+   "personal_info": "Объект с личными данными: name_ru, name_en, birth_year, death_year, education, profession.",
+   "role_in_lai": "Массив строк. Роли в проекте (Основатель, Исследователь, Эксперт и т.д.).",
+   "specialization": "Массив строк. Области научных или исследовательских интересов.",
+   "bio_summary": "Краткая биография (2-3 предложения), подчеркивающая вклад в альтернативную историю.",
+   "contacts": "Объект с ссылками: email, telegram, forum_profile, official_page.",
+   "academic_ids": "Объект для академических идентификаторов (ORCID, SPIN-код и др.), если есть.",
+   "bibliography": "Массив объектов основных трудов: {title, year, type, url}.",
+   "related_hypotheses": "Массив ID гипотез этого автора (формат LAI_SEGxx-Author_01). Обновляется по мере добавления новых карточек.",
+   "methodology_notes": "Заметки о методе исследования или философском подходе автора.",
+   "license": "Лицензия на использование материалов (рекомендуется CC BY-SA 4.0)."
+ },
+ "example_structure": {
+   "id": "AUTH-Example",
+   "version": "1.1",
+   "personal_info": {
+     "name_ru": "Иван Иванов",
+     "name_en": "Ivan Ivanov",
+     "birth_year": 1980,
+     "death_year": null,
+     "education": "МГУ, исторический факультет",
+     "profession": "Археолог"
+   },
+   "role_in_lai": ["Исследователь"],
+   "specialization": ["Мегалиты Кавказа", "Древняя металлургия"],
+   "bio_summary": "Исследователь с 10-летним стажем. Специализируется на поиске следов древних технологий в горных регионах.",
+   "contacts": {
+     "email": "",
+     "telegram": "",
+     "forum_profile": "https://laiforum.ru/",
+     "official_page": ""
+   },
+   "academic_ids": {
+     "spin_code": "",
+     "author_id_rinc": "",
+     "orcid": "",
+     "researcher_id": ""
+   },
+   "bibliography": [
+     {
+       "title": "Тайны горных вершин",
+       "year": 2020,
+       "type": "article",
+       "url": "https://example.com/article"
+     }
+   ],
+   "related_hypotheses": [
+     "LAI_SEG01-Example_01"
+   ],
+   "methodology_notes": "Придерживается принципа междисциплинарного анализа артефактов.",
+   "license": "CC BY-SA 4.0"
+ }
+}
