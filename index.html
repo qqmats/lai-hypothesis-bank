@@ -319,28 +319,36 @@ function checkFocusParameter() {
     const focusId = urlParams.get('focus');
 
     if (focusId) {
-        // Ждем немного, чтобы карточки успели отрисоваться
+        console.log(`Поиск карточки с ID: ${focusId}`);
+        
+        // Ждем 2 секунды, чтобы наверняка все карточки успели создаться через JS
         setTimeout(() => {
             const card = document.getElementById(focusId);
             if (card) {
+                // Плавная прокрутка к центру экрана
                 card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                // Добавляем временную подсветку, чтобы пользователь увидел, куда попал
-                card.style.transition = "box-shadow 0.5s";
-                card.style.boxShadow = "0 0 0 4px #e67e22"; 
+                
+                // Эффект подсветки (оранжевая рамка)
+                card.style.transition = "box-shadow 0.5s, border 0.5s";
+                card.style.border = "3px solid #e67e22";
+                card.style.boxShadow = "0 0 15px rgba(230, 126, 34, 0.5)";
+                
+                // Убираем подсветку через 4 секунды
                 setTimeout(() => {
+                    card.style.border = "";
                     card.style.boxShadow = "";
-                }, 3000);
+                }, 4000);
             } else {
-                console.warn(`Карточка с ID ${focusId} не найдена на странице.`);
+                console.warn(`Карточка с ID ${focusId} не найдена. Проверьте правильность ID.`);
             }
-        }, 1000); // Задержка 1 секунда для загрузки данных
+        }, 2000); 
         
-        // Очищаем URL, чтобы при обновлении страницы не было повторной прокрутки
+        // Очищаем URL от параметра, чтобы при обновлении страницы не было повторного скролла
         window.history.replaceState({}, document.title, window.location.pathname);
     }
 }
 
-// Запускаем проверку после загрузки страницы
+// Запускаем проверку после полной загрузки страницы
 window.addEventListener('load', checkFocusParameter);
 </script>
 
