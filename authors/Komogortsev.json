@@ -48,10 +48,11 @@
    "url": ""
   }
  ],
- "related_hypotheses": [
+"related_hypotheses": [
   "LAI_SEG10-Komogortsev_01",
   "LAI_SEG02-Komogortsev_01",
-  "LAI_SEG07-Komogortsev_01"
+  "LAI_SEG07-Komogortsev_01",
+  "LAI_SEG08-Komogortsev_01"
  ],
  "license": "CC BY-SA 4.0"
 }
