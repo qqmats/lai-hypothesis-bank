@@ -313,43 +313,8 @@
     // Запуск при загрузке страницы
     loadHypotheses();
     loadAuthors();
-    // Функция для обработки перехода от авторов
-function checkFocusParameter() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const focusId = urlParams.get('focus');
+    // Функция для обработки перехода от авторов удалена
 
-    if (focusId) {
-        console.log(`Поиск карточки с ID: ${focusId}`);
-        
-        // Ждем 2 секунды, чтобы наверняка все карточки успели создаться через JS
-        setTimeout(() => {
-            const card = document.getElementById(focusId);
-            if (card) {
-                // Плавная прокрутка к центру экрана
-                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                
-                // Эффект подсветки (оранжевая рамка)
-                card.style.transition = "box-shadow 0.5s, border 0.5s";
-                card.style.border = "3px solid #e67e22";
-                card.style.boxShadow = "0 0 15px rgba(230, 126, 34, 0.5)";
-                
-                // Убираем подсветку через 4 секунды
-                setTimeout(() => {
-                    card.style.border = "";
-                    card.style.boxShadow = "";
-                }, 4000);
-            } else {
-                console.warn(`Карточка с ID ${focusId} не найдена. Проверьте правильность ID.`);
-            }
-        }, 2000); 
-        
-        // Очищаем URL от параметра, чтобы при обновлении страницы не было повторного скролла
-        window.history.replaceState({}, document.title, window.location.pathname);
-    }
-}
-
-// Запускаем проверку после полной загрузки страницы
-window.addEventListener('load', checkFocusParameter);
     // Универсальный обработчик Esc (активен, если на странице есть элементы с классом .modal)
 document.addEventListener('keydown', function(event) {
     if (event.key === "Escape") {
