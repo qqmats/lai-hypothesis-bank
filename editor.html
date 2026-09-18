@@ -2,17 +2,27 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Редактор ЛАИ: Профили и Гипотезы</title>
+    <title>Редактор ЛАИ: Правки и Черновики</title>
     <style>
-        body { font-family: sans-serif; max-width: 900px; margin: 20px auto; padding: 20px; background: #f9f9f9; }
-        .container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        h1 { color: #2c3e50; text-align: center; }
-        label { display: block; margin-top: 15px; font-weight: bold; }
-        input, textarea, select { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-        button { background: #3498db; color: white; border: none; padding: 12px 20px; margin-top: 20px; cursor: pointer; border-radius: 5px; font-size: 16px; }
-        button:hover { background: #2980b9; }
-        #output { background: #2d3436; color: #fab1a0; padding: 15px; border-radius: 5px; margin-top: 20px; white-space: pre-wrap; font-family: monospace; display: none; }
+        body { font-family: 'Segoe UI', sans-serif; max-width: 1000px; margin: 20px auto; padding: 20px; background: #f4f4f9; color: #333; }
+        .container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #2c3e50; }
         .nav-link { display: block; text-align: center; margin-bottom: 20px; color: #7f8c8d; text-decoration: none; }
+        
+        /* Стили для формы */
+        .form-row { display: flex; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .key-label { width: 30%; font-weight: bold; color: #e67e22; font-family: monospace; padding-right: 10px; user-select: none; }
+        .input-area { width: 70%; }
+        input, textarea, select { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; font-family: inherit; }
+        textarea { resize: vertical; min-height: 80px; }
+        
+        .btn-group { text-align: center; margin-top: 30px; }
+        button { background: #3498db; color: white; border: none; padding: 12px 25px; border-radius: 5px; cursor: pointer; font-size: 16px; margin: 0 10px; }
+        button:hover { background: #2980b9; }
+        .btn-load { background: #95a5a6; }
+        .btn-save { background: #27ae60; }
+
+        #jsonInput { width: 100%; height: 150px; font-family: monospace; margin-bottom: 20px; display: none; }
     </style>
 </head>
 <body>
@@ -20,96 +30,110 @@
 <a href="index.html" class="nav-link">← Вернуться к Банку гипотез</a>
 
 <div class="container">
-    <h1>🛠️ Генератор файлов правок</h1>
+    <h1>🛠️ Редактор карточек ЛАИ</h1>
     
-    <label for="typeSelect">Тип файла:</label>
-    <select id="typeSelect" onchange="loadTemplate()">
-        <option value="profile">Профиль автора (_update.json)</option>
-        <option value="hypothesis">Карточка гипотезы (_draft.json)</option>
-    </select>
-
-    <div id="profileFields">
-        <label>ID Автора (например, Sergeev):</label>
-        <input type="text" id="authorId" placeholder="Sergeev" oninput="updateFilename()">
-        
-        <label>Имя (RU):</label>
-        <input type="text" id="nameRu" placeholder="Степан Сергеев">
-        
-        <label>Краткая биография:</label>
-        <textarea id="bio" rows="3"></textarea>
+    <div style="text-align: center; margin-bottom: 20px;">
+        <button onclick="toggleInput()" class="btn-load">Вставить/Загрузить JSON</button>
     </div>
 
-    <div id="hypothesisFields" style="display:none;">
-        <label>Сегмент (SEG01-SEG10):</label>
-        <select id="segId">
-            <option value="SEG01">SEG01 - Мегалиты</option>
-            <option value="SEG04">SEG04 - Биология</option>
-            <option value="SEG10">SEG10 - Фундаментальные знания</option>
-        </select>
-        
-        <label>ID Автора:</label>
-        <input type="text" id="hypAuthorId" placeholder="Sergeev" oninput="updateFilename()">
-        
-        <label>Заголовок гипотезы:</label>
-        <input type="text" id="hypTitle">
+    <textarea id="jsonInput" placeholder="Вставьте сюда содержимое JSON-файла (профиля или гипотезы) для редактирования..."></textarea>
+    <div id="formContainer"></div>
+
+    <div class="btn-group">
+        <button onclick="generateUpdateFile()" class="btn-save">Скачать файл правок (_update)</button>
     </div>
-
-    <button onclick="generateJSON()">Сгенерировать JSON</button>
-
-    <div id="output"></div>
-    <button id="downloadBtn" style="display:none; background: #27ae60;" onclick="downloadFile()">Скачать файл для загрузки</button>
 </div>
 
 <script>
     let currentData = {};
-    let filename = "";
+    let isProfile = false;
 
-    function loadTemplate() {
-        const type = document.getElementById('typeSelect').value;
-        document.getElementById('profileFields').style.display = type === 'profile' ? 'block' : 'none';
-        document.getElementById('hypothesisFields').style.display = type === 'hypothesis' ? 'block' : 'none';
-        document.getElementById('output').style.display = 'none';
-        document.getElementById('downloadBtn').style.display = 'none';
+    function toggleInput() {
+        const area = document.getElementById('jsonInput');
+        area.style.display = area.style.display === 'none' ? 'block' : 'none';
     }
 
-    function updateFilename() {
-        // Логика формирования имени файла будет здесь
+    // Рекурсивная функция для создания полей формы
+    function buildForm(obj, container, prefix = "") {
+        container.innerHTML = "";
+        for (let key in obj) {
+            if (!obj.hasOwnProperty(key)) continue;
+            
+            const row = document.createElement('div');
+            row.className = 'form-row';
+            
+            const label = document.createElement('div');
+            label.className = 'key-label';
+            label.innerText = key;
+            
+            const inputWrapper = document.createElement('div');
+            inputWrapper.className = 'input-area';
+            
+            let value = obj[key];
+
+            // Обработка разных типов данных
+            if (Array.isArray(value)) {
+                // Для массивов пока просто текстовое поле через запятую для простоты
+                const input = document.createElement('textarea');
+                input.value = value.join(', ');
+                input.onchange = (e) => { obj[key] = e.target.value.split(',').map(s => s.trim()); };
+                inputWrapper.appendChild(input);
+            } else if (typeof value === 'object' && value !== null) {
+                // Если объект сложный (например, personal_info), рекурсивно не входим, 
+                // а даем возможность редактировать основные поля первого уровня для скорости
+                // В полной версии здесь можно сделать вложенные аккордеоны
+                const input = document.createElement('textarea');
+                input.value = JSON.stringify(value, null, 2);
+                input.style.height = "150px";
+                input.onchange = (e) => { 
+                    try { obj[key] = JSON.parse(e.target.value); } 
+                    catch(err) { alert("Ошибка JSON в поле " + key); }
+                };
+                inputWrapper.appendChild(input);
+            } else {
+                // Примитивы (строки, числа)
+                const input = document.createElement(value.toString().length > 50 ? 'textarea' : 'input');
+                if (input.tagName === 'INPUT') input.type = 'text';
+                input.value = value;
+                input.onchange = (e) => { obj[key] = e.target.value; };
+                inputWrapper.appendChild(input);
+            }
+
+            row.appendChild(label);
+            row.appendChild(inputWrapper);
+            container.appendChild(row);
+        }
     }
 
-    function generateJSON() {
-        const type = document.getElementById('typeSelect').value;
-        
-        if (type === 'profile') {
-            const id = document.getElementById('authorId').value;
-            filename = `${id}_update.json`;
-            currentData = {
-                "id": `AUTH-${id}`,
-                "version": "1.1",
-                "personal_info": { "name_ru": document.getElementById('nameRu').value },
-                "bio_summary": document.getElementById('bio').value,
-                "instruction": "Это файл правок. Модератор должен слить эти данные с основным профилем."
-            };
-        } else {
-            const seg = document.getElementById('segId').value;
-            const auth = document.getElementById('hypAuthorId').value;
-            filename = `LAI_${seg}-${auth}_draft.json`;
-            currentData = {
-                "id": filename.replace('.json', ''),
-                "version": "1.2",
-                "status": "draft",
-                "title": document.getElementById('hypTitle').value,
-                "authors": [{ "id": `AUTH-${auth}`, "name": "", "role": "основной" }],
-                "instruction": "Черновик гипотезы. Требует проверки модератором перед переносом в основную папку."
-            };
+    function loadFromTextarea() {
+        const text = document.getElementById('jsonInput').value;
+        try {
+            currentData = JSON.parse(text);
+            isProfile = currentData.hasOwnProperty('personal_info');
+            buildForm(currentData, document.getElementById('formContainer'));
+            document.getElementById('jsonInput').style.display = 'none';
+        } catch (e) {
+            alert("Ошибка парсинга JSON. Проверьте синтаксис.");
+        }
+    }
+
+    function generateUpdateFile() {
+        if (Object.keys(currentData).length === 0) {
+            alert("Сначала загрузите данные!");
+            return;
         }
 
-        const jsonStr = JSON.stringify(currentData, null, 2);
-        document.getElementById('output').innerText = jsonStr;
-        document.getElementById('output').style.display = 'block';
-        document.getElementById('downloadBtn').style.display = 'inline-block';
-    }
+        let filename = "";
+        if (isProfile) {
+            // Для профилей: берем ID автора (например, AUTH-Sergeev -> Sergeev_update.json)
+            const authId = currentData.id ? currentData.id.replace('AUTH-', '') : 'Author';
+            filename = `${authId}_update.json`;
+        } else {
+            // Для гипотез: берем ID гипотезы
+            const hypId = currentData.id || 'LAI_SEG00-Author_00';
+            filename = `${hypId}_draft.json`;
+        }
 
-    function downloadFile() {
         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(currentData, null, 2));
         const downloadAnchorNode = document.createElement('a');
         downloadAnchorNode.setAttribute("href", dataStr);
@@ -118,6 +142,9 @@
         downloadAnchorNode.click();
         downloadAnchorNode.remove();
     }
+
+    // Инициализация при загрузке (если нужно)
+    document.getElementById('jsonInput').addEventListener('input', loadFromTextarea);
 </script>
 
 </body>
