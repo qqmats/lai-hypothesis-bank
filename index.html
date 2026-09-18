@@ -350,6 +350,15 @@ function checkFocusParameter() {
 
 // Запускаем проверку после полной загрузки страницы
 window.addEventListener('load', checkFocusParameter);
+    // Универсальный обработчик Esc (активен, если на странице есть элементы с классом .modal)
+document.addEventListener('keydown', function(event) {
+    if (event.key === "Escape") {
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            modal.style.display = "none";
+        });
+    }
+});
 </script>
 
 </body>
