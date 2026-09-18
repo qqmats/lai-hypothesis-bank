@@ -70,6 +70,20 @@
             const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${AUTHORS_PATH}`);
             const files = await response.json();
             const authorFiles = files.filter(file => file.name.endsWith('.json'));
+                        // Сортировка: Андрей Скляров всегда первый, остальные по алфавиту
+            authorFiles.sort((a, b) => {
+                const nameA = a.name.toLowerCase();
+                const nameB = b.name.toLowerCase();
+                
+                // Если файл принадлежит Склярову, он идет первым (-1)
+                if (nameA.includes('sklyarov')) return -1;
+                if (nameB.includes('sklyarov')) return 1;
+                
+                // Иначе стандартная сортировка по алфавиту
+                if (nameA < nameB) return -1;
+                if (nameA > nameB) return 0;
+                return 0;
+            });
             const container = document.getElementById('authors-container');
 
             for (const file of authorFiles) {
