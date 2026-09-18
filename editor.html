@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактор ЛАИ: Профили и Гипотезы</title>
+    <style>
+        body { font-family: sans-serif; max-width: 900px; margin: 20px auto; padding: 20px; background: #f9f9f9; }
+        .container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; text-align: center; }
+        label { display: block; margin-top: 15px; font-weight: bold; }
+        input, textarea, select { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        button { background: #3498db; color: white; border: none; padding: 12px 20px; margin-top: 20px; cursor: pointer; border-radius: 5px; font-size: 16px; }
+        button:hover { background: #2980b9; }
+        #output { background: #2d3436; color: #fab1a0; padding: 15px; border-radius: 5px; margin-top: 20px; white-space: pre-wrap; font-family: monospace; display: none; }
+        .nav-link { display: block; text-align: center; margin-bottom: 20px; color: #7f8c8d; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<a href="index.html" class="nav-link">← Вернуться к Банку гипотез</a>
+
+<div class="container">
+    <h1>🛠️ Генератор файлов правок</h1>
+    
+    <label for="typeSelect">Тип файла:</label>
+    <select id="typeSelect" onchange="loadTemplate()">
+        <option value="profile">Профиль автора (_update.json)</option>
+        <option value="hypothesis">Карточка гипотезы (_draft.json)</option>
+    </select>
+
+    <div id="profileFields">
+        <label>ID Автора (например, Sergeev):</label>
+        <input type="text" id="authorId" placeholder="Sergeev" oninput="updateFilename()">
+        
+        <label>Имя (RU):</label>
+        <input type="text" id="nameRu" placeholder="Степан Сергеев">
+        
+        <label>Краткая биография:</label>
+        <textarea id="bio" rows="3"></textarea>
+    </div>
+
+    <div id="hypothesisFields" style="display:none;">
+        <label>Сегмент (SEG01-SEG10):</label>
+        <select id="segId">
+            <option value="SEG01">SEG01 - Мегалиты</option>
+            <option value="SEG04">SEG04 - Биология</option>
+            <option value="SEG10">SEG10 - Фундаментальные знания</option>
+        </select>
+        
+        <label>ID Автора:</label>
+        <input type="text" id="hypAuthorId" placeholder="Sergeev" oninput="updateFilename()">
+        
+        <label>Заголовок гипотезы:</label>
+        <input type="text" id="hypTitle">
+    </div>
+
+    <button onclick="generateJSON()">Сгенерировать JSON</button>
+
+    <div id="output"></div>
+    <button id="downloadBtn" style="display:none; background: #27ae60;" onclick="downloadFile()">Скачать файл для загрузки</button>
+</div>
+
+<script>
+    let currentData = {};
+    let filename = "";
+
+    function loadTemplate() {
+        const type = document.getElementById('typeSelect').value;
+        document.getElementById('profileFields').style.display = type === 'profile' ? 'block' : 'none';
+        document.getElementById('hypothesisFields').style.display = type === 'hypothesis' ? 'block' : 'none';
+        document.getElementById('output').style.display = 'none';
+        document.getElementById('downloadBtn').style.display = 'none';
+    }
+
+    function updateFilename() {
+        // Логика формирования имени файла будет здесь
+    }
+
+    function generateJSON() {
+        const type = document.getElementById('typeSelect').value;
+        
+        if (type === 'profile') {
+            const id = document.getElementById('authorId').value;
+            filename = `${id}_update.json`;
+            currentData = {
+                "id": `AUTH-${id}`,
+                "version": "1.1",
+                "personal_info": { "name_ru": document.getElementById('nameRu').value },
+                "bio_summary": document.getElementById('bio').value,
+                "instruction": "Это файл правок. Модератор должен слить эти данные с основным профилем."
+            };
+        } else {
+            const seg = document.getElementById('segId').value;
+            const auth = document.getElementById('hypAuthorId').value;
+            filename = `LAI_${seg}-${auth}_draft.json`;
+            currentData = {
+                "id": filename.replace('.json', ''),
+                "version": "1.2",
+                "status": "draft",
+                "title": document.getElementById('hypTitle').value,
+                "authors": [{ "id": `AUTH-${auth}`, "name": "", "role": "основной" }],
+                "instruction": "Черновик гипотезы. Требует проверки модератором перед переносом в основную папку."
+            };
+        }
+
+        const jsonStr = JSON.stringify(currentData, null, 2);
+        document.getElementById('output').innerText = jsonStr;
+        document.getElementById('output').style.display = 'block';
+        document.getElementById('downloadBtn').style.display = 'inline-block';
+    }
+
+    function downloadFile() {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(currentData, null, 2));
+        const downloadAnchorNode = document.createElement('a');
+        downloadAnchorNode.setAttribute("href", dataStr);
+        downloadAnchorNode.setAttribute("download", filename);
+        document.body.appendChild(downloadAnchorNode);
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
+    }
+</script>
+
+</body>
+</html>
