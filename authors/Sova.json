@@ -1,0 +1,62 @@
+{
+  "id": "AUTH-Sova",
+  "version": "1.1",
+  "personal_info": {
+    "name_ru": "Николай Сова",
+    "name_en": "Nikolai Sova",
+    "birth_year": 1971,
+    "death_year": null,
+    "education": "МВТУ им. Баумана (радиоинженер), РЭУ им. Плеханова (МВА), Кандидат экономических наук",
+    "profession": "Радиоинженер, специалист по стратегическому управлению и аналитике"
+  },
+  "role_in_lai": [
+    "Исследователь",
+    "Автор проектов"
+  ],
+  "specialization": [
+    "Полигональная кладка",
+    "Следы обработки камня",
+    "Древняя генная инженерия",
+    "Применение ИИ в альтернативной истории"
+  ],
+  "bio_summary": "Исследователь ЛАИ с 2021 года. Организатор независимых экспедиций в Египет, Перу, Боливию, Турцию и Мексику. Автор проектов «Сдвиг парадигмы» и «Полигональная история». Специализируется на сборе доказательной базы существования высокотехнологичной «полигональной» цивилизации.",
+  "contacts": {
+    "email": "",
+    "telegram": "",
+    "forum_profile": "https://laiforum.ru/",
+    "official_page": "https://lah.ru/persona/nikolaj-sova/"
+  },
+  "academic_ids": {
+    "spin_code": "",
+    "author_id_rinc": "",
+    "orcid": "",
+    "researcher_id": ""
+  },
+  "bibliography": [
+    {
+      "title": "Полигональная история (доклад на IX семинаре ЛАИ)",
+      "year": 2021,
+      "type": "seminar_report",
+      "url": "https://sponsr.ru/onlinelai/collections/7240/"
+    },
+    {
+      "title": "Альтернативная история и искусственный интеллект",
+      "year": 2025,
+      "type": "lecture",
+      "url": "https://sponsr.ru/onlinelai/109150/Nikolai_Sova_Alternativnaya_istoriya_i_iskusstvennyi_intellekt/"
+    },
+    {
+      "title": "Сдвиг парадигмы: Загадки Перу – Морай",
+      "year": 2022,
+      "type": "video",
+      "url": "https://www.youtube.com/watch?v=example_moray_sova"
+    }
+  ],
+  "related_hypotheses": [
+    "LAI_SEG01-Sova_01",
+    "LAI_SEG06-Sova_01",
+    "LAI_SEG08-Sova_01"
+  ],
+  "methodology_notes": "Использует междисциплинарный подход, сочетая инженерный анализ следов обработки с натурными исследованиями артефактов. Активно внедряет методы анализа данных и ИИ для проверки исторических гипотез.",
+  "license": "CC BY-SA 4.0"
+}
