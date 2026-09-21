@@ -5,220 +5,171 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Исследователи ЛАИ</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
-            margin: 0;
-            padding: 20px;
-        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f9; color: #333; margin: 0; padding: 20px; }
+        header { text-align: center; margin-bottom: 40px; }
+        h1 { color: #2c3e50; }
+        .nav-link { display: inline-block; margin-top: 10px; text-decoration: none; color: #3498db; font-weight: bold; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
+        .card { background: white; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 20px; transition: transform 0.2s; cursor: pointer; }
+        .card:hover { transform: translateY(-5px); }
+        .author-name { font-size: 1.4em; font-weight: bold; color: #2c3e50; margin-bottom: 5px; }
+        .role { color: #7f8c8d; font-style: italic; margin-bottom: 15px; }
+        .hypotheses-list { list-style: none; padding: 0; margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px; }
+        .hypotheses-list li { margin-bottom: 8px; }
+        .hyp-link { cursor: pointer; color: #2980b9; font-weight: 500; text-decoration: underline; }
+        .hyp-link:hover { color: #e67e22; }
+        .tag { display: inline-block; background: #ecf0f1; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; margin-right: 5px; }
 
-        h1 {
-            text-align: center;
-            color: #2c3e50;
-        }
-
-        .back-link {
-            display: block;
-            text-align: center;
-            margin-bottom: 20px;
-            text-decoration: none;
-            color: #007bff;
-            font-weight: bold;
-        }
-
-        .authors-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .author-card {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            padding: 20px;
-            transition: transform 0.2s;
-        }
-
-        .author-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .author-name {
-            font-size: 1.2em;
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-
-        .author-role {
-            color: #7f8c8d;
-            font-size: 0.9em;
-            margin-bottom: 15px;
-        }
-
-        .author-bio {
-            font-size: 0.95em;
-            line-height: 1.5;
-            margin-bottom: 15px;
-        }
-
-        /* Стили для модуля кнопок контактов */
-        .author-contact-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-
-        .contact-btn {
-            display: inline-flex;
-            align-items: center;
-            padding: 8px 16px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            color: white;
-        }
-
-        .contact-btn.telegram {
-            background-color: #0088cc; /* Цвет Telegram */
-        }
-
-        .contact-btn.official {
-            background-color: #2c3e50; /* Нейтральный темный цвет */
-        }
-
-        .contact-btn:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-
-        .contact-icon {
-            margin-right: 8px;
-            font-size: 16px;
-        }
+        /* Стили для модального окна */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(5px); }
+        .modal-content { background-color: #fefefe; margin: 5% auto; padding: 30px; border: 1px solid #888; width: 80%; max-width: 800px; border-radius: 12px; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+        .close:hover, .close:focus { color: black; text-decoration: none; cursor: pointer; }
+        .modal-title { color: #2c3e50; margin-top: 0; }
+        .modal-meta { font-size: 0.9em; color: #7f8c8d; margin-bottom: 20px; }
+        .modal-body { line-height: 1.6; }
     </style>
 </head>
 <body>
 
-    <a href="index.html" class="back-link">← Вернуться к классификации гипотез</a>
-    <h1>👥 Исследователи Лаборатории Альтернативной Истории</h1>
+<header>
+    <h1>👥 Исследователи Лаборатории Альтернативной Истории 6</h1>
+    <a href="index.html" class="nav-link">← Вернуться к классификации гипотез</a>
+</header>
 
-    <div id="authors-container" class="authors-grid">
-        <!-- Карточки авторов будут загружены сюда -->
+<div id="authors-container" class="grid">
+    <!-- Сюда будут загружаться карточки авторов -->
+</div>
+
+<!-- Модальное окно -->
+<div id="hypothesisModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 id="modalTitle" class="modal-title"></h2>
+        <div id="modalMeta" class="modal-meta"></div>
+        <div id="modalBody" class="modal-body"></div>
     </div>
+</div>
 
-    <script>
-        // Данные авторов (в реальном проекте это может быть отдельный JSON файл)
-        const authorsData = [
-            {
-                "id": "AUTH-Sklyarov",
-                "personal_info": {
-                    "name_ru": "Андрей Скляров",
-                    "name_en": "Andrey Sklyarov"
-                },
-                "role_in_lai": ["Основатель", "Исследователь"],
-                "bio_summary": "Инженер-физик, основатель ЛАИ. Автор множества книг и фильмов об альтернативной истории.",
-                "contacts": {
-                    "telegram": "", 
-                    "official_page": "https://lah.ru/"
-                }
-            },
-            {
-                "id": "AUTH-Sergeev",
-                "personal_info": {
-                    "name_ru": "Степан Сергеев",
-                    "name_en": "Stepan Sergeev"
-                },
-                "role_in_lai": ["Исследователь", "Эксперт по генетике"],
-                "bio_summary": "Специалист в области биоинженерии и генетики древних цивилизаций.",
-                "contacts": {
-                    "telegram": "https://t.me/example_sergeev", 
-                    "official_page": ""
-                }
-            },
-            {
-                "id": "AUTH-Lagun",
-                "personal_info": {
-                    "name_ru": "Дмитрий Лагун",
-                    "name_en": "Dmitry Lagun"
-                },
-                "role_in_lai": ["Исследователь", "Физик"],
-                "bio_summary": "Исследует акустические и физические свойства древних сооружений.",
-                "contacts": {
-                    "telegram": "", 
-                    "official_page": ""
-                }
-            }
-        ];
+<script>
+    const REPO_OWNER = 'qqmats';
+    const REPO_NAME = 'lai-hypothesis-bank';
+    const AUTHORS_PATH = 'authors';
+    const HYPOTHESES_PATH = 'hypotheses';
 
-        // Функция для создания кнопок контактов
-        function renderContactButtons(authorData) {
-            const container = document.createElement('div');
-            container.className = 'author-contact-buttons';
+    // Элементы модального окна
+    const modal = document.getElementById("hypothesisModal");
+    const span = document.getElementsByClassName("close")[0];
 
-            // Проверяем наличие ссылок в объекте contacts
-            if (authorData.contacts) {
-                // Кнопка Telegram
-                if (authorData.contacts.telegram && authorData.contacts.telegram.trim() !== "") {
-                    const tgBtn = document.createElement('a');
-                    tgBtn.href = authorData.contacts.telegram;
-                    tgBtn.target = "_blank";
-                    tgBtn.className = "contact-btn telegram";
-                    tgBtn.innerHTML = '<span class="contact-icon">✈️</span> Telegram';
-                    container.appendChild(tgBtn);
+    // Закрытие окна
+    span.onclick = function() { modal.style.display = "none"; }
+    window.onclick = function(event) { if (event.target == modal) { modal.style.display = "none"; } }
+
+    async function loadAuthors() {
+        try {
+            const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${AUTHORS_PATH}`);
+            const files = await response.json();
+            const authorFiles = files.filter(file => file.name.endsWith('.json'));
+                                   // Сортировка: Ручной порядок для ключевых авторов, остальные по алфавиту
+            authorFiles.sort((a, b) => {
+                const nameA = a.name.toLowerCase();
+                const nameB = b.name.toLowerCase();
+                
+                // Определяем "вес" (приоритет) для каждого автора
+                const getPriority = (name) => {
+                    if (name.includes('sklyarov')) return 1; // Андрей Скляров - всегда первый
+                    if (name.includes('pavlov')) return 2;   // Павел Павлов - второй
+                    if (name.includes('sitchin')) return 3;  // Захария Ситчин - третий
+                    if (name.includes('zhukov')) return 4;  // Степан Сергеев - четвертый
+                    return 5;                                // Все остальные
+                };
+
+                const priorityA = getPriority(nameA);
+                const priorityB = getPriority(nameB);
+
+                // Сначала сравниваем по приоритету
+                if (priorityA !== priorityB) {
+                    return priorityA - priorityB;
                 }
 
-                // Кнопка Официальной страницы
-                if (authorData.contacts.official_page && authorData.contacts.official_page.trim() !== "") {
-                    const offBtn = document.createElement('a');
-                    offBtn.href = authorData.contacts.official_page;
-                    offBtn.target = "_blank";
-                    offBtn.className = "contact-btn official";
-                    offBtn.innerHTML = '<span class="contact-icon">🌐</span> Официальный сайт';
-                    container.appendChild(offBtn);
-                }
-            }
-
-            return container;
-        }
-
-        function loadAuthors() {
+                // Если приоритет одинаковый (например, оба из группы "остальные"), сортируем по алфавиту
+                if (nameA < nameB) return -1;
+                if (nameA > nameB) return 1;
+                return 0;
+            });
             const container = document.getElementById('authors-container');
-            
-            authorsData.forEach(author => {
-                const card = document.createElement('div');
-                card.className = 'author-card';
 
-                // Создаем кнопки контактов
-                const buttonsModule = renderContactButtons(author);
+            for (const file of authorFiles) {
+                const contentResponse = await fetch(file.download_url);
+                const author = await contentResponse.json();
+
+                const card = document.createElement('div');
+                card.className = 'card';
+                
+                let hypothesesHtml = '';
+                if (author.related_hypotheses && author.related_hypotheses.length > 0) {
+                    hypothesesHtml = '<ul class="hypotheses-list">';
+                    author.related_hypotheses.forEach(hypId => {
+                        // При клике вызываем функцию открытия модалки
+                        hypothesesHtml += `<li><span class="hyp-link" onclick="openHypothesis('${hypId}')">📄 ${hypId}</span></li>`;
+                    });
+                    hypothesesHtml += '</ul>';
+                }
 
                 card.innerHTML = `
                     <div class="author-name">${author.personal_info.name_ru}</div>
-                    <div class="author-role">${author.role_in_lai.join(', ')}</div>
-                    <div class="author-bio">${author.bio_summary}</div>
-                    <div id="contact-buttons-container"></div>
+                    <div class="role">${author.role_in_lai.join(', ')}</div>
+                    <p>${author.bio_summary || 'Описание отсутствует.'}</p>
+                    <div>
+                        ${author.specialization.map(spec => `<span class="tag">${spec}</span>`).join('')}
+                    </div>
+                    ${hypothesesHtml}
                 `;
-
-                // Находим контейнер внутри созданной карточки и вставляем кнопки
-                const buttonsContainer = card.querySelector('#contact-buttons-container');
-                if (buttonsContainer) {
-                    buttonsContainer.appendChild(buttonsModule);
-                }
-
                 container.appendChild(card);
-            });
-        }
+            }
+        } catch (error) { console.error('Ошибка загрузки авторов:', error); }
+    }
 
-        // Запуск загрузки при открытии страницы
-        document.addEventListener('DOMContentLoaded', loadAuthors);
-    </script>
+    // Функция для загрузки и отображения гипотезы
+    async function openHypothesis(hypId) {
+        // Определяем сегмент из ID (например, LAI_SEG04-Sergeev_01 -> SEG04)
+        const segment = hypId.split('-')[0].replace('LAI_', ''); 
+        const url = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/hypotheses/${segment}/${hypId}.json`;
+
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error('Файл не найден');
+            const data = await response.json();
+
+            document.getElementById('modalTitle').innerText = data.title;
+            document.getElementById('modalMeta').innerHTML = `
+                <strong>ID:</strong> ${data.id} | 
+                <strong>Статус:</strong> ${data.status} | 
+                <strong>Уверенность:</strong> ${data.confidence_level}
+            `;
+            document.getElementById('modalBody').innerHTML = `
+                <p><strong>Суть гипотезы:</strong> ${data.hypothesis_statement}</p>
+                <p><strong>Описание:</strong> ${data.synopsis}</p>
+                <p><strong>Ключевые слова:</strong> ${data.keywords.join(', ')}</p>
+                <hr>
+                <p><small>Источник: <a href="${data.main_source.url}" target="_blank">${data.main_source.title}</a></small></p>
+            `;
+            
+            modal.style.display = "block";
+        } catch (error) {
+            alert(`Не удалось загрузить гипотезу ${hypId}. Проверьте правильность пути.`);
+            console.error(error);
+        }
+    }
+
+    loadAuthors();
+    // Обработка нажатия клавиши Esc для закрытия модального окна
+document.addEventListener('keydown', function(event) {
+    if (event.key === "Escape") {
+        modal.style.display = "none";
+    }
+});
+</script>
+
 </body>
 </html>
