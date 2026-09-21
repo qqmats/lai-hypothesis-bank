@@ -2,398 +2,160 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Банк гипотез ЛАИ</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f6f9; color: #333; margin: 0; padding: 20px; }
-        header { text-align: center; margin-bottom: 40px; }
-        h1 { color: #2c3e50; }
-        .filters { text-align: center; margin-bottom: 30px; }
-        .filter-btn { padding: 8px 16px; margin: 0 5px; border: none; background: #e0e0e0; cursor: pointer; border-radius: 20px; transition: 0.3s; }
-        .filter-btn:hover, .filter-btn.active { background: #3498db; color: white; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
-        .card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.2s; display: flex; flex-direction: column; justify-content: space-between; }
-        .card:hover { transform: translateY(-5px); }
-        .card h3 { margin-top: 0; color: #2980b9; font-size: 1.2em; }
-        .meta { font-size: 0.85em; color: #7f8c8d; margin-bottom: 10px; }
-        .status { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; font-weight: bold; margin-bottom: 10px; }
-        .status.draft { background: #f1c40f; color: #fff; }
-        .actions { margin-top: 15px; display: flex; gap: 10px; }
-        .btn { text-decoration: none; padding: 8px 12px; border-radius: 5px; font-size: 0.9em; font-weight: bold; text-align: center; flex: 1; cursor: pointer; border: none; }
-        .btn-edit { background: #ecf0f1; color: #2c3e50; }
-        .btn-view { background: #3498db; color: white; }
+        body { font-family: sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .header { display: flex; justify-content: space-between; align-items: center; }
+        .filter-buttons button { margin-right: 5px; padding: 5px 10px; cursor: pointer; }
+        .hypothesis-card { border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; }
+        .hypothesis-meta { color: #666; font-size: 0.9em; margin-bottom: 10px; }
         
-        /* Modal Styles */
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); }
-        .modal-content { background-color: #fefefe; margin: 5% auto; padding: 30px; border: 1px solid #888; width: 80%; max-width: 800px; border-radius: 10px; position: relative; }
-        .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
-        .close:hover { color: black; }
-        .modal-body h2 { color: #2c3e50; margin-top: 0; }
-        .modal-section { margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        .modal-label { font-weight: bold; color: #555; display: block; margin-bottom: 5px; }
-        #loading { text-align: center; font-size: 1.2em; color: #7f8c8d; }
+        /* Стили для активной ссылки на автора */
+        .author-link {
+            color: #0366d6;
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Стили для кнопок контактов */
+        .btn-link {
+            display: inline-block;
+            padding: 5px 10px;
+            margin-right: 5px;
+            text-decoration: none;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: #333;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+        .btn-link:hover { background-color: #e0e0e0; }
+
+        /* Стили модального окна */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); display: none;
+            justify-content: center; align-items: center; z-index: 1000;
+        }
+        .modal-content {
+            background: white; padding: 20px; border-radius: 8px;
+            max-width: 600px; width: 90%; position: relative;
+            max-height: 80vh; overflow-y: auto;
+        }
+        .close-btn {
+            position: absolute; top: 10px; right: 15px;
+            font-size: 24px; cursor: pointer;
+        }
     </style>
 </head>
 <body>
-
-<header>
-    <h1>🏛️ Банк гипотез ЛАИ</h1>
-    <p>Систематизация знаний Лаборатории Альтернативной Истории 63</p>
-    <a href="authors.html" style="text-decoration: none; color: #fff; background-color: #e67e22; padding: 8px 15px; border-radius: 5px; font-size: 0.9em; margin-left: 20px;">👥 Список авторов</a>
-</header>
-
-<div class="filters" id="segmentFilters">
-    <button class="filter-btn active" onclick="filterHypotheses('all')">Все</button>
-</div>
-
-<div id="loading">Загрузка гипотез...</div>
-<div class="grid" id="hypothesisGrid"></div>
-
-<!-- Modal -->
-<div id="hypothesisModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <div id="modalBody" class="modal-body"></div>
+    <div class="header">
+        <h1>🏛️ Банк гипотез ЛАИ</h1>
+        <a href="authors.html">👥 Список авторов</a>
     </div>
-</div>
-
-<script>
-    const repoUser = 'qqmats';
-    const repoName = 'lai-hypothesis-bank';
-    const branch = 'main';
-    const EDIT_PASSWORD = "3102"; 
-
-    const segments = {
-        "SEG01": "Мегалиты", "SEG02": "Геоинженерия", "SEG03": "Артефакты",
-        "SEG04": "Биология", "SEG05": "Физика", "SEG06": "Биоинженерия",
-        "SEG07": "IT и Вычисления", "SEG08": "Социальная инженерия",
-        "SEG09": "Прочее", "SEG10": "Фундаментальные знания"
-    };
-
-    let allHypotheses = [];
-    let allAuthors = {}; 
-
-    async function loadHypotheses() {
-        const loading = document.getElementById('loading');
-        try {
-            const apiUrl = `https://api.github.com/repos/${repoUser}/${repoName}/git/trees/${branch}?recursive=1`;
-            const response = await fetch(apiUrl);
-            if (!response.ok) throw new Error('API Error');
-            
-            const data = await response.json();
-            // Фильтруем только JSON файлы из папки hypotheses
-            const jsonFiles = data.tree.filter(item => 
-                item.path.startsWith('hypotheses/') && item.path.endsWith('.json') && item.type === 'blob'
-            );
-
-            const promises = jsonFiles.map(async file => {
-                const rawUrl = `https://raw.githubusercontent.com/${repoUser}/${repoName}/${branch}/${file.path}`;
-                const res = await fetch(rawUrl);
-                if (!res.ok) return null;
-                
-                // Проверка: пытаемся получить текст и распарсить его
-                const text = await res.text();
-                try {
-                    return JSON.parse(text);
-                } catch (e) {
-                    console.warn(`Ошибка парсинга файла ${file.path}:`, e);
-                    return null;
-                }
-            });
-
-            const results = await Promise.all(promises);
-            allHypotheses = results.filter(h => h !== null);
-            
-            createFilterButtons();
-            renderHypotheses(allHypotheses);
-            loading.style.display = 'none';
-
-        } catch (error) {
-            console.error(error);
-            loading.innerText = 'Ошибка загрузки данных. Проверьте консоль.';
-        }
-    }
-
-    async function loadAuthors() {
-        try {
-            const apiUrl = `https://api.github.com/repos/${repoUser}/${repoName}/git/trees/${branch}?recursive=1`;
-            const response = await fetch(apiUrl);
-            const data = await response.json();
-            
-            const authorFiles = data.tree.filter(item => 
-                item.path.startsWith('authors/') && item.path.endsWith('.json') && item.type === 'blob'
-            );
-
-            const promises = authorFiles.map(async file => {
-                const rawUrl = `https://raw.githubusercontent.com/${repoUser}/${repoName}/${branch}/${file.path}`;
-                const res = await fetch(rawUrl);
-                if (!res.ok) return null;
-                
-                const text = await res.text();
-                try {
-                    return JSON.parse(text);
-                } catch (e) {
-                    return null;
-                }
-            });
-
-            const profiles = await Promise.all(promises);
-            profiles.forEach(profile => {
-                if (profile && profile.id) allAuthors[profile.id] = profile;
-            });
-        } catch (error) {
-            console.error("Ошибка загрузки профилей:", error);
-        }
-    }
-
-    function createFilterButtons() {
-        const container = document.getElementById('segmentFilters');
-        container.innerHTML = '<button class="filter-btn active" onclick="filterHypotheses(\'all\')">Все</button>';
-        Object.keys(segments).forEach(seg => {
-            const btn = document.createElement('button');
-            btn.className = 'filter-btn';
-            btn.innerText = segments[seg];
-            btn.onclick = () => filterHypotheses(seg);
-            container.appendChild(btn);
-        });
-    }
-
-    function renderHypotheses(list) {
-        const grid = document.getElementById('hypothesisGrid');
-        grid.innerHTML = '';
-        
-        list.forEach(hyp => {
-            let segmentId = 'Unknown';
-            if (hyp.id && typeof hyp.id === 'string') {
-                const match = hyp.id.match(/SEG\d+/);
-                if (match) segmentId = match[0];
-            }
-
-            const filePath = (segmentId !== 'Unknown' && hyp.id) 
-                ? `hypotheses/${segmentId}/${hyp.id}.json` 
-                : '#';
-
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.innerHTML = `
-                <div>
-                   <!-- Блок идентификатора и автора -->
-<div class="hypothesis-meta">
-    <span class="hyp-id">${hyp.id}</span> | 
-    <!-- Активное имя автора -->
-    <a href="#" onclick="openAuthorModal('${authorId}'); return false;" class="author-link">
-        ${authorName}
-    </a>
-</div>
-                <div class="actions">
-                    <a href="#" onclick="checkEditPermission('${filePath}'); return false;" class="btn btn-edit">Редактировать</a>
-                    <button onclick="openModal('${hyp.id}')" class="btn btn-view">Открыть карточку</button>
-                </div>
-            `;
-            grid.appendChild(card);
-        });
-    }
-
-    function filterHypotheses(segment) {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        event.target.classList.add('active');
-        if (segment === 'all') {
-            renderHypotheses(allHypotheses);
-        } else {
-            const filtered = allHypotheses.filter(h => h.id && h.id.includes(segment));
-            renderHypotheses(filtered);
-        }
-    }
-
-    function checkEditPermission(path) {
-        const input = prompt("Введите пароль модератора для редактирования:");
-        if (input === EDIT_PASSWORD) {
-            window.open(`https://github.com/${repoUser}/${repoName}/edit/${branch}/${path}`, '_blank');
-        } else if (input !== null) {
-            alert("Неверный пароль. Доступ к редактированию запрещен.");
-        }
-    }
-
-    // Modal Logic
-    const modal = document.getElementById("hypothesisModal");
-    const span = document.getElementsByClassName("close")[0];
-    const modalBody = document.getElementById("modalBody");
-
-    span.onclick = function() { modal.style.display = "none"; }
-    window.onclick = function(event) { if (event.target == modal) { modal.style.display = "none"; } }
-
-    async function openModal(id) {
-        const hyp = allHypotheses.find(h => h.id === id);
-        if (!hyp) return;
-
-        const statusMap = {
-            "draft": "Черновик", "discussion": "Обсуждение", "in_progress": "В работе",
-            "confirmed": "Подтверждено", "refuted": "Опровергнуто", "archived": "Архив"
-        };
-        const statusRu = statusMap[hyp.status] || hyp.status;
-
-        let sourcesHtml = '';
-        if (hyp.main_source && hyp.main_source.url) {
-            sourcesHtml += `<div class="modal-section"><span class="modal-label">Основной источник:</span> <a href="${hyp.main_source.url}" target="_blank">${hyp.main_source.title}</a></div>`;
-        }
-        if (hyp.bibliography && hyp.bibliography.length > 0) {
-            sourcesHtml += `<div class="modal-section"><span class="modal-label">Библиография автора:</span><ul>`;
-            hyp.bibliography.forEach(item => {
-                sourcesHtml += `<li><a href="${item.url}" target="_blank">${item.title}</a> (${item.type})</li>`;
-            });
-            sourcesHtml += `</ul></div>`;
-        }
-        if (hyp.relationships) {
-            for (const [type, links] of Object.entries(hyp.relationships)) {
-                if (links && links.length > 0) {
-                    let typeRu = type;
-                    if (type === 'supports') typeRu = 'Поддерживает';
-                    if (type === 'contradicts') typeRu = 'Противоречит';
-                    if (type === 'correlates_with') typeRu = 'Коррелирует с';
-                    
-                    sourcesHtml += `<div class="modal-section"><span class="modal-label">${typeRu}:</span><ul>`;
-                    links.forEach(link => {
-                        sourcesHtml += `<li><strong>${link.id}</strong>: ${link.note || ''}</li>`;
-                    });
-                    sourcesHtml += `</ul></div>`;
-                }
-            }
-        }
-
-        modalBody.innerHTML = `
-            <h2>${hyp.title}</h2>
-            <div class="meta" style="margin-bottom: 20px;">
-                <strong>ID:</strong> ${hyp.id} &nbsp;|&nbsp; 
-                <span class="status ${hyp.status}">${statusRu}</span> &nbsp;|&nbsp; 
-                <strong>Авторы:</strong> ${hyp.authors ? hyp.authors.map(a => 
-                    `<a href="#" onclick="showAuthorProfile('${a.id || ''}'); return false;" style="color:#2980b9; text-decoration:none;">${a.name}</a>`
-                ).join(', ') : 'Не указаны'}
-            </div>
-            
-            <div class="modal-section">
-                <span class="modal-label">Формулировка гипотезы:</span>
-                <p style="font-style: italic; color: #444;">${hyp.hypothesis_statement || 'Не указана'}</p>
-            </div>
-            
-            <div class="modal-section">
-                <span class="modal-label">Краткое описание:</span>
-                <p>${hyp.synopsis || 'Не указано'}</p>
-            </div>
-
-            <div class="modal-section">
-                <span class="modal-label">Ключевые слова:</span>
-                <p>${hyp.keywords ? hyp.keywords.join(', ') : ''}</p>
-            </div>
-
-            ${sourcesHtml}
-        `;
-        modal.style.display = "block";
-    }
-
-    function showAuthorProfile(authorId) {
-        const author = allAuthors[authorId];
-        if (!author) {
-            alert("Профиль автора не найден.");
-            return;
-        }
-        
-        modalBody.innerHTML = `
-            <h2>${author.personal_info.name_ru}</h2>
-            <div class="modal-section">
-                <span class="modal-label">Роль в ЛАИ:</span> ${author.role_in_lai.join(', ')}
-            </div>
-            <div class="modal-section">
-                <span class="modal-label">Специализация:</span> ${author.specialization.join(', ')}
-            </div>
-            <div class="modal-section">
-                <span class="modal-label">Биография:</span>
-                <p>${author.bio_summary}</p>
-            </div>
-            ${author.contacts.official_page ? `<div class="modal-section"><a href="${author.contacts.official_page}" target="_blank">Официальная страница на сайте ЛАИ</a></div>` : ''}
-        `;
-        modal.style.display = "block";
-    }
-
-    // Запуск при загрузке страницы
-    loadHypotheses();
-    loadAuthors();
-    // Функция для обработки перехода от авторов удалена
-
-    // Универсальный обработчик Esc (активен, если на странице есть элементы с классом .modal)
-document.addEventListener('keydown', function(event) {
-    if (event.key === "Escape") {
-        const modals = document.querySelectorAll('.modal');
-        modals.forEach(modal => {
-            modal.style.display = "none";
-        });
-    }
-});
-</script>
-    <script>
-// Функция открытия модального окна
-async function openAuthorModal(authorId) {
-    const modal = document.getElementById('authorModal');
-    const modalBody = document.getElementById('modalBody');
+    <p>Систематизация знаний Лаборатории Альтернативной Истории</p>
     
-    modal.style.display = 'flex';
-    modalBody.innerHTML = '<p>Загрузка профиля...</p>';
+    <div class="filter-buttons">
+        <button onclick="renderHypotheses('all')">Все</button>
+        <!-- Кнопки сегментов будут здесь -->
+    </div>
 
-    try {
-        // Путь к файлу автора (предполагаем, что ID выглядит как AUTH-Sklyarov)
-        const response = await fetch(`authors/${authorId}.json`);
-        if (!response.ok) throw new Error('Файл не найден');
-        
-        const author = await response.json();
-        
-        // Формируем содержимое окна (аналогично authors.html)
-        let content = `
-            <h2>${author.personal_info.name_ru}</h2>
-            <p><strong>Роль:</strong> ${author.role_in_lai.join(', ')}</p>
-            <p><strong>Специализация:</strong> ${author.specialization.join(', ')}</p>
-            <p>${author.bio_summary}</p>
-            
-            <div class="author-links" style="margin-top: 15px;">
-                <a href="${author.contacts.telegram}" target="_blank" class="btn-link">📱 Telegram/VK</a>
-                <a href="${author.contacts.official_page}" target="_blank" class="btn-link">🌐 Сайт</a>
-                <button onclick="copyToClipboard('${author.contacts.email}')" class="btn-link">📧 Копировать email</button>
+    <div id="hypotheses-container">Загрузка гипотез...</div>
+
+    <!-- Модальное окно профиля автора -->
+    <div id="authorModal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeAuthorModal()">&times;</span>
+            <div id="modalBody">
+                <p>Загрузка профиля...</p>
             </div>
-        `;
-        
-        modalBody.innerHTML = content;
-    } catch (error) {
-        modalBody.innerHTML = `<p style="color:red">Ошибка загрузки профиля: ${error.message}</p>`;
-    }
-}
-
-// Функция закрытия окна
-function closeAuthorModal() {
-    document.getElementById('authorModal').style.display = 'none';
-}
-
-// Закрытие по клику вне окна
-window.onclick = function(event) {
-    const modal = document.getElementById('authorModal');
-    if (event.target == modal) {
-        closeAuthorModal();
-    }
-}
-
-// Функция копирования (из предыдущего шага)
-function copyToClipboard(text) {
-    if (!text) return;
-    navigator.clipboard.writeText(text).then(() => {
-        alert('Email скопирован!');
-    });
-}
-</script>
-<!-- Модальное окно профиля автора -->
-<div id="authorModal" class="modal-overlay" style="display: none;">
-    <div class="modal-content">
-        <span class="close-btn" onclick="closeAuthorModal()">&times;</span>
-        <div id="modalBody">
-            <!-- Сюда будет загружаться информация -->
-            <p>Загрузка профиля...</p>
         </div>
     </div>
-</div>
+
+    <script>
+        // Основная функция отрисовки (упрощенная версия для примера)
+        async function renderHypotheses(filter = 'all') {
+            const container = document.getElementById('hypotheses-container');
+            container.innerHTML = 'Загрузка...';
+            
+            // Здесь должен быть ваш код загрузки JSON-файлов из папки hypotheses/
+            // Для примера предположим, что у нас есть массив данных hypData
+            
+            // Пример того, как теперь должна выглядеть карточка:
+            let html = '';
+            // ... цикл по гипотезам ...
+            // const authorId = hyp.authors[0].id; // Например, AUTH-Alekseev
+            // const authorName = hyp.authors[0].name; // Например, Игорь Алексеев
+
+            html += `
+            <div class="hypothesis-card">
+                <div class="hypothesis-meta">
+                    <span class="hyp-id">${hyp.id}</span> | 
+                    <a href="#" onclick="openAuthorModal('${authorId}'); return false;" class="author-link">
+                        ${authorName}
+                    </a>
+                </div>
+                <h3>${hyp.title}</h3>
+                <p>${hyp.synopsis}</p>
+            </div>`;
+            
+            container.innerHTML = html;
+        }
+
+        // Функция открытия модального окна
+        async function openAuthorModal(authorId) {
+            const modal = document.getElementById('authorModal');
+            const modalBody = document.getElementById('modalBody');
+            
+            modal.style.display = 'flex';
+            modalBody.innerHTML = '<p>Загрузка профиля...</p>';
+
+            try {
+                const response = await fetch(`authors/${authorId}.json`);
+                if (!response.ok) throw new Error('Файл не найден');
+                
+                const author = await response.json();
+                
+                let content = `
+                    <h2>${author.personal_info.name_ru}</h2>
+                    <p><strong>Роль:</strong> ${author.role_in_lai.join(', ')}</p>
+                    <p><strong>Специализация:</strong> ${author.specialization.join(', ')}</p>
+                    <p>${author.bio_summary}</p>
+                    
+                    <div class="author-links" style="margin-top: 15px;">
+                        <a href="${author.contacts.telegram}" target="_blank" class="btn-link">📱 Telegram/VK</a>
+                        <a href="${author.contacts.official_page}" target="_blank" class="btn-link">🌐 Сайт</a>
+                        <button onclick="copyToClipboard('${author.contacts.email}')" class="btn-link">📧 Копировать email</button>
+                    </div>
+                `;
+                
+                modalBody.innerHTML = content;
+            } catch (error) {
+                modalBody.innerHTML = `<p style="color:red">Ошибка загрузки профиля: ${error.message}</p>`;
+            }
+        }
+
+        function closeAuthorModal() {
+            document.getElementById('authorModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('authorModal');
+            if (event.target == modal) closeAuthorModal();
+        }
+
+        function copyToClipboard(text) {
+            if (!text) return;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Email скопирован!');
+            });
+        }
+        
+        // Запуск при загрузке
+        renderHypotheses();
+    </script>
 </body>
 </html>
