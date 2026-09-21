@@ -1,0 +1,55 @@
+{
+ "id": "AUTH-Norkina",
+ "version": "1.1",
+ "personal_info": {
+   "name_ru": "Екатерина Норкина",
+   "name_en": "Ekaterina Norkina",
+   "birth_year": null,
+   "death_year": null,
+   "education": "",
+   "profession": "Исследователь"
+ },
+ "role_in_lai": [
+   "Исследователь",
+   "Лектор"
+ ],
+ "specialization": [
+   "Биология человека",
+   "Генетика и антропология",
+   "Биоинженерия древних цивилизаций",
+   "Происхождение Homo sapiens"
+ ],
+ "bio_summary": "Исследователь ЛАИ, специализирующийся на биологических аспектах альтернативной истории. Изучает генетические маркеры происхождения человека, феномен рудиментарных органов и мифологические химеры как возможные свидетельства биоинженерной деятельности ДВЦ.",
+ "contacts": {
+   "email": "",
+   "telegram": "",
+   "forum_profile": "https://laiforum.ru/",
+   "official_page": "https://lah.ru/o-tsentre/komanda/"
+ },
+ "academic_ids": {
+   "spin_code": "",
+   "author_id_rinc": "",
+   "orcid": "",
+   "researcher_id": ""
+ },
+ "bibliography": [
+   {
+     "title": "Лекция: Генетические маркеры происхождения человека",
+     "year": 2023,
+     "type": "video_lecture",
+     "url": "https://lah.ru/video/"
+   },
+   {
+     "title": "Доклад о биологических артефактах в анатомии человека",
+     "year": 2024,
+     "type": "article",
+     "url": "https://lah.ru/research/"
+   }
+ ],
+ "related_hypotheses": [
+   "LAI_SEG04-Norkina_01",
+   "LAI_SEG04-Norkina_02"
+ ],
+ "methodology_notes": "Применяет междисциплинарный подход, сочетая данные современной генетики и антропологии с анализом мифологического наследия и артефактов древнего искусства.",
+ "license": "CC BY-SA 4.0"
+}
