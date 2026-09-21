@@ -1,0 +1,76 @@
+{
+  "id": "AUTH-Alekseev",
+  "version": "1.1",
+  "personal_info": {
+    "name_ru": "Игорь Алексеев",
+    "name_en": "Igor Alekseev",
+    "birth_year": null,
+    "death_year": null,
+    "education": "Не указано",
+    "profession": "Режиссер, исследователь древних цивилизаций"
+  },
+  "role_in_lai": [
+    "Партнер",
+    "Исследователь",
+    "Эксперт по Южной Америке"
+  ],
+  "specialization": [
+    "Геоглифы Наска и Пальпа",
+    "Мегалитические сооружения Перу",
+    "Документальное кино",
+    "Геоинженерия древних цивилизаций"
+  ],
+  "bio_summary": "Независимый исследователь, автор YouTube-канала Ombio Productions. Занимается исследованием исторически значимых регионов Южной Америки (в частности плато Наска и Пальпа) более 10 лет. Автор множества исследовательских работ о геометрических фигурах плато Наска, мегалитических сооружениях и загадках древнего Перу. Режиссер документальных фильмов «Живые Камни Саксайуамана», «Невозможный Баальбек», «Смотрящие с Небес. Тайны пустыни Наска».",
+  "contacts": {
+    "email": "",
+    "telegram": "",
+    "forum_profile": "https://laiforum.ru/",
+    "official_page": "https://lah.ru/persona/igor-alekseev/"
+  },
+  "academic_ids": {
+    "spin_code": "",
+    "author_id_rinc": "",
+    "orcid": "",
+    "researcher_id": ""
+  },
+  "bibliography": [
+    {
+      "title": "«Эстрелла» и другие геометрические загадки плато Наска",
+      "year": 2014,
+      "type": "article",
+      "url": "https://lah.ru/neraskrytye-tajny/estrella-i-drugie-geometricheskie-zagadki-plato-naska/"
+    },
+    {
+      "title": "Линии Наска. Другой взгляд",
+      "year": 2011,
+      "type": "article",
+      "url": "https://lah.ru/neraskrytye-tajny/linii-naska-drugoj-vzglyad/"
+    },
+    {
+      "title": "Замечания к геохимическим исследованиям образцов Саксайуамана",
+      "year": 2024,
+      "type": "article",
+      "url": "https://lah.ru/laboratornye-issledovaniya/zamechaniya-k-geohimicheskim-issledovaniyam-obrazcov-saksajuamana/"
+    },
+    {
+      "title": "Живые Камни Саксайуамана",
+      "year": null,
+      "type": "film",
+      "url": ""
+    },
+    {
+      "title": "Смотрящие с Небес. Тайны пустыни Наска",
+      "year": null,
+      "type": "film",
+      "url": ""
+    }
+  ],
+  "related_hypotheses": [
+    "LAI_SEG07-Alekseev_01",
+    "LAI_SEG02-Alekseev_01",
+    "LAI_SEG01-Alekseev_01",
+    "LAI_SEG09-Alekseev_01"
+  ],
+  "methodology_notes": "Придерживается принципов экспедиционного исследования и визуальной фиксации артефактов. Активно использует методы сравнительного анализа геометрии ландшафта и архитектурных форм.",
+  "license": "CC BY-SA 4.0"
+}
