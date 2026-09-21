@@ -1,0 +1,57 @@
+{
+ "id": "AUTH-Maksimenko",
+ "version": "1.1",
+ "personal_info": {
+   "name_ru": "Виталий Максименко",
+   "name_en": "Vitaly Maksimenko",
+   "birth_year": null,
+   "death_year": null,
+   "education": "Техническое образование",
+   "profession": "Исследователь, эксперт по каменной кладке"
+ },
+ "role_in_lai": [
+   "Исследователь",
+   "Участник экспедиций"
+ ],
+ "specialization": [
+   "Следы инструментальной обработки камня",
+   "Археология Египта и Перу",
+   "Мегалитические конструкции",
+   "Функциональный анализ артефактов"
+ ],
+ "bio_summary": "Активный участник экспедиций ЛАИ в Египет, Перу и Турцию. Специализируется на детальном изучении следов инструмента на твердых породах и анализе геометрии мегалитических блоков. Автор множества фоторепортажей и видеоматериалов с мест раскопок.",
+ "contacts": {
+   "email": "",
+   "telegram": "",
+   "forum_profile": "https://laiforum.ru/",
+   "official_page": "https://lah.ru/team_group/research/"
+ },
+ "academic_ids": {
+   "spin_code": "",
+   "author_id_rinc": "",
+   "orcid": "",
+   "researcher_id": ""
+ },
+ "bibliography": [
+   {
+     "title": "Отчет экспедиции ЛАИ в Египет: Серрапеум",
+     "year": 2015,
+     "type": "report",
+     "url": "https://lah.ru/expeditions/"
+   },
+   {
+     "title": "Видеорепортаж из Серрапеума",
+     "year": 2016,
+     "type": "video",
+     "url": "https://lah.ru/video/"
+   }
+ ],
+ "related_hypotheses": [
+   "LAI_SEG01-Maksimenko_01",
+   "LAI_SEG01-Maksimenko_02",
+   "LAI_SEG03-Maksimenko_01",
+   "LAI_SEG02-Maksimenko_01"
+ ],
+ "methodology_notes": "Делает упор на визуальный анализ артефактов и сравнение с возможностями современного инструмента. Придерживается принципа «факты против теории».",
+ "license": "CC BY-SA 4.0"
+}
