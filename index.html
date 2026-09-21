@@ -5,65 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Банк гипотез ЛАИ</title>
     <style>
-        body { font-family: sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
-        .header { display: flex; justify-content: space-between; align-items: center; }
-        .filter-buttons button { margin-right: 5px; padding: 5px 10px; cursor: pointer; }
-        .hypothesis-card { border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; }
-        .hypothesis-meta { color: #666; font-size: 0.9em; margin-bottom: 10px; }
+        body { font-family: sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f9f9f9; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #ddd; padding-bottom: 15px; }
+        .filter-buttons { margin: 20px 0; }
+        .filter-buttons button { padding: 8px 15px; cursor: pointer; background: #fff; border: 1px solid #ccc; border-radius: 4px; margin-right: 5px; }
+        .filter-buttons button:hover { background: #eee; }
         
+        .hypothesis-card { background: white; border: 1px solid #e1e4e8; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .hypothesis-meta { color: #586069; font-size: 0.9em; margin-bottom: 10px; display: flex; justify-content: space-between; }
+        .status-badge { padding: 2px 8px; border-radius: 12px; font-size: 0.8em; font-weight: bold; }
+        .status-draft { background: #fffbdd; color: #735c0f; }
+        .status-confirmed { background: #dcffe4; color: #1b7f37; }
+
         /* Стили для активной ссылки на автора */
-        .author-link {
-            color: #0366d6;
-            text-decoration: underline;
-            cursor: pointer;
-            font-weight: bold;
-        }
+        .author-link { color: #0366d6; text-decoration: none; font-weight: 600; cursor: pointer; }
+        .author-link:hover { text-decoration: underline; }
 
-        /* Стили для кнопок контактов */
-        .btn-link {
-            display: inline-block;
-            padding: 5px 10px;
-            margin-right: 5px;
-            text-decoration: none;
-            background-color: #f0f0f0;
-            border-radius: 4px;
-            font-size: 0.9em;
-            color: #333;
-            border: 1px solid #ccc;
-            cursor: pointer;
-        }
-        .btn-link:hover { background-color: #e0e0e0; }
+        /* Стили кнопок контактов */
+        .btn-link { display: inline-block; padding: 6px 12px; margin-right: 8px; text-decoration: none; background-color: #f6f8fa; border: 1px solid #d1d5da; border-radius: 6px; font-size: 0.9em; color: #24292e; cursor: pointer; }
+        .btn-link:hover { background-color: #eaecef; }
 
-        /* Стили модального окна */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5); display: none;
-            justify-content: center; align-items: center; z-index: 1000;
-        }
-        .modal-content {
-            background: white; padding: 20px; border-radius: 8px;
-            max-width: 600px; width: 90%; position: relative;
-            max-height: 80vh; overflow-y: auto;
-        }
-        .close-btn {
-            position: absolute; top: 10px; right: 15px;
-            font-size: 24px; cursor: pointer;
-        }
+        /* Модальное окно */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background: white; padding: 25px; border-radius: 10px; max-width: 600px; width: 90%; position: relative; max-height: 85vh; overflow-y: auto; }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 28px; cursor: pointer; color: #aaa; }
+        .close-btn:hover { color: #000; }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>🏛️ Банк гипотез ЛАИ</h1>
-        <a href="authors.html">👥 Список авторов</a>
+        <a href="authors.html" style="text-decoration: none; color: #0366d6;">👥 Список авторов</a>
     </div>
-    <p>Систематизация знаний Лаборатории Альтернативной Истории 7</p>
     
-    <div class="filter-buttons">
-        <button onclick="renderHypotheses('all')">Все</button>
-        <!-- Кнопки сегментов будут здесь -->
+    <p>Систематизация знаний Лаборатории Альтернативной Истории. Версия интерфейса 1.2</p>
+    
+    <div class="filter-buttons" id="segmentFilters">
+        <button onclick="renderHypotheses('all')">Все сегменты</button>
+        <!-- Кнопки сегментов будут добавлены скриптом -->
     </div>
 
-    <div id="hypotheses-container">Загрузка гипотез...</div>
+    <div id="hypotheses-container">Загрузка базы данных...</div>
 
     <!-- Модальное окно профиля автора -->
     <div id="authorModal" class="modal-overlay">
@@ -76,36 +58,89 @@
     </div>
 
     <script>
-        // Основная функция отрисовки (упрощенная версия для примера)
-        async function renderHypotheses(filter = 'all') {
-            const container = document.getElementById('hypotheses-container');
-            container.innerHTML = 'Загрузка...';
-            
-            // Здесь должен быть ваш код загрузки JSON-файлов из папки hypotheses/
-            // Для примера предположим, что у нас есть массив данных hypData
-            
-            // Пример того, как теперь должна выглядеть карточка:
-            let html = '';
-            // ... цикл по гипотезам ...
-            // const authorId = hyp.authors[0].id; // Например, AUTH-Alekseev
-            // const authorName = hyp.authors[0].name; // Например, Игорь Алексеев
+        // ⚠️ ВАЖНО: Впишите сюда пути ко всем вашим файлам гипотез вручную
+        const hypothesisFiles = [
+            "hypotheses/SEG01/LAI_SEG01-Sergeev_01.json",
+            "hypotheses/SEG04/LAI_SEG04-Sergeev_01.json",
+            // Добавьте сюда остальные файлы по мере их создания
+        ];
 
-            html += `
-            <div class="hypothesis-card">
-                <div class="hypothesis-meta">
-                    <span class="hyp-id">${hyp.id}</span> | 
-                    <a href="#" onclick="openAuthorModal('${authorId}'); return false;" class="author-link">
-                        ${authorName}
-                    </a>
-                </div>
-                <h3>${hyp.title}</h3>
-                <p>${hyp.synopsis}</p>
-            </div>`;
+        let allHypotheses = [];
+
+        async function loadAllData() {
+            const container = document.getElementById('hypotheses-container');
+            allHypotheses = [];
             
-            container.innerHTML = html;
+            for (const filePath of hypothesisFiles) {
+                try {
+                    const response = await fetch(filePath);
+                    if (response.ok) {
+                        const data = await response.json();
+                        allHypotheses.push(data);
+                    }
+                } catch (e) {
+                    console.error("Ошибка загрузки файла:", filePath, e);
+                }
+            }
+            
+            createSegmentButtons();
+            renderHypotheses('all');
         }
 
-        // Функция открытия модального окна
+        function createSegmentButtons() {
+            const filterContainer = document.getElementById('segmentFilters');
+            const segments = [...new Set(allHypotheses.map(h => h.id.split('-')[0].replace('LAI_', '')))];
+            
+            segments.forEach(seg => {
+                const btn = document.createElement('button');
+                btn.innerText = seg;
+                btn.onclick = () => renderHypotheses(seg);
+                filterContainer.appendChild(btn);
+            });
+        }
+
+        function renderHypotheses(filter) {
+            const container = document.getElementById('hypotheses-container');
+            container.innerHTML = '';
+
+            const filtered = filter === 'all' 
+                ? allHypotheses 
+                : allHypotheses.filter(h => h.id.includes(filter));
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<p>Гипотезы в этом сегменте пока не добавлены.</p>';
+                return;
+            }
+
+            filtered.forEach(hyp => {
+                // Получаем данные первого автора для превью
+                const mainAuthor = hyp.authors[0];
+                const authorId = mainAuthor.id; // Например, AUTH-Sergeev
+                const authorName = mainAuthor.name;
+
+                const card = document.createElement('div');
+                card.className = 'hypothesis-card';
+                card.innerHTML = `
+                    <div class="hypothesis-meta">
+                        <span><strong>ID:</strong> ${hyp.id}</span>
+                        <span class="status-badge status-${hyp.status}">${hyp.status}</span>
+                    </div>
+                    <h3>${hyp.title}</h3>
+                    <div class="hypothesis-meta">
+                        <span>Автор: 
+                            <a href="#" onclick="openAuthorModal('${authorId}'); return false;" class="author-link">
+                                ${authorName}
+                            </a>
+                        </span>
+                        <span>Сегмент: ${hyp.domain || 'Не указан'}</span>
+                    </div>
+                    <p>${hyp.synopsis}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // --- Функции модального окна ---
         async function openAuthorModal(authorId) {
             const modal = document.getElementById('authorModal');
             const modalBody = document.getElementById('modalBody');
@@ -115,26 +150,27 @@
 
             try {
                 const response = await fetch(`authors/${authorId}.json`);
-                if (!response.ok) throw new Error('Файл не найден');
+                if (!response.ok) throw new Error('Файл профиля не найден');
                 
                 const author = await response.json();
                 
                 let content = `
                     <h2>${author.personal_info.name_ru}</h2>
-                    <p><strong>Роль:</strong> ${author.role_in_lai.join(', ')}</p>
+                    <p><strong>Роль в ЛАИ:</strong> ${author.role_in_lai.join(', ')}</p>
                     <p><strong>Специализация:</strong> ${author.specialization.join(', ')}</p>
+                    <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
                     <p>${author.bio_summary}</p>
                     
-                    <div class="author-links" style="margin-top: 15px;">
-                        <a href="${author.contacts.telegram}" target="_blank" class="btn-link">📱 Telegram/VK</a>
-                        <a href="${author.contacts.official_page}" target="_blank" class="btn-link">🌐 Сайт</a>
-                        <button onclick="copyToClipboard('${author.contacts.email}')" class="btn-link">📧 Копировать email</button>
+                    <div class="author-links" style="margin-top: 20px;">
+                        ${author.contacts.telegram ? `<a href="${author.contacts.telegram}" target="_blank" class="btn-link">📱 Telegram/VK</a>` : ''}
+                        ${author.contacts.official_page ? `<a href="${author.contacts.official_page}" target="_blank" class="btn-link">🌐 Официальный сайт</a>` : ''}
+                        ${author.contacts.email ? `<button onclick="copyToClipboard('${author.contacts.email}')" class="btn-link">📧 Копировать email</button>` : ''}
                     </div>
                 `;
                 
                 modalBody.innerHTML = content;
             } catch (error) {
-                modalBody.innerHTML = `<p style="color:red">Ошибка загрузки профиля: ${error.message}</p>`;
+                modalBody.innerHTML = `<p style="color:red">Ошибка: ${error.message}</p>`;
             }
         }
 
@@ -148,14 +184,15 @@
         }
 
         function copyToClipboard(text) {
-            if (!text) return;
             navigator.clipboard.writeText(text).then(() => {
-                alert('Email скопирован!');
+                alert('Email скопирован в буфер обмена!');
+            }).catch(err => {
+                console.error('Ошибка копирования:', err);
             });
         }
-        
-        // Запуск при загрузке
-        renderHypotheses();
+
+        // Запуск загрузки при старте страницы
+        loadAllData();
     </script>
 </body>
 </html>
