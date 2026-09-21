@@ -33,7 +33,7 @@
 <body>
 
 <header>
-    <h1>👥 Исследователи Лаборатории Альтернативной Истории 6</h1>
+    <h1>👥 Исследователи Лаборатории Альтернативной Истории 61</h1>
     <a href="index.html" class="nav-link">← Вернуться к классификации гипотез</a>
 </header>
 
@@ -123,6 +123,34 @@
                     <div>
                         ${author.specialization.map(spec => `<span class="tag">${spec}</span>`).join('')}
                     </div>
+                    <!-- Пример блока для отображения ссылок автора -->
+<div class="author-links" style="margin-top: 10px;">
+    <!-- Ссылка на Telegram / VK -->
+    <a href="${author.contacts.telegram}" target="_blank" class="btn-link telegram-btn">
+        📱 Telegram / VK
+    </a>
+    
+    <!-- Ссылка на официальную страницу -->
+    <a href="${author.contacts.official_page}" target="_blank" class="btn-link official-btn">
+        🌐 Официальный сайт
+    </a>
+</div>
+
+<style>
+    .btn-link {
+        display: inline-block;
+        padding: 5px 10px;
+        margin-right: 5px;
+        text-decoration: none;
+        background-color: #f0f0f0;
+        border-radius: 4px;
+        font-size: 0.9em;
+        color: #333;
+    }
+    .btn-link:hover {
+        background-color: #e0e0e0;
+    }
+</style>
                     ${hypothesesHtml}
                 `;
                 container.appendChild(card);
