@@ -176,7 +176,9 @@
             card.className = 'card';
             card.innerHTML = `
                 <div>
-                    <div class="meta">${hyp.id || 'Без ID'} | ${hyp.authors && hyp.authors[0] ? hyp.authors[0].name : 'Неизвестный автор'}</div>
+                    <div class="meta">${hyp.id || 'Без ID'} | ${hyp.authors ? hyp.authors.map(a => 
+    `<a href="#" onclick="showAuthorProfile('${a.id || ''}'); return false;" style="color:#2980b9; text-decoration:none;">${a.name}</a>`
+).join(', ') : 'Не указаны'}</div>
                     <h3>${hyp.title || 'Без названия'}</h3>
                     <span class="status ${hyp.status || 'draft'}">${hyp.status || 'draft'}</span>
                     <p>${hyp.synopsis ? hyp.synopsis.substring(0, 120) + '...' : 'Описание отсутствует'}</p>
