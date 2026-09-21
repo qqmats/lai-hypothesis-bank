@@ -148,6 +148,10 @@
                 if (author.related_hypotheses && author.related_hypotheses.length > 0) {
                     hypothesesHtml = '<ul class="hypotheses-list">';
                     author.related_hypotheses.forEach(hypId => {
+                        // Предположим, что данные текущего автора хранятся в переменной author
+const contactModule = renderContactButtons(author);
+// Вставьте модуль в нужный вам блок (например, в конец блока с биографией)
+document.querySelector('.author-bio-block').appendChild(contactModule); 
                         // При клике вызываем функцию открытия модалки
                         hypothesesHtml += `<li><span class="hyp-link" onclick="openHypothesis('${hypId}')">📄 ${hypId}</span></li>`;
                     });
