@@ -134,10 +134,10 @@
     <a href="${author.contacts.official_page}" target="_blank" class="btn-link official-btn">
         🌐 Ресурс 2
     </a>
- <!-- почта -->
-    <a href="${author.contacts.email}" target="_blank" class="btn-link official-btn">
-        📧 mail-e
-    </a>
+<!-- Кнопка копирования почты -->
+<button onclick="copyToClipboard('${author.contacts.email}')" class="btn-link email-btn" title="Скопировать email">
+    📧 mail-e
+</button>
     
 </div>
 
@@ -202,6 +202,31 @@ document.addEventListener('keydown', function(event) {
         modal.style.display = "none";
     }
 });
+</script>
+    <script>
+function copyToClipboard(text) {
+    if (!text) {
+        alert("Email не указан");
+        return;
+    }
+    
+    // Создаем временный элемент для копирования
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    
+    try {
+        document.execCommand('copy');
+        // Визуальное подтверждение (можно заменить на красивое уведомление)
+        alert('Email скопирован: ' + text);
+    } catch (err) {
+        console.error('Ошибка копирования:', err);
+        alert('Не удалось скопировать email');
+    }
+    
+    document.body.removeChild(textarea);
+}
 </script>
 
 </body>
