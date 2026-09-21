@@ -176,11 +176,14 @@
             card.className = 'card';
             card.innerHTML = `
                 <div>
-                    <div class="meta">${hyp.id || 'Без ID'} | ${hyp.authors && hyp.authors[0] ? hyp.authors[0].name : 'Неизвестный автор'}</div>
-                    <h3>${hyp.title || 'Без названия'}</h3>
-                    <span class="status ${hyp.status || 'draft'}">${hyp.status || 'draft'}</span>
-                    <p>${hyp.synopsis ? hyp.synopsis.substring(0, 120) + '...' : 'Описание отсутствует'}</p>
-                </div>
+                   <!-- Блок идентификатора и автора -->
+<div class="hypothesis-meta">
+    <span class="hyp-id">${hyp.id}</span> | 
+    <!-- Активное имя автора -->
+    <a href="#" onclick="openAuthorModal('${authorId}'); return false;" class="author-link">
+        ${authorName}
+    </a>
+</div>
                 <div class="actions">
                     <a href="#" onclick="checkEditPermission('${filePath}'); return false;" class="btn btn-edit">Редактировать</a>
                     <button onclick="openModal('${hyp.id}')" class="btn btn-view">Открыть карточку</button>
@@ -325,6 +328,72 @@ document.addEventListener('keydown', function(event) {
     }
 });
 </script>
+    <script>
+// Функция открытия модального окна
+async function openAuthorModal(authorId) {
+    const modal = document.getElementById('authorModal');
+    const modalBody = document.getElementById('modalBody');
+    
+    modal.style.display = 'flex';
+    modalBody.innerHTML = '<p>Загрузка профиля...</p>';
 
+    try {
+        // Путь к файлу автора (предполагаем, что ID выглядит как AUTH-Sklyarov)
+        const response = await fetch(`authors/${authorId}.json`);
+        if (!response.ok) throw new Error('Файл не найден');
+        
+        const author = await response.json();
+        
+        // Формируем содержимое окна (аналогично authors.html)
+        let content = `
+            <h2>${author.personal_info.name_ru}</h2>
+            <p><strong>Роль:</strong> ${author.role_in_lai.join(', ')}</p>
+            <p><strong>Специализация:</strong> ${author.specialization.join(', ')}</p>
+            <p>${author.bio_summary}</p>
+            
+            <div class="author-links" style="margin-top: 15px;">
+                <a href="${author.contacts.telegram}" target="_blank" class="btn-link">📱 Telegram/VK</a>
+                <a href="${author.contacts.official_page}" target="_blank" class="btn-link">🌐 Сайт</a>
+                <button onclick="copyToClipboard('${author.contacts.email}')" class="btn-link">📧 Копировать email</button>
+            </div>
+        `;
+        
+        modalBody.innerHTML = content;
+    } catch (error) {
+        modalBody.innerHTML = `<p style="color:red">Ошибка загрузки профиля: ${error.message}</p>`;
+    }
+}
+
+// Функция закрытия окна
+function closeAuthorModal() {
+    document.getElementById('authorModal').style.display = 'none';
+}
+
+// Закрытие по клику вне окна
+window.onclick = function(event) {
+    const modal = document.getElementById('authorModal');
+    if (event.target == modal) {
+        closeAuthorModal();
+    }
+}
+
+// Функция копирования (из предыдущего шага)
+function copyToClipboard(text) {
+    if (!text) return;
+    navigator.clipboard.writeText(text).then(() => {
+        alert('Email скопирован!');
+    });
+}
+</script>
+<!-- Модальное окно профиля автора -->
+<div id="authorModal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeAuthorModal()">&times;</span>
+        <div id="modalBody">
+            <!-- Сюда будет загружаться информация -->
+            <p>Загрузка профиля...</p>
+        </div>
+    </div>
+</div>
 </body>
 </html>
