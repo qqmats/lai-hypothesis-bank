@@ -31,6 +31,7 @@
         .modal-section { margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
         .modal-label { font-weight: bold; color: #555; display: block; margin-bottom: 5px; }
         #loading { text-align: center; font-size: 1.2em; color: #7f8c8d; }
+        
     </style>
 </head>
 <body>
@@ -38,6 +39,9 @@
 <header>
     <h1>🏛️ Банк гипотез ЛАИ</h1>
     <p>Систематизация знаний Лаборатории Альтернативной Истории 63</p>
+    <!-- Было: <span>Меморандум</span> -->
+<!-- Стало: -->
+<a href="#" onclick="openMemorandum(); return false;" style="cursor: pointer; text-decoration: underline;">Меморандум</a>
     <a href="authors.html" style="text-decoration: none; color: #fff; background-color: #e67e22; padding: 8px 15px; border-radius: 5px; font-size: 0.9em; margin-left: 20px;">👥 Список авторов</a>
 </header>
 
@@ -327,6 +331,46 @@ document.addEventListener('keydown', function(event) {
     }
 });
 </script>
+<!-- Модальное окно Меморандума -->
+<div id="memorandumModal" class="modal-overlay">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeMemorandum()">×</button>
+        <div id="memorandumText">Загрузка меморандума...</div>
+    </div>
+</div>
+    <!-- Библиотека для рендеринга Markdown -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
+<script>
+// Функция открытия
+function openMemorandum() {
+    const modal = document.getElementById('memorandumModal');
+    const contentDiv = document.getElementById('memorandumText');
+    
+    modal.classList.add('active');
+    
+    // Загружаем содержимое MEMORANDUM.md
+    fetch('MEMORANDUM.md')
+        .then(response => response.text())
+        .then(text => {
+            // Преобразуем Markdown в HTML
+            contentDiv.innerHTML = marked.parse(text);
+        })
+        .catch(err => {
+            contentDiv.innerHTML = '<p style="color:red;">Ошибка загрузки меморандума. Проверьте путь к файлу.</p>';
+            console.error('Ошибка:', err);
+        });
+}
+
+// Функция закрытия
+function closeMemorandum() {
+    document.getElementById('memorandumModal').classList.remove('active');
+}
+
+// Закрытие по клику вне окна
+document.getElementById('memorandumModal').addEventListener('click', function(e) {
+    if (e.target === this) closeMemorandum();
+});
+</script>
 </body>
 </html>
