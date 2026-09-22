@@ -31,6 +31,41 @@
         .modal-section { margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
         .modal-label { font-weight: bold; color: #555; display: block; margin-bottom: 5px; }
         #loading { text-align: center; font-size: 1.2em; color: #7f8c8d; }
+        /* Стили для модального окна */
+.modal-overlay {
+    display: none; /* Скрыто по умолчанию */
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    max-width: 800px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    color: #333;
+}
+
+.modal-close {
+    position: absolute;
+    top: 10px; right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    background: none; border: none;
+}
+
+/* Класс для активации окна */
+.modal-overlay.active {
+    display: flex;
+}
         
     </style>
 </head>
