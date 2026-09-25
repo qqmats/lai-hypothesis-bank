@@ -316,10 +316,14 @@
                 <span class="modal-label">Краткое описание:</span>
                 <p>${hyp.synopsis || 'Не указано'}</p>
             </div>
-            <div class="modal-section">
-                <span class="modal-label">Критерии подтверждения:</span>
-                <p>${hyp.confirmation_criteria || 'Не указано'}</p>
-            </div>
+           <div class="modal-section">
+    <span class="modal-label">Критерии подтверждения:</span>
+    <ul>
+        ${hyp.confirmation_criteria && hyp.confirmation_criteria.length > 0 
+            ? hyp.confirmation_criteria.map(item => `<li>${typeof item === 'object' ? JSON.stringify(item) : item}</li>`).join('') 
+            : '<li>Не указано</li>'}
+    </ul>
+</div>
 
             <div class="modal-section">
                 <span class="modal-label">Ключевые слова:</span>
