@@ -316,14 +316,24 @@
                 <span class="modal-label">Краткое описание:</span>
                 <p>${hyp.synopsis || 'Не указано'}</p>
             </div>
-           <div class="modal-section">
+          <div class="modal-section">
     <span class="modal-label">Критерии подтверждения:</span>
-    <ul>
-        ${hyp.confirmation_criteria && hyp.confirmation_criteria.length > 0 
-            ? hyp.confirmation_criteria.map(item => `<li>${typeof item === 'object' ? JSON.stringify(item) : item}</li>`).join('') 
-            : '<li>Не указано</li>'}
-    </ul>
-</div>       
+    ${hyp.confirmation_criteria && hyp.confirmation_criteria.length > 0 
+        ? `<ul>${hyp.confirmation_criteria.map(item => {
+            // Если элемент - это объект (расширенный формат)
+            if (typeof item === 'object' && item !== null) {
+                return `<li>
+                    <strong>${item.description || 'Описание отсутствует'}</strong><br>
+                    <small>Метод: ${item.method || 'Не указан'} | Ожидается: ${item.expected_result || '—'}</small>
+                </li>`;
+            } 
+            // Если элемент - это просто строка (базовый формат)
+            else {
+                return `<li>${item}</li>`;
+            }
+        }).join('')}</ul>` 
+        : '<p>Не указано</p>'}
+</div>      
             <div class="modal-section">
                 <span class="modal-label">Ключевые слова:</span>
                 <p>${hyp.keywords ? hyp.keywords.join(', ') : ''}</p>
