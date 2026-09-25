@@ -1,0 +1,60 @@
+{
+  "id": "AUTH-Sploshnov",
+  "version": "1.1",
+  "personal_info": {
+    "name_ru": "Александр Сплошнов",
+    "name_en": "Alexander Sploshnov",
+    "birth_year": null,
+    "death_year": null,
+    "education": "ГИТР (Режиссура)",
+    "profession": "CG/VFX Supervisor, 3D Artist, Researcher"
+  },
+  "role_in_lai": [
+    "Исследователь",
+    "Специалист по 3D-моделированию"
+  ],
+  "specialization": [
+    "Фотограмметрия артефактов",
+    "Цифровая реконструкция мегалитов",
+    "Визуализация древних технологий",
+    "VR/AR в исследованиях"
+  ],
+  "bio_summary": "Специалист по компьютерной графике и 3D-моделированию. Внедряет технологии фотограмметрии и VR для точного документирования и анализа артефактов ДВЦ. Автор детальных цифровых реконструкций объектов в Мексике, Перу и России.",
+  "contacts": {
+    "email": "3dsploshnoff@gmail.com",
+    "telegram": "",
+    "forum_profile": "https://laiforum.ru/",
+    "official_page": "https://sketchfab.com/3dsploshnoff"
+  },
+  "academic_ids": {
+    "spin_code": "",
+    "author_id_rinc": "",
+    "orcid": "",
+    "researcher_id": ""
+  },
+  "bibliography": [
+    {
+      "title": "3D технологии в исследовательской деятельности (Доклад на VI семинаре ЛАИ)",
+      "year": null,
+      "type": "report",
+      "url": "https://www.instagram.com/sploshnoff/"
+    },
+    {
+      "title": "Фотограмметрическое сканирование пещер Барабар",
+      "year": null,
+      "type": "field_report",
+      "url": "https://aturs.ru/barabar"
+    }
+  ],
+  "related_hypotheses": [
+    "LAI_SEG03-Sploshnov_01",
+    "LAI_SEG06-Sploshnov_02",
+    "LAI_SEG03-Sploshnov_03",
+    "LAI_SEG02-Sploshnov_04",
+    "LAI_SEG05-Sploshnov_05",
+    "LAI_SEG08-Sploshnov_06",
+    "LAI_SEG01-Sploshnov_07"
+  ],
+  "methodology_notes": "Использует принцип 'цифрового двойника' для бесконтактного изучения геометрии объектов. Сотрудничает с партнерами ЛАИ (И. Алексеев, А. Татуков) для интеграции 3D-данных в экспедиционные отчеты.",
+  "license": "CC BY-SA 4.0"
+}
