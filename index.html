@@ -324,7 +324,11 @@
             : '<li>Не указано</li>'}
     </ul>
 </div>
-
+<div class="modal-section">
+                <span class="modal-label">Критерии2:</span>
+                <p>${hyp.confirmation_criteria ? hyp.confirmation_criteria.join(', ') : ''}</p>
+            </div>
+         
             <div class="modal-section">
                 <span class="modal-label">Ключевые слова:</span>
                 <p>${hyp.keywords ? hyp.keywords.join(', ') : ''}</p>
