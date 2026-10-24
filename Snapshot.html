@@ -34,7 +34,10 @@
 </div>
 
 <script>
-    // ВАЖНО: Убедитесь, что эти пути точно совпадают с именами файлов в вашем репозитории!
+   // 1. Путь к вашему файлу инструкции
+    const instructionPath = "lai_ai_instructions.txt";
+	
+	// ВАЖНО: Убедитесь, что эти пути точно совпадают с именами файлов в вашем репозитории!
     const hypothesisFiles = [
             "hypotheses/SEG01/LAI_SEG01-Sergeev_01.json", 
 			"hypotheses/SEG01/LAI_SEG01-Alekseev_01.json",
@@ -141,50 +144,32 @@
         logDiv.scrollTop = logDiv.scrollHeight;
     }
 
-        async function generateSnapshot() {
+     async function generateSnapshot() {
         const logDiv = document.getElementById('log');
         logDiv.innerHTML = ""; 
         
-        // Получаем текущую дату и время в читаемом формате
         const now = new Date();
         const dateStr = now.toLocaleDateString('ru-RU') + ' ' + now.toLocaleTimeString('ru-RU');
         
-        // Обновляем заголовок, добавляя дату
-        finalContent = `# LAI HYPOTHESIS BANK - FULL DATA DUMP\n`;
+        // Начинаем с заголовка
+        finalContent = `# LAI HYPOTHESIS BANK - AI-READY SNAPSHOT\n`;
         finalContent += `# Generated: ${dateStr}\n\n`;
         
         document.getElementById('saveBtn').disabled = true;
-        document.getElementById('copyBtn').disabled = true;
-
-        const allFiles = [...hypothesisFiles, ...authorFiles];
-        let successCount = 0;
-
-        for (const file of allFiles) {
-            try {
-                log(`Загрузка: ${file}...`);
-                const response = await fetch(file);
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                finalContent += `## FILE PATH: ${file}\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\n`;
-                successCount++;
-                log(`✅ Успешно: ${file}`, 'success');
+    …successCount++;
             } catch (error) {
-                log(`❌ Ошибка загрузки ${file}: ${error.message}`, 'error');
+                log(`❌ Ошибка ${file}: ${error.message}`, 'error');
             }
         }
 
-        if (successCount > 0) {
-            log(`\n🎉 Готово! Обработано файлов: ${successCount}. Дата создания: ${dateStr}`, 'success');
+        if (successCount > 0 || finalContent.includes("SYSTEM INSTRUCTION")) {
+            log(`\n🎉 Готово! Файл сформирован.`, 'success');
             document.getElementById('saveBtn').disabled = false;
             document.getElementById('copyBtn').disabled = false;
-        } else {
-            log("\n⚠️ Не удалось загрузить ни одного файла. Проверьте пути в коде.", 'error');
         }
     }
+
+    // ... функции downloadFile и copyHTMLCode остаются без изменений ...
 
     function downloadFile() {
         if (!finalContent) return;
