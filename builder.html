@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>LAI Data Builder (Raw View)</title>
+    <style>
+        body { font-family: monospace; padding: 20px; background: #f4f4f4; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h1 { color: #333; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .section-title { color: #007bff; margin-top: 30px; font-size: 1.2em; font-weight: bold; }
+        .file-block { margin-bottom: 20px; border-left: 3px solid #ddd; padding-left: 15px; }
+        .file-path { color: #666; font-weight: bold; margin-bottom: 5px; display: block; }
+        pre { background: #f9f9f9; padding: 10px; border-radius: 4px; overflow-x: auto; white-space: pre-wrap; }
+        .controls { margin-bottom: 20px; padding: 10px; background: #eef; border-radius: 4px; }
+        button { cursor: pointer; padding: 8px 15px; background: #28a745; color: white; border: none; border-radius: 4px; }
+        button:hover { background: #218838; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🏗 LAI Hypothesis Bank: Raw Data Builder</h1>
+    
+    <div class="controls">
+        <p>Эта страница генерирует текстовый вывод всех карточек для анализа нейросетями.</p>
+        <button onclick="loadAllData()">🔄 Обновить данные</button>
+        <button onclick="copyToClipboard()">📋 Копировать весь текст</button>
+    </div>
+
+    <div id="output"></div>
+</div>
+
+<script>
+    // Список путей к вашим данным. 
+    // ВАЖНО: Для автоматического поиска всех файлов на GitHub Pages нужен более сложный скрипт.
+    // Пока мы используем базовый список сегментов. Если файлов станет очень много, 
+    // лучше будет использовать GitHub API или собрать этот список вручную.
+    const segments = ['SEG01', 'SEG02', 'SEG03', 'SEG04', 'SEG05', 'SEG06', 'SEG07', 'SEG08', 'SEG09', 'SEG10'];
+    
+    async function loadAllData() {
+        const output = document.getElementById('output');
+        output.innerHTML = '<p>Загрузка данных...</p>';
+        let fullText = "";
+
+        // 1. Загрузка гипотез
+        output.innerHTML += '<div class="section-title">📂 Гипотезы (Hypotheses)</div>';
+        
+        for (const seg of segments) {
+            try {
+                // Пытаемся загрузить каждый файл в сегменте. 
+                // В реальном проекте лучше иметь индексный файл со списком имен файлов.
+                // Здесь мы предполагаем, что вы знаете имена файлов или используете API.
+                // Для примера я сделаю заглушку, но ниже опишу, как сделать это правильно.
+            } catch (e) { console.log(e); }
+        }
+
+        // Для простоты реализации на чистом JS без бэкенда, 
+        // нам нужно знать точные имена файлов. 
+        // Давайте сделаем так: вы добавите список ваших текущих файлов в массив ниже:
+        
+        const hypothesisFiles = [
+            "hypotheses/SEG01/LAI_SEG01-Sergeev_01.json", 
+            // Добавьте сюда остальные пути к файлам через запятую
+        ];
+
+        const authorFiles = [
+            "authors/Sklyarov.json",
+            "authors/AUTH-Siparov.json"
+            // Добавьте сюда остальные пути
+        ];
+
+        let resultHTML = "";
+
+        // Функция для загрузки одного файла
+        async function fetchFile(path) {
+            try {
+                const response = await fetch(path);
+                if (!response.ok) return null;
+                const data = await response.json();
+                return { path, data };
+            } catch (error) {
+                return null;
+            }
+        }
+
+        // Обработка гипотез
+        resultHTML += '<div class="section-title">📂 Гипотезы</div>';
+        for (const file of hypothesisFiles) {
+            const content = await fetchFile(file);
+            if (content) {
+                resultHTML += `
+                    <div class="file-block">
+                        <span class="file-path">${content.path}</span>
+                        <pre>${JSON.stringify(content.data, null, 2)}</pre>
+                    </div>`;
+            }
+        }
+
+        // Обработка авторов
+        resultHTML += '<div class="section-title">👤 Авторы</div>';
+        for (const file of authorFiles) {
+            const content = await fetchFile(file);
+            if (content) {
+                resultHTML += `
+                    <div class="file-block">
+                        <span class="file-path">${content.path}</span>
+                        <pre>${JSON.stringify(content.data, null, 2)}</pre>
+                    </div>`;
+            }
+        }
+
+        output.innerHTML = resultHTML;
+    }
+
+    function copyToClipboard() {
+        const text = document.getElementById('output').innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            alert('Текст скопирован в буфер обмена!');
+        });
+    }
+
+    // Запуск при загрузке
+    loadAllData();
+</script>
+
+</body>
+</html>
