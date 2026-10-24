@@ -140,10 +140,17 @@
         logDiv.scrollTop = logDiv.scrollHeight;
     }
 
-    async function generateSnapshot() {
+        async function generateSnapshot() {
         const logDiv = document.getElementById('log');
         logDiv.innerHTML = ""; 
-        finalContent = "# LAI HYPOTHESIS BANK - FULL DATA DUMP\n\n";
+        
+        // Получаем текущую дату и время в читаемом формате
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('ru-RU') + ' ' + now.toLocaleTimeString('ru-RU');
+        
+        // Обновляем заголовок, добавляя дату
+        finalContent = `# LAI HYPOTHESIS BANK - FULL DATA DUMP\n`;
+        finalContent += `# Generated: ${dateStr}\n\n`;
         
         document.getElementById('saveBtn').disabled = true;
         document.getElementById('copyBtn').disabled = true;
@@ -170,11 +177,11 @@
         }
 
         if (successCount > 0) {
-            log(`\n🎉 Готово! Обработано файлов: ${successCount}. Теперь можно скачать или скопировать текст.`, 'success');
+            log(`\n🎉 Готово! Обработано файлов: ${successCount}. Дата создания: ${dateStr}`, 'success');
             document.getElementById('saveBtn').disabled = false;
             document.getElementById('copyBtn').disabled = false;
         } else {
-            log("\n⚠️ Не удалось загрузить ни одного файла. Проверьте пути в коде и запущен ли сайт на GitHub Pages.", 'error');
+            log("\n⚠️ Не удалось загрузить ни одного файла. Проверьте пути в коде.", 'error');
         }
     }
 
