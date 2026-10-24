@@ -26,6 +26,7 @@
     <div class="controls">
         <button class="btn-load" onclick="generateSnapshot()">1. Собрать данные</button>
         <button class="btn-save" onclick="downloadFile()" id="saveBtn" disabled>2. Скачать файл</button>
+		<button class="btn-copy" onclick="copyHTMLCode()" id="copyBtn" disabled>3. Копировать HTML-код</button>
         <button class="btn-copy" onclick="copyText()" id="copyBtn" disabled>3. Копировать текст</button>
     </div>
 
@@ -213,6 +214,29 @@
             alert('Текст скопирован в буфер обмена!');
         }).catch(err => {
             log('Ошибка копирования: ' + err, 'error');
+        });
+    }
+	    function copyHTMLCode() {
+        if (!finalContent) return;
+        
+        // Формируем полноценный HTML-документ
+        const htmlDocument = `<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>LAI Full Data Snapshot</title>
+<style>body { font-family: monospace; white-space: pre-wrap; padding: 20px; line-height: 1.5; }</style>
+</head>
+<body>
+<h1>LAI HYPOTHESIS BANK - STATIC SNAPSHOT</h1>
+<pre>${finalContent.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>
+</body>
+</html>`;
+
+        navigator.clipboard.writeText(htmlDocument).then(() => {
+            alert('✅ Полный HTML-код скопирован! Теперь вы можете вставить его в файл репозитория.');
+        }).catch(err => {
+            log('❌ Ошибка копирования: ' + err, 'error');
         });
     }
 </script>
