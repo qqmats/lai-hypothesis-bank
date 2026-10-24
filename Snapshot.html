@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>LAI Data Builder & Snapshot</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background: #f0f2f5; color: #333; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 15px; }
+        .controls { display: flex; gap: 10px; margin-bottom: 25px; padding: 15px; background: #e8f4fd; border-radius: 8px; align-items: center; }
+        button { cursor: pointer; padding: 10px 20px; border: none; border-radius: 6px; font-weight: bold; transition: 0.2s; }
+        .btn-load { background: #3498db; color: white; }
+        .btn-snap { background: #27ae60; color: white; }
+        .btn-copy { background: #95a5a6; color: white; }
+        button:hover { opacity: 0.9; transform: translateY(-1px); }
+        
+        .section-title { color: #2980b9; margin-top: 30px; font-size: 1.3em; font-weight: bold; border-left: 5px solid #2980b9; padding-left: 10px; }
+        .file-block { margin-bottom: 25px; border: 1px solid #e1e4e8; border-radius: 6px; overflow: hidden; }
+        .file-path { background: #f6f8fa; padding: 8px 12px; font-family: monospace; font-size: 0.9em; color: #586069; border-bottom: 1px solid #e1e4e8; }
+        pre { background: #fff; padding: 15px; margin: 0; overflow-x: auto; font-size: 0.9em; line-height: 1.5; }
+        #status { margin-left: 10px; font-style: italic; color: #666; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🏗 LAI Hypothesis Bank: AI-Data Builder</h1>
+    
+    <div class="controls">
+        <button class="btn-load" onclick="loadAllData()">🔄 Загрузить данные</button>
+        <button class="btn-snap" onclick="createSnapshot()" id="snapBtn" disabled>💾 Скачать AI-Ready Snapshot</button>
+        <button class="btn-copy" onclick="copyToClipboard()">📋 Копировать текст</button>
+        <span id="status">Ожидание загрузки...</span>
+    </div>
+
+    <div id="output"></div>
+</div>
+
+<script>
+    // ВАЖНО: Здесь должен быть полный список ваших файлов. 
+    // Для примера я оставил структуру, но вам нужно будет добавить туда реальные имена файлов.
+    const hypothesisFiles = [
+        "hypotheses/SEG01/LAI_SEG01-Sergeev_01.json",
+        // Добавьте остальные файлы гипотез сюда
+    ];
+
+    const authorFiles = [
+        "authors/Sklyarov.json",
+        "authors/AUTH-Siparov.json"
+        // Добавьте остальные файлы авторов сюда
+    ];
+
+    let fullContentText = "";
+
+    async function loadAllData() {
+        const output = document.getElementById('output');
+        const status = document.getElementById('status');
+        const snapBtn = document.getElementById('snapBtn');
+        
+        output.innerHTML = '<p>⏳ Загрузка и обработка файлов...</p>';
+        status.innerText = "Загрузка...";
+        fullContentText = "# LAI HYPOTHESIS BANK - RAW DATA SNAPSHOT\n\n";
+
+        let resultHTML = "";
+
+        // Вспомогательная функция для fetch
+        async function fetchAndRender(files, title) {
+            let html = `<div class="section-title">${title}</div>`;
+            for (const file of files) {
+                try {
+                    const response = await fetch(file);
+                    if (!response.ok) continue;
+                    const data = await response.json();
+                    
+                    // Добавляем в HTML для просмотра
+                    html += `
+                        <div class="file-block">
+                            <div class="file-path">${file}</div>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </div>`;
+                    
+                    // Добавляем в текстовый формат для AI
+                    fullContentText += `## FILE: ${file}\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\n`;
+                } catch (e) { console.error(e); }
+            }
+            return html;
+        }
+
+        resultHTML += await fetchAndRender(hypothesisFiles, "📂 Гипотезы (Hypotheses)");
+        resultHTML += await fetchAndRender(authorFiles, "👤 Авторы (Authors)");
+
+        output.innerHTML = resultHTML;
+        status.innerText = "Готово! Данные загружены.";
+        snapBtn.disabled = false;
+    }
+
+    function createSnapshot() {
+        // Создаем простой HTML файл, где весь текст уже внутри
+        const snapshotContent = `
+        <!DOCTYPE html>
+        <body style="font-family: monospace; white-space: pre-wrap;">
+        <h1>LAI Bank Static Snapshot</h1>
+        ${fullContentText.replace(/\n/g, '<br>').replace(/ /g, '&nbsp;')}
+        </body></html>`;
+        
+        const blob = new Blob([snapshotContent], {type: 'text/html'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'lai_data_snapshot.html';
+        a.click();
+    }
+
+    function copyToClipboard() {
+        navigator.clipboard.writeText(fullContentText).then(() => {
+            alert('Текстовая версия скопирована!');
+        });
+    }
+</script>
+
+</body>
+</html>
