@@ -143,22 +143,24 @@
         const allFiles = [...hypothesisFiles, ...authorFiles];
         let successCount = 0;
 
-        for (const file of allFiles) {
-            try {
-                log(`Загрузка данных: ${file}...`);
-                const response = await fetch(file);
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                finalContent += `### FILE PATH: ${file}\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\n`;
-                successCount++;
-            } catch (error) {
-                log(`❌ Ошибка ${file}: ${error.message}`, 'error');
-            }
+       for (const file of allFiles) {
+    try {
+        log(`Загрузка данных: ${file}...`);
+        const response = await fetch(file);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+        if (file.endsWith('.json')) {
+            const data = await response.json();
+            finalContent += `### FILE PATH: ${file}\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\n`;
+        } else {
+            const text = await response.text();
+            finalContent += `### FILE PATH: ${file}\n\`\`\`\n${text}\n\`\`\`\n\n`;
         }
+        successCount++;
+    } catch (error) {
+        log(`❌ Ошибка ${file}: ${error.message}`, 'error');
+    }
+}
 
         if (successCount > 0 || finalContent.includes("SYSTEM INSTRUCTION")) {
             log(`\n🎉 Готово! Обработано файлов: ${successCount}.`, 'success');
