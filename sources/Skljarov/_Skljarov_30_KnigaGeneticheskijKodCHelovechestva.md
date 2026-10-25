@@ -1,6 +1,6 @@
 ---
-source_url: UNKNOWN
-channel: Lah.ru / Project.lah.ru
+source_url: https://lah.ru/homo-text/
+channel: Lah.ru
 title: "Генетический код человечества (Человек — результат творения или эволюции?)"
 publication_date: 2015
 content_type: Book
@@ -10,7 +10,7 @@ primary_speaker:
   lai_author_id: "AUTH-Sklyarov"
 other_speakers: []
 preliminary_segments: ["SEG04", "SEG06", "SEG10"]
-processed_by: AI Assistant
+processed_by: С.Сергеев z2934@yandex.ru
 date_processed: 2026-09-29
 ---
 
