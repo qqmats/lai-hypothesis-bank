@@ -2,76 +2,79 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>LAI Data Builder & Snapshot</title>
+    <title>LAI Universal Data Builder</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background: #f0f2f5; color: #333; }
         .container { max-width: 1000px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         h1 { color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 15px; }
+        
         .controls { display: flex; gap: 10px; margin-bottom: 25px; padding: 15px; background: #e8f4fd; border-radius: 8px; align-items: center; flex-wrap: wrap; }
-        button { cursor: pointer; padding: 10px 20px; border: none; border-radius: 6px; font-weight: bold; transition: 0.2s; }
+        button { cursor: pointer; padding: 10px 20px; border: none; border-radius: 6px; font-weight: bold; transition: 0.2s; color: white; }
         
-        /* Кнопки для JSON */
-        .btn-json { background: #3498db; color: white; }
-        /* Кнопки для Markdown */
-        .btn-md { background: #e67e22; color: white; }
-        /* Общие кнопки */
-        .btn-action { background: #27ae60; color: white; }
-        .btn-copy { background: #95a5a6; color: white; }
-        
+        /* Цветовое кодирование разделов */
+        .btn-inst { background: #8e44ad; } /* Инструкция - Фиолетовый */
+        .btn-hyp { background: #2980b9; }  /* Гипотезы - Синий */
+        .btn-auth { background: #16a085; } /* Авторы - Бирюзовый */
+        .btn-src { background: #e67e22; }  /* Источники - Оранжевый */
+        .btn-exp { background: #27ae60; }  /* Экспорт - Зеленый */
+        .btn-copy { background: #7f8c8d; } /* Копирование - Серый */
+
         button:hover { opacity: 0.9; transform: translateY(-1px); }
         button:disabled { background: #ccc; cursor: not-allowed; }
-        
+
         #log { margin-top: 20px; font-family: monospace; font-size: 0.9em; color: #555; white-space: pre-wrap; background: #fafafa; padding: 10px; border: 1px solid #eee; max-height: 300px; overflow-y: auto; }
-        .success { color: #27ae60; }
-        .error { color: #e74c3c; }
+        .success { color: #27ae60; font-weight: bold; }
+        .error { color: #e74c3c; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>🏗 LAI Hypothesis Bank: Multi-Format Builder</h1>
+    <h1>🏗 LAI Bank: Universal Raw Data Builder</h1>
+    <p>Этот инструмент собирает «сырое» содержимое файлов для анализа нейросетью. Формат файла не имеет значения.</p>
     
     <div class="controls">
-        <!-- Секция JSON -->
-        <button class="btn-json" onclick="loadJsonData()">1. Собрать JSON (Гипотезы/Авторы)</button>
+        <button class="btn-inst" onclick="loadData(instructionFiles, 'Инструкция')">📜 Инструкция</button>
+        <button class="btn-hyp" onclick="loadData(hypothesisFiles, 'Гипотезы')">💡 Гипотезы (JSON)</button>
+        <button class="btn-auth" onclick="loadData(authorFiles, 'Авторы')">👤 Авторы (JSON)</button>
+        <button class="btn-src" onclick="loadData(sourceFiles, 'Источники')">📚 Источники (MD/TXT)</button>
         
-        <!-- Секция Markdown -->
-        <button class="btn-md" onclick="loadMdData()">2. Собрать MD (Источники/Скляров)</button>
+        <div style="width: 100%; height: 1px; background: #ddd; margin: 5px 0;"></div>
         
-        <!-- Экспорт -->
-        <button class="btn-action" onclick="downloadFile()" id="saveBtn" disabled>💾 Скачать файл</button>
-        <button class="btn-copy" onclick="copyHTMLCode()" id="copyBtn" disabled>📋 Копировать HTML-код</button>
+        <button class="btn-exp" onclick="downloadFile()" id="saveBtn" disabled>💾 Скачать HTML</button>
+        <button class="btn-copy" onclick="copyHTMLCode()" id="copyBtn" disabled>📋 Копировать код</button>
     </div>
 
-    <div id="log">Выберите тип данных для сборки...</div>
+    <div id="log">Выберите раздел для загрузки...</div>
 </div>
 
 <script>
-    // --- НАСТРОЙКИ ПУТЕЙ ---
-    
-    // 1. Системная инструкция
-    const instructionPath = "lai_ai_instructions.txt";
+    // --- НАСТРОЙКИ ПУТЕЙ (Редактируйте эти списки вручную) ---
 
-    // 2. Файлы JSON (Гипотезы и Авторы)
+    const instructionFiles = [
+        "lai_ai_instructions.txt"
+    ];
+
     const hypothesisFiles = [
         "hypotheses/SEG01/LAI_SEG01-Sergeev_01.json",
-        // ... добавьте остальные пути к гипотезам
+        "hypotheses/SEG01/LAI_SEG01-Sklyarov_01.json"
+        // Добавляйте сюда остальные гипотезы
     ];
+
     const authorFiles = [
         "authors/Sklyarov.json",
         "authors/AUTH-Siparov.json"
+        // Добавляйте сюда остальных авторов
     ];
 
-    // 3. Файлы Markdown (Источники, выжимки)
-    // ВАЖНО: Добавляйте сюда пути к новым файлам вручную
     const sourceFiles = [
         "sources/Skljarov/_Skljarov_00_biografija.md",
-        "sources/Skljarov/_Skljarov_23_KnigaMeksikaBezKrivykhZerkal.md",
-        // ... добавьте остальные пути к .md файлам
+        "sources/Skljarov/_Skljarov_23_KnigaMeksikaBezKrivykhZerkal.md"
+        // Добавляйте сюда любые .md или .txt файлы
     ];
 
     let finalContent = "";
-    let isDataLoaded = false;
+    let isReady = false;
 
     function log(msg, type = 'normal') {
         const logDiv = document.getElementById('log');
@@ -80,75 +83,48 @@
         logDiv.scrollTop = logDiv.scrollHeight;
     }
 
-    // --- ФУНКЦИЯ 1: СБОРКА JSON ---
-    async function loadJsonData() {
-        log("🚀 Начало сборки JSON-данных...", 'normal');
-        if (!finalContent.includes("SYSTEM INSTRUCTION")) await loadInstruction();
-        
-        finalContent += `\n## HYPOTHESES & AUTHORS DUMP START\n\n`;
-        const allJsonFiles = [...hypothesisFiles, ...authorFiles];
-        let count = 0;
-
-        for (const file of allJsonFiles) {
-            try {
-                const response = await fetch(file);
-                if (!response.ok) throw new Error(`Status ${response.status}`);
-                const data = await response.json();
-                finalContent += `### DATA FILE: ${file}\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\n`;
-                count++;
-            } catch (error) {
-                log(`❌ Ошибка JSON ${file}: ${error.message}`, 'error');
-            }
+    // Универсальная функция загрузки любого текста
+    async function loadData(fileList, sectionName) {
+        if (fileList.length === 0) {
+            log(`⚠️ Список "${sectionName}" пуст. Добавьте пути в код.`, 'error');
+            return;
         }
-        log(`✅ JSON данные обработаны. Файлов: ${count}`, 'success');
-        checkReady();
-    }
 
-    // --- ФУНКЦИЯ 2: СБОРКА MARKDOWN ---
-    async function loadMdData() {
-        log("🚀 Начало сборки Markdown-источников...", 'normal');
-        if (!finalContent.includes("SYSTEM INSTRUCTION")) await loadInstruction();
+        log(`🚀 Загрузка раздела: ${sectionName}...`, 'normal');
+        
+        // Если это первый загружаемый раздел, добавим шапку
+        if (!finalContent.includes("SNAPSHOT START")) {
+            finalContent = `# LAI HYPOTHESIS BANK - RAW DATA SNAPSHOT\n`;
+            finalContent += `# Generated: ${new Date().toLocaleString('ru-RU')}\n\n`;
+            finalContent += `<!-- SNAPSHOT START -->\n\n`;
+        }
 
-        finalContent += `\n## SOURCES (MARKDOWN) DUMP START\n\n`;
+        finalContent += `## SECTION: ${sectionName.toUpperCase()}\n\n`;
         let count = 0;
 
-        for (const file of sourceFiles) {
+        for (const file of fileList) {
             try {
                 const response = await fetch(file);
                 if (!response.ok) throw new Error(`Status ${response.status}`);
                 
-                // Используем .text() для Markdown файлов
+                // Читаем ВСЁ как простой текст. Нейросеть сама разберется.
                 const textData = await response.text(); 
-                finalContent += `### SOURCE FILE: ${file}\n\`\`\`markdown\n${textData}\n\`\`\`\n\n`;
+                
+                finalContent += `### FILE: ${file}\n\`\`\`\n${textData}\n\`\`\`\n\n`;
                 count++;
             } catch (error) {
-                log(`❌ Ошибка MD ${file}: ${error.message}`, 'error');
+                log(`❌ Ошибка ${file}: ${error.message}`, 'error');
             }
         }
-        log(`✅ Markdown источники обработаны. Файлов: ${count}`, 'success');
-        checkReady();
-    }
 
-    // --- ВСПОМОГАТЕЛЬНАЯ: ЗАГРУЗКА ИНСТРУКЦИИ ---
-    async function loadInstruction() {
-        try {
-            const instrResponse = await fetch(instructionPath);
-            if (instrResponse.ok) {
-                const instrText = await instrResponse.text();
-                finalContent = `# LAI HYPOTHESIS BANK - AI-READY SNAPSHOT\n`;
-                finalContent += `# Generated: ${new Date().toLocaleString('ru-RU')}\n\n`;
-                finalContent += `## SYSTEM INSTRUCTION\n\`\`\`\n${instrText}\n\`\`\`\n\n`;
-                finalContent += `--- END OF INSTRUCTION ---\n\n`;
-            }
-        } catch (e) {
-            log(`⚠️ Не удалось загрузить инструкцию: ${e.message}`, 'error');
+        if (count > 0) {
+            log(`✅ Раздел "${sectionName}" обработан. Файлов: ${count}`, 'success');
+            isReady = true;
+            document.getElementById('saveBtn').disabled = false;
+            document.getElementById('copyBtn').disabled = false;
+        } else {
+            log(`⚠️ В разделе "${sectionName}" не найдено доступных файлов.`, 'error');
         }
-    }
-
-    function checkReady() {
-        isDataLoaded = true;
-        document.getElementById('saveBtn').disabled = false;
-        document.getElementById('copyBtn').disabled = false;
     }
 
     // --- ЭКСПОРТ ---
@@ -168,7 +144,7 @@
     }
 
     function downloadFile() {
-        if (!isDataLoaded) return;
+        if (!isReady) return;
         const blob = new Blob([createFullHTML(finalContent)], { type: 'text/html' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -180,9 +156,11 @@
     }
 
     function copyHTMLCode() {
-        if (!isDataLoaded) return;
+        if (!isReady) return;
         navigator.clipboard.writeText(createFullHTML(finalContent)).then(() => {
-            alert('✅ Полный HTML-код скопирован! Готов для вставки в репозиторий.');
+            alert('✅ Код скопирован! Вставьте его в файл репозитория.');
+        }).catch(err => {
+            log('❌ Ошибка копирования: ' + err, 'error');
         });
     }
 </script>
