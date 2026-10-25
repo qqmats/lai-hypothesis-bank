@@ -1,8 +1,8 @@
 ---
-source_url: https://lah.ru/text/sklyarov/vavilonskaya_bashnya.htm
+source_url: https://go-save.ru/zKdAN,  https://clck.ru/3WgDRj, https://clck.ru/3WgDVX
 channel: ЛАИ (Лаборатория Альтернативной Истории)
 title: "Вавилонская башня - рекордсмен долгостроя"
-publication_date: UNKNOWN
+publication_date: 12.11.2006
 content_type: Article
 language: ru
 primary_speaker:
@@ -10,7 +10,7 @@ primary_speaker:
   lai_author_id: "AUTH-Sklyarov"
 other_speakers: []
 preliminary_segments: ["SEG07", "SEG08", "SEG10"]
-processed_by: Qwen3.7 Assistant
+processed_by: С.Сергеев z2934@yandex.ru
 date_processed: 2026-09-28
 ---
 
