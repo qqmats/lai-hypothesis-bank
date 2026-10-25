@@ -1,8 +1,8 @@
 ---
-source_url: UNKNOWN (предположительно Lah.ru)
+source_url: https://lah.ru/obitaemyj-ostrov-zemlya/
 channel: Lah.ru / Project.lah.ru
 title: "Обитаемый остров Земля"
-publication_date: UNKNOWN (экспедиция 2007-2009 гг.)
+publication_date:26.01.2012 
 content_type: Book
 language: ru
 primary_speaker:
@@ -10,7 +10,7 @@ primary_speaker:
   lai_author_id: "AUTH-Sklyarov"
 other_speakers: []
 preliminary_segments: ["SEG04", "SEG06", "SEG08", "SEG10"]
-processed_by: AI Assistant
+processed_by: С.Сергеев z2934@yandex.ru
 date_processed: 2026-09-29
 ---
 
