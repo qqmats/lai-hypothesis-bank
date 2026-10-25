@@ -1,7 +1,7 @@
 ---
-source_url: http://lah.ru/text/sklyarov/sklyarov.htm (предположительно, на основе других работ автора)
+source_url: 
 channel: Lah.ru / Project.lah.ru
-title: "Перу и Боливия задолго до инков"
+title: "ПЕРЕПИСАТЬ ошибка содержания"
 publication_date: 2010 (экспедиция 2009 г.)
 content_type: Book
 language: ru
@@ -10,7 +10,7 @@ primary_speaker:
   lai_author_id: "AUTH-Sklyarov"
 other_speakers: []
 preliminary_segments: ["SEG01", "SEG05", "SEG08", "SEG10"]
-processed_by: AI Assistant
+processed_by: 	С.Сергеев z2934@yandex.ru
 date_processed: 2026-09-29
 ---
 
