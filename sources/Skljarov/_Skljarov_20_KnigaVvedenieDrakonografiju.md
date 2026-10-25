@@ -1,8 +1,8 @@
-Ы.Ыукпуум---
-source_url: https://lah.ru/text/sklyarov/dragonography.htm](http://lit.md/files/sklyarov/vvedenie_v_drakonografiyu.pdf
+---
+source_url:  https://lah.ru/drakon-text/ , http://lit.md/files/sklyarov/vvedenie_v_drakonografiyu.pdf
 channel: ЛАИ (Лаборатория Альтернативной Истории)
 title: "Введение в драконографию"
-publication_date:  ~2007
+publication_date:  15.10.2006
 content_type: Статья
 language: ru
 primary_speaker:
