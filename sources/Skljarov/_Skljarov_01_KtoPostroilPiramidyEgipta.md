@@ -2,7 +2,7 @@
 source_url: https://www.youtube.com/watch?v=umtTqh4Qtp4
 channel: Astro TV (Архив ЛАИ)
 title: "Андрей Скляров - Кто построил пирамиды Египта"
-publication_date: UNKNOWN
+publication_date: 8‏ ‎июля‏ ‎2012
 content_type: Interview
 language: ru
 primary_speaker:
