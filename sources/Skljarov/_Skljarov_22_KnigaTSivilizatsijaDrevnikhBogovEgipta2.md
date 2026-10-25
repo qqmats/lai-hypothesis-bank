@@ -1,16 +1,16 @@
 ---
-source_url: https://lah.ru/text/sklyarov/civilization_gods_egypt.htm
+source_url: https://royallib.com/book/sklyarov_andrey/tsivilizatsiya_drevnih_bogov_egipta.html
 channel: ЛАИ (Лаборатория Альтернативной Истории)
 title: "Цивилизация древних богов Египта"
-publication_date: 2008
-content_type: Book/Article
+publication_date: 2005
+content_type: Book/Article "ISBN: 5-9533-0714-4"
 language: ru
 primary_speaker:
   name: "Андрей Скляров"
   lai_author_id: "AUTH-Sklyarov"
 other_speakers: []
 preliminary_segments: ["SEG01", "SEG05", "SEG10"]
-processed_by: Qwen3.7 Assistant
+processed_by: С.Сергеев z2934@yandex.ru
 date_processed: 2026-09-29
 ---
 
