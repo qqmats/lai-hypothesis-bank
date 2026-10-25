@@ -1,8 +1,8 @@
 ---
-source_url: https://lah.ru/text/sklyarov/radiocarbon.htm
+source_url: https://lah.ru/time-text/
 channel: ЛАИ (Лаборатория Альтернативной Истории)
 title: "Чего изволите-с?.. Меню радиоуглеродного датирования и дендрохронологии"
-publication_date: UNKNOWN
+publication_date: 27.01.2015
 content_type: Article
 language: ru
 primary_speaker:
@@ -10,7 +10,7 @@ primary_speaker:
   lai_author_id: "AUTH-Sklyarov"
 other_speakers: []
 preliminary_segments: ["SEG01", "SEG10"]
-processed_by: Qwen3.7 Assistant
+processed_by: С.Сергеев z2934@yandex.ru
 date_processed: 2026-09-28
 ---
 
