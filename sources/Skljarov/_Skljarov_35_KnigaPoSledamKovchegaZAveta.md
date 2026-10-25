@@ -1,5 +1,5 @@
 ---
-source_url: UNKNOWN
+source_url: https://lah.ru/03-text/
 channel: ЛАИ (Лаборатория Альтернативной Истории)
 title: "По следам Ковчега Завета"
 publication_date: 2013
