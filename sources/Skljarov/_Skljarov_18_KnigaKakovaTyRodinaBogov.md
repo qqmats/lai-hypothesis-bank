@@ -1,8 +1,8 @@
 ---
-source_url: https://lah.ru/text/sklyarov/rodina_bogov.htm
+source_url: [https://lah.ru/text/sklyarov/rodina_bogov.htm](https://lah.ru/bio-text/?ysclid=mvnhyc7ca853676955)
 channel: ЛАИ (Лаборатория Альтернативной Истории)
 title: "Какова ты, родина богов?.."
-publication_date: UNKNOWN
+publication_date: 30.11.2006
 content_type: Article
 language: ru
 primary_speaker:
@@ -10,7 +10,7 @@ primary_speaker:
   lai_author_id: "AUTH-Sklyarov"
 other_speakers: []
 preliminary_segments: ["SEG04", "SEG08", "SEG10"]
-processed_by: Qwen3.7 Assistant
+processed_by: С.Сергеев z2934@yandex.ru
 date_processed: 2026-09-28
 ---
 
