@@ -1,16 +1,16 @@
----
-source_url: https://lah.ru/text/sklyarov/dragonography.htm
+Ы.Ыукпуум---
+source_url: https://lah.ru/text/sklyarov/dragonography.htm](http://lit.md/files/sklyarov/vvedenie_v_drakonografiyu.pdf
 channel: ЛАИ (Лаборатория Альтернативной Истории)
 title: "Введение в драконографию"
-publication_date: UNKNOWN
-content_type: Article
+publication_date:  ~2007
+content_type: Статья
 language: ru
 primary_speaker:
   name: "Андрей Скляров"
   lai_author_id: "AUTH-Sklyarov"
 other_speakers: []
 preliminary_segments: ["SEG04", "SEG10"]
-processed_by: Qwen3.7 Assistant
+processed_by: St.Sergeev z2934@yandex.ru
 date_processed: 2026-09-28
 ---
 
