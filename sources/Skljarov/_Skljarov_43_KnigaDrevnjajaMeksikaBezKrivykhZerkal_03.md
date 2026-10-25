@@ -1,5 +1,5 @@
 ---
-source_url: UNKNOWN
+source_url: https://lah.ru/drevnyaya-meksika-bez-krivyh-zerkal/
 channel: ЛАИ (Лаборатория Альтернативной Истории)
 title: "Древняя Мексика без кривых зеркал ч.3"
 publication_date: 2007-01-01
