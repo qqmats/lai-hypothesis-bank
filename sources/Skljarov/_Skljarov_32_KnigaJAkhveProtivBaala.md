@@ -1,6 +1,6 @@
 ---
-source_url: UNKNOWN
-channel: Lah.ru / Project.lah.ru
+source_url: https://lah.ru/mono-text/
+channel: Lah.ru
 title: "Яхве против Баала - хроника переворота"
 publication_date: 2016
 content_type: Book
@@ -10,7 +10,7 @@ primary_speaker:
   lai_author_id: "AUTH-Sklyarov"
 other_speakers: []
 preliminary_segments: ["SEG08", "SEG10"]
-processed_by: AI Assistant
+processed_by: С.Сергеев z2934@yandex.ru
 date_processed: 2026-09-29
 ---
 
