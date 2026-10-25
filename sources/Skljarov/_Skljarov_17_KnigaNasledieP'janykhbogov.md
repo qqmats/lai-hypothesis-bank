@@ -1,18 +1,21 @@
 ---
-source_url: 
-channel: ЛАИ (Лаборатория Альтернативной Истории)
-title: "Наследие пьяных богов" ("Битва за урожай: кому и зачем она понадобилась...")
-publication_date: UNKNOWN
-content_type: Article
-language: ru
+source_url: "https://lah.ru/..." 
+channel: "ЛАИ (Лаборатория Альтернативной Истории)"
+title: "Наследие пьяных богов (Битва за урожай: кому и зачем она понадобилась...)"
+publication_date: "UNKNOWN"
+content_type: "Article"
+language: "ru"
 primary_speaker:
   name: "Андрей Скляров"
   lai_author_id: "AUTH-Sklyarov"
 other_speakers: []
 preliminary_segments: ["SEG08", "SEG10"]
-processed_by: С.Сергеев z2934@yandex.ru
-date_processed: 2026-09-28
+processed_by: "С. Сергеев (z2934@yandex.ru)"
+date_processed: "2026-09-28"
 ---
+
+# Синопсис статьи "Наследие пьяных богов"
+...
 
 # Синопсис статьи "Наследие пьяных богов"
 
