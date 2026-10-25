@@ -1,8 +1,8 @@
 ---
-source_url: UNKNOWN
+source_url: https://lah.ru/drevnyaya-meksika-bez-krivyh-zerkal/
 channel: Lah.ru / Project.lah.ru
 title: "Древняя Мексика без кривых зеркал"
-publication_date: UNKNOWN (экспедиция март 2007)
+publication_date: 26.01.2009 (экспедиция март 2007)
 content_type: Book
 language: ru
 primary_speaker:
@@ -16,7 +16,7 @@ other_speakers:
   - name: "Алексей Тесленко"
     role: "участник экспедиции"
 preliminary_segments: ["SEG01", "SEG05", "SEG08", "SEG10"]
-processed_by: AI Assistant
+processed_by: С.Сергеев z2934@yandex.ru
 date_processed: 2026-09-29
 ---
 
