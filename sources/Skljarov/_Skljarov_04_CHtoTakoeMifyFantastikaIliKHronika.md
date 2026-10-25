@@ -2,7 +2,7 @@
 source_url: https://www.youtube.com/watch?v=agmWr3neNxY
 channel: Архив ЛАИ
 title: "Андрей Скляров: Что такое мифы - Фантастика или историческая хроника?"
-publication_date: UNKNOWN
+publication_date: ~2016
 content_type: Interview
 language: ru
 primary_speaker:
