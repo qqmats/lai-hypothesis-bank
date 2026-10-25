@@ -2,7 +2,7 @@
 source_url: https://www.youtube.com/watch?v=YFUtG0Ae6sc
 channel: Архив ЛАИ
 title: "АНДРЕЙ СКЛЯРОВ: БОГИ и ЛЮДИ - Диспут с гидом в Израиле"
-publication_date: UNKNOWN
+publication_date: 24.04.2020
 content_type: Interview
 language: ru
 primary_speaker:
