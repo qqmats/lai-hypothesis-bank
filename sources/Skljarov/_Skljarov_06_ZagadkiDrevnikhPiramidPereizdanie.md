@@ -1,8 +1,8 @@
 ---
 source_url: https://www.youtube.com/watch?v=ZiL1jwOyssk
-channel: Архив ЛАИ
+channel: Архив ЛАИ, канал Альпари
 title: "Андрей Скляров: Загадки древних пирамид. Переиздание"
-publication_date: UNKNOWN
+publication_date: ~2019
 content_type: Interview
 language: ru
 primary_speaker:
