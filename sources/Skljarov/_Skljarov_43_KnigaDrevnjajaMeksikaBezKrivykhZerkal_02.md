@@ -1,5 +1,5 @@
 ---
-source_url: UNKNOWN
+source_url: https://lah.ru/drevnyaya-meksika-bez-krivyh-zerkal/
 channel: ЛАИ (Лаборатория Альтернативной Истории)
 title: "Древняя Мексика без кривых зеркал ч.2"
 publication_date: 2007-01-01
@@ -10,7 +10,7 @@ primary_speaker:
   lai_author_id: "AUTH-Sklyarov"
 other_speakers: []
 preliminary_segments: ["SEG01", "SEG02", "SEG05", "SEG10"]
-processed_by: AI Assistant
+processed_by: С.Сергеев z2934@yandex.ru
 date_processed: 2026-10-11
 ---
 
