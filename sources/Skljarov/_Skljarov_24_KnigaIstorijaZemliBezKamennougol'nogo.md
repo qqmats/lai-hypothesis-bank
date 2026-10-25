@@ -1,5 +1,5 @@
 ---
-source_url: http://lah.ru/text/sklyarov/sklyarov.htm (предположительно, на основе других работ автора)
+source_url: https://lah.ru/carbon-text/
 channel: Lah.ru / Project.lah.ru
 title: "История Земли без Каменноугольного периода"
 publication_date: 2009-05
@@ -10,7 +10,7 @@ primary_speaker:
   lai_author_id: "AUTH-Sklyarov"
 other_speakers: []
 preliminary_segments: ["SEG02", "SEG10"]
-processed_by: AI Assistant
+processed_by: С.Сергеев z2934@yandex.ru
 date_processed: 2026-09-29
 ---
 
