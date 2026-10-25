@@ -1,8 +1,8 @@
 ---
-source_url: "https://lah.ru/..." 
+source_url: https://old.lah.ru/text/sklyarov/zerno-titul.htm 
 channel: "ЛАИ (Лаборатория Альтернативной Истории)"
 title: "Наследие пьяных богов (Битва за урожай: кому и зачем она понадобилась...)"
-publication_date: "UNKNOWN"
+publication_date: ~2002
 content_type: "Article"
 language: "ru"
 primary_speaker:
