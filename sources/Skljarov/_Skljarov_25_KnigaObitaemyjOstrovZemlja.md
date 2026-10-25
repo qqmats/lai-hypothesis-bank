@@ -2,7 +2,7 @@
 source_url: https://lah.ru/obitaemyj-ostrov-zemlya/
 channel: Lah.ru
 title: "Обитаемый остров Земля"
-publication_date:26.01.2012 
+publication_date: 26.01.2012 
 content_type: Book
 language: ru
 primary_speaker:
