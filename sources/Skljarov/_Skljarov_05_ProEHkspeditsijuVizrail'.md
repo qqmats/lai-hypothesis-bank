@@ -2,7 +2,7 @@
 source_url: https://www.youtube.com/watch?v=gvtiTwAsmTI
 channel: Подкаст ЛАИ
 title: "Андрей Скляров: Про экспедицию в Израиль и ДВЦ"
-publication_date: UNKNOWN
+publication_date: 15.09.2023
 content_type: Podcast
 language: ru
 primary_speaker:
