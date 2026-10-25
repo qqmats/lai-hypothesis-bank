@@ -9,97 +9,69 @@
         h1 { color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 15px; }
         .controls { display: flex; gap: 10px; margin-bottom: 25px; padding: 15px; background: #e8f4fd; border-radius: 8px; align-items: center; flex-wrap: wrap; }
         button { cursor: pointer; padding: 10px 20px; border: none; border-radius: 6px; font-weight: bold; transition: 0.2s; }
-        .btn-load { background: #3498db; color: white; }
-        .btn-snap { background: #27ae60; color: white; }
+        
+        /* Кнопки для JSON */
+        .btn-json { background: #3498db; color: white; }
+        /* Кнопки для Markdown */
+        .btn-md { background: #e67e22; color: white; }
+        /* Общие кнопки */
+        .btn-action { background: #27ae60; color: white; }
         .btn-copy { background: #95a5a6; color: white; }
+        
         button:hover { opacity: 0.9; transform: translateY(-1px); }
         button:disabled { background: #ccc; cursor: not-allowed; }
         
-        .section-title { color: #2980b9; margin-top: 30px; font-size: 1.3em; font-weight: bold; border-left: 5px solid #2980b9; padding-left: 10px; }
-        .file-block { margin-bottom: 25px; border: 1px solid #e1e4e8; border-radius: 6px; overflow: hidden; }
-        .file-path { background: #f6f8fa; padding: 8px 12px; font-family: monospace; font-size: 0.9em; color: #586069; border-bottom: 1px solid #e1e4e8; }
-        pre { background: #fff; padding: 15px; margin: 0; overflow-x: auto; font-size: 0.9em; line-height: 1.5; }
-        #status { margin-left: 10px; font-style: italic; color: #666; }
         #log { margin-top: 20px; font-family: monospace; font-size: 0.9em; color: #555; white-space: pre-wrap; background: #fafafa; padding: 10px; border: 1px solid #eee; max-height: 300px; overflow-y: auto; }
+        .success { color: #27ae60; }
+        .error { color: #e74c3c; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>🏗 LAI Hypothesis Bank: AI-Data Builder Skljarov</h1>
+    <h1>🏗 LAI Hypothesis Bank: Multi-Format Builder</h1>
     
     <div class="controls">
-        <button class="btn-load" onclick="generateSnapshot()">1. Собрать данные</button>
-        <button class="btn-snap" onclick="downloadFile()" id="saveBtn" disabled>💾 Скачать файл</button>
+        <!-- Секция JSON -->
+        <button class="btn-json" onclick="loadJsonData()">1. Собрать JSON (Гипотезы/Авторы)</button>
+        
+        <!-- Секция Markdown -->
+        <button class="btn-md" onclick="loadMdData()">2. Собрать MD (Источники/Скляров)</button>
+        
+        <!-- Экспорт -->
+        <button class="btn-action" onclick="downloadFile()" id="saveBtn" disabled>💾 Скачать файл</button>
         <button class="btn-copy" onclick="copyHTMLCode()" id="copyBtn" disabled>📋 Копировать HTML-код</button>
-        <span id="status">Ожидание...</span>
     </div>
 
-    <div id="log">Нажмите "Собрать данные", чтобы начать генерацию снапшота...</div>
+    <div id="log">Выберите тип данных для сборки...</div>
 </div>
 
 <script>
-    // Путь к файлу системной инструкции
+    // --- НАСТРОЙКИ ПУТЕЙ ---
+    
+    // 1. Системная инструкция
     const instructionPath = "lai_ai_instructions.txt";
 
-    // Списки файлов данных (убедитесь, что пути точные!)
+    // 2. Файлы JSON (Гипотезы и Авторы)
     const hypothesisFiles = [
-       "sources/Skljarov/_Skljarov_00_biografija.md",
-"sources/Skljarov/_Skljarov_01_KtoPostroilPiramidyEgipta.md",
-"sources/Skljarov/_Skljarov_02_CHtoIskaliFaraonyVpiramidakh.md",
-"sources/Skljarov/_Skljarov_03_PoSledamBogov.md",
-"sources/Skljarov/_Skljarov_04_CHtoTakoeMifyFantastikaIliKHronika.md",
-"sources/Skljarov/_Skljarov_05_ProEHkspeditsijuVizrail'.md",
-"sources/Skljarov/_Skljarov_06_ZagadkiDrevnikhPiramidPereizdanie.md",
-"sources/Skljarov/_Skljarov_07_BogiIljudiGidIzrail'.md",
-"sources/Skljarov/_Skljarov_08_ProDVTSiEHffektPiramid.md",
-"sources/Skljarov/_Skljarov_09_NeizvedannoeOtvety.md",
-"sources/Skljarov/_Skljarov_10_12000LetGMO.md",
-"sources/Skljarov/_Skljarov_11_stat'jaRadiouglerDatirDendrokhronologija.md",
-"sources/Skljarov/_Skljarov_12_KnigaFizikaDukha.md",
-"sources/Skljarov/_Skljarov_13_KnigaFizikaDukhaPrilozhenija.md",
-"sources/Skljarov/_Skljarov_14_KnigaMifOpotope.md",
-"sources/Skljarov/_Skljarov_15_KnigaOl'jantajtambosvidetel'potopa.md",
-"sources/Skljarov/_Skljarov_16_KnigaZHdetLiZemljuSud'bafaehtona.md",
-"sources/Skljarov/_Skljarov_17_KnigaNasledieP'janykhbogov.md",
-"sources/Skljarov/_Skljarov_18_KnigaKakovaTyRodinaBogov.md",
-"sources/Skljarov/_Skljarov_18_KnigaVavilonskajaBashnjaDolgostroj.md",
-"sources/Skljarov/_Skljarov_19_KnigaKomp'juterDrevnegoKitaja.md",
-"sources/Skljarov/_Skljarov_20_KnigaVvedenieDrakonografiju.md",
-"sources/Skljarov/_Skljarov_21_KnigaDendrokhronologijaNaukaIliPodgonka.md",
-"sources/Skljarov/_Skljarov_22_KnigaTSivilizatsijaDrevnikhBogovEgipta2.md",
-"sources/Skljarov/_Skljarov_23_KnigaMeksikaBezKrivykhZerkal.md",
-"sources/Skljarov/_Skljarov_24_KnigaIstorijaZemliBezKamennougol'nogo.md",
-"sources/Skljarov/_Skljarov_25_KnigaObitaemyjOstrovZemlja.md",
-"sources/Skljarov/_Skljarov_26_KnigaPeruIBolivijaZadolgoDoInkov.md",
-"sources/Skljarov/_Skljarov_27_KnigaOtekushchejSituatsiiVokrugGeokhronologii.md",
-"sources/Skljarov/_Skljarov_28_KnigaBezKamennougol'nogoperioda2.md",
-"sources/Skljarov/_Skljarov_29_KnigaMetallyDaryBogov.md",
-"sources/Skljarov/_Skljarov_30_KnigaGeneticheskijKodCHelovechestva.md",
-"sources/Skljarov/_Skljarov_31_KnigaSozdanieDrevnikhTSivilizatsij.md",
-"sources/Skljarov/_Skljarov_32_KnigaJAkhveProtivBaala.md",
-"sources/Skljarov/_Skljarov_33_KnigaPiramidyZagadkiStroitel'stvanaznachenija.md",
-"sources/Skljarov/_Skljarov_34_KnigaNaskaGigantskieRisunkiNaPoljakh.md",
-"sources/Skljarov/_Skljarov_35_KnigaPoSledamKovchegaZAveta.md",
-"sources/Skljarov/_Skljarov_36_KnigaDrevnieBogiKtoOni.md",
-"sources/Skljarov/_Skljarov_37_KnigaZemljaVaala.md",
-"sources/Skljarov/_Skljarov_38_ZagadkiIstoriiStranyVoskhodjashchego.md",
-"sources/Skljarov/_Skljarov_39_KnigaMifyObOstrovePaskhi.md",
-"sources/Skljarov/_Skljarov_40_KnigaPredmetyBogovIkhKopii.md",
-"sources/Skljarov/_Skljarov_41_KnigaSirijskij perekrestokTSivilizatsij.md",
-"sources/Skljarov/_Skljarov_42_VideoSledyVojnyDrevnikhBogov.md",
-"sources/Skljarov/_Skljarov_43_KnigaDrevnjajaMeksikaBezKrivykhZerkal_01.md",
-"sources/Skljarov/_Skljarov_43_KnigaDrevnjajaMeksikaBezKrivykhZerkal_02.md",
-"sources/Skljarov/_Skljarov_43_KnigaDrevnjajaMeksikaBezKrivykhZerkal_03.md",
-"sources/Skljarov/_Skljarov_43_KnigaDrevnjajaMeksikaBezKrivykhZerkal_04.md"
+        "hypotheses/SEG01/LAI_SEG01-Sergeev_01.json",
+        // ... добавьте остальные пути к гипотезам
     ];
-
     const authorFiles = [
         "authors/Sklyarov.json",
         "authors/AUTH-Siparov.json"
     ];
 
+    // 3. Файлы Markdown (Источники, выжимки)
+    // ВАЖНО: Добавляйте сюда пути к новым файлам вручную
+    const sourceFiles = [
+        "sources/Skljarov/_Skljarov_00_biografija.md",
+        "sources/Skljarov/_Skljarov_23_KnigaMeksikaBezKrivykhZerkal.md",
+        // ... добавьте остальные пути к .md файлам
+    ];
+
     let finalContent = "";
+    let isDataLoaded = false;
 
     function log(msg, type = 'normal') {
         const logDiv = document.getElementById('log');
@@ -108,93 +80,78 @@
         logDiv.scrollTop = logDiv.scrollHeight;
     }
 
-    async function generateSnapshot() {
-        const logDiv = document.getElementById('log');
-        logDiv.innerHTML = ""; 
+    // --- ФУНКЦИЯ 1: СБОРКА JSON ---
+    async function loadJsonData() {
+        log("🚀 Начало сборки JSON-данных...", 'normal');
+        if (!finalContent.includes("SYSTEM INSTRUCTION")) await loadInstruction();
         
-        const now = new Date();
-        const dateStr = now.toLocaleDateString('ru-RU') + ' ' + now.toLocaleTimeString('ru-RU');
-        
-        // Заголовок снапшота
-        finalContent = `# LAI HYPOTHESIS BANK - AI-READY SNAPSHOT\n`;
-        finalContent += `# Generated: ${dateStr}\n\n`;
-        
-        document.getElementById('saveBtn').disabled = true;
-        document.getElementById('copyBtn').disabled = true;
+        finalContent += `\n## HYPOTHESES & AUTHORS DUMP START\n\n`;
+        const allJsonFiles = [...hypothesisFiles, ...authorFiles];
+        let count = 0;
 
-        // 1. Загрузка Системной Инструкции
+        for (const file of allJsonFiles) {
+            try {
+                const response = await fetch(file);
+                if (!response.ok) throw new Error(`Status ${response.status}`);
+                const data = await response.json();
+                finalContent += `### DATA FILE: ${file}\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\n`;
+                count++;
+            } catch (error) {
+                log(`❌ Ошибка JSON ${file}: ${error.message}`, 'error');
+            }
+        }
+        log(`✅ JSON данные обработаны. Файлов: ${count}`, 'success');
+        checkReady();
+    }
+
+    // --- ФУНКЦИЯ 2: СБОРКА MARKDOWN ---
+    async function loadMdData() {
+        log("🚀 Начало сборки Markdown-источников...", 'normal');
+        if (!finalContent.includes("SYSTEM INSTRUCTION")) await loadInstruction();
+
+        finalContent += `\n## SOURCES (MARKDOWN) DUMP START\n\n`;
+        let count = 0;
+
+        for (const file of sourceFiles) {
+            try {
+                const response = await fetch(file);
+                if (!response.ok) throw new Error(`Status ${response.status}`);
+                
+                // Используем .text() для Markdown файлов
+                const textData = await response.text(); 
+                finalContent += `### SOURCE FILE: ${file}\n\`\`\`markdown\n${textData}\n\`\`\`\n\n`;
+                count++;
+            } catch (error) {
+                log(`❌ Ошибка MD ${file}: ${error.message}`, 'error');
+            }
+        }
+        log(`✅ Markdown источники обработаны. Файлов: ${count}`, 'success');
+        checkReady();
+    }
+
+    // --- ВСПОМОГАТЕЛЬНАЯ: ЗАГРУЗКА ИНСТРУКЦИИ ---
+    async function loadInstruction() {
         try {
-            log(`📄 Загрузка системной инструкции: ${instructionPath}...`);
             const instrResponse = await fetch(instructionPath);
             if (instrResponse.ok) {
                 const instrText = await instrResponse.text();
-                finalContent += `## SYSTEM INSTRUCTION (lai_ai_instructions.txt)\n\`\`\`\n${instrText}\n\`\`\`\n\n`;
+                finalContent = `# LAI HYPOTHESIS BANK - AI-READY SNAPSHOT\n`;
+                finalContent += `# Generated: ${new Date().toLocaleString('ru-RU')}\n\n`;
+                finalContent += `## SYSTEM INSTRUCTION\n\`\`\`\n${instrText}\n\`\`\`\n\n`;
                 finalContent += `--- END OF INSTRUCTION ---\n\n`;
-                log(`✅ Инструкция успешно загружена.`, 'success');
-            } else {
-                log(`⚠️ Не удалось найти файл инструкции. Проверьте имя файла.`, 'error');
             }
         } catch (e) {
-            log(`❌ Ошибка загрузки инструкции: ${e.message}`, 'error');
-        }
-
-        // 2. Загрузка Данных
-        finalContent += `## DATA DUMP START\n\n`;
-        const allFiles = [...hypothesisFiles, ...authorFiles];
-        let successCount = 0;
-
-       for (const file of allFiles) {
-    try {
-        log(`Загрузка данных: ${file}...`);
-        const response = await fetch(file);
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
-        if (file.endsWith('.json')) {
-            const data = await response.json();
-            finalContent += `### FILE PATH: ${file}\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\n`;
-        } else {
-            const text = await response.text();
-            finalContent += `### FILE PATH: ${file}\n\`\`\`\n${text}\n\`\`\`\n\n`;
-        }
-        successCount++;
-    } catch (error) {
-        log(`❌ Ошибка ${file}: ${error.message}`, 'error');
-    }
-}
-
-        if (successCount > 0 || finalContent.includes("SYSTEM INSTRUCTION")) {
-            log(`\n🎉 Готово! Обработано файлов: ${successCount}.`, 'success');
-            document.getElementById('saveBtn').disabled = false;
-            document.getElementById('copyBtn').disabled = false;
-        } else {
-            log("\n⚠️ Не удалось загрузить данные.", 'error');
+            log(`⚠️ Не удалось загрузить инструкцию: ${e.message}`, 'error');
         }
     }
 
-    function downloadFile() {
-        if (!finalContent) return;
-        const htmlContent = createFullHTML(finalContent);
-        const blob = new Blob([htmlContent], { type: 'text/html' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'lai_full_snapshot.html';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
+    function checkReady() {
+        isDataLoaded = true;
+        document.getElementById('saveBtn').disabled = false;
+        document.getElementById('copyBtn').disabled = false;
     }
 
-    function copyHTMLCode() {
-        if (!finalContent) return;
-        const htmlContent = createFullHTML(finalContent);
-        navigator.clipboard.writeText(htmlContent).then(() => {
-            alert('✅ Полный HTML-код скопирован! Теперь вы можете вставить его в файл репозитория.');
-        }).catch(err => {
-            log('❌ Ошибка копирования: ' + err, 'error');
-        });
-    }
-
+    // --- ЭКСПОРТ ---
     function createFullHTML(content) {
         return `<!DOCTYPE html>
 <html lang="ru">
@@ -208,6 +165,25 @@
 <pre>${content.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>
 </body>
 </html>`;
+    }
+
+    function downloadFile() {
+        if (!isDataLoaded) return;
+        const blob = new Blob([createFullHTML(finalContent)], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'lai_full_snapshot.html';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+
+    function copyHTMLCode() {
+        if (!isDataLoaded) return;
+        navigator.clipboard.writeText(createFullHTML(finalContent)).then(() => {
+            alert('✅ Полный HTML-код скопирован! Готов для вставки в репозиторий.');
+        });
     }
 </script>
 
