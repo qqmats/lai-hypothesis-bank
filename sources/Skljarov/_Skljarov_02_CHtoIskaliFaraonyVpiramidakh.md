@@ -2,7 +2,7 @@
 source_url: https://www.youtube.com/watch?v=iQUAezcGO_0
 channel: Архив ЛАИ
 title: "Андрей Скляров: Что искали фараоны в Пирамидах Египта?"
-publication_date: UNKNOWN
+publication_date: 26.06.2020
 content_type: Lecture
 language: ru
 primary_speaker:
