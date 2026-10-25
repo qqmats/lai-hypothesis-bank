@@ -1,5 +1,5 @@
 ---
-source_url: UNKNOWN
+source_url: https://lah.ru/civil-text/
 channel: Lah.ru / Project.lah.ru
 title: "Создание древних цивилизаций (Обновленная теория происхождения государства)"
 publication_date: 2016
@@ -10,7 +10,7 @@ primary_speaker:
   lai_author_id: "AUTH-Sklyarov"
 other_speakers: []
 preliminary_segments: ["SEG08", "SEG10"]
-processed_by: AI Assistant
+processed_by: С.Сергеев z2934@yandex.ru
 date_processed: 2026-09-29
 ---
 
