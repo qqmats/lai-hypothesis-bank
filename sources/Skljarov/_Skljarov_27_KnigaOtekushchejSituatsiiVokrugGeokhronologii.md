@@ -1,5 +1,5 @@
 ---
-source_url: 
+source_url: https://lah.ru/geoscale-text/
 channel: Lah.ru / Project.lah.ru
 title: "ПЕРЕПИСАТЬ ошибка содержания"
 publication_date: 2010 (экспедиция 2009 г.)
