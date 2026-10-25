@@ -1,5 +1,5 @@
 ---
-source_url: [https://lah.ru/text/sklyarov/rodina_bogov.htm](https://lah.ru/bio-text/?ysclid=mvnhyc7ca853676955)
+source_url: https://lah.ru/bio-text/?ysclid=mvnhyc7ca853676955
 channel: ЛАИ (Лаборатория Альтернативной Истории)
 title: "Какова ты, родина богов?.."
 publication_date: 30.11.2006
