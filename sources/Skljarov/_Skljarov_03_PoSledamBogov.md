@@ -2,7 +2,7 @@
 source_url: https://www.youtube.com/watch?v=h0kKfGJoRgM
 channel: Архив ЛАИ
 title: "Андрей Скляров - По следам Богов (Памяти основателя ЛАИ)"
-publication_date: UNKNOWN
+publication_date: ~2021
 content_type: Documentary
 language: ru
 primary_speaker:
@@ -13,7 +13,7 @@ other_speakers:
     role: "Соратник, физик"
   - name: "Андрей Жуков"
     role: "Историк, исследователь"
-  - name: "Алексей Тисленко"
+  - name: "Алексей Тесленко"
     role: "Физик-исследователь"
 preliminary_segments: ["SEG01", "SEG02", "SEG10"]
 processed_by: С.Сергеев z2934@yandex.ru
