@@ -2,7 +2,7 @@
 source_url: https://www.youtube.com/watch?v=_vcHebEjlgQ
 channel: Архив ЛАИ
 title: "Андрей Скляров про ДВЦ и эффект пирамид"
-publication_date: UNKNOWN
+publication_date: 06.07.2024
 content_type: Interview
 language: ru
 primary_speaker:
