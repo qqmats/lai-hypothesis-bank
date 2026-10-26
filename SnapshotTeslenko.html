@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>LAI Universal Data Builder1</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background: #f0f2f5; color: #333; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 15px; }
+        
+        .controls { display: flex; gap: 10px; margin-bottom: 25px; padding: 15px; background: #e8f4fd; border-radius: 8px; align-items: center; flex-wrap: wrap; }
+        button { cursor: pointer; padding: 10px 20px; border: none; border-radius: 6px; font-weight: bold; transition: 0.2s; color: white; }
+        
+        /* Цветовое кодирование разделов */
+        .btn-inst { background: #8e44ad; } /* Инструкция - Фиолетовый */
+        .btn-hyp { background: #2980b9; }  /* Гипотезы - Синий */
+        .btn-auth { background: #16a085; } /* Авторы - Бирюзовый */
+        .btn-src { background: #e67e22; }  /* Источники - Оранжевый */
+        .btn-exp { background: #27ae60; }  /* Экспорт - Зеленый */
+        .btn-copy { background: #7f8c8d; } /* Копирование - Серый */
+
+        button:hover { opacity: 0.9; transform: translateY(-1px); }
+        button:disabled { background: #ccc; cursor: not-allowed; }
+
+        #log { margin-top: 20px; font-family: monospace; font-size: 0.9em; color: #555; white-space: pre-wrap; background: #fafafa; padding: 10px; border: 1px solid #eee; max-height: 300px; overflow-y: auto; }
+        .success { color: #27ae60; font-weight: bold; }
+        .error { color: #e74c3c; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🏗 LAI Bank: Universal Raw Data Builder1</h1>
+    <p>Этот инструмент собирает «сырое» содержимое файлов для анализа нейросетью. Формат файла не имеет значения.</p>
+    
+    <div class="controls">
+        <button class="btn-inst" onclick="loadData(instructionFiles, 'Инструкция')">📜 Инструкция</button>
+        <button class="btn-hyp" onclick="loadData(hypothesisFiles, 'Гипотезы')">💡 Гипотезы (JSON)</button>
+        <button class="btn-auth" onclick="loadData(authorFiles, 'Авторы')">👤 Авторы (JSON)</button>
+        <button class="btn-src" onclick="loadData(sourceFiles, 'Источники')">📚 Источники (MD/TXT)</button>
+        
+        <div style="width: 100%; height: 1px; background: #ddd; margin: 5px 0;"></div>
+        
+        <button class="btn-exp" onclick="downloadFile()" id="saveBtn" disabled>💾 Скачать HTML</button>
+        <button class="btn-copy" onclick="copyHTMLCode()" id="copyBtn" disabled>📋 Копировать код</button>
+    </div>
+
+    <div id="log">Выберите раздел для загрузки...</div>
+</div>
+
+<script>
+    // --- НАСТРОЙКИ ПУТЕЙ (Редактируйте эти списки вручную) ---
+
+    const instructionFiles = [
+        "lai_ai_instructions.txt"
+    ];
+
+    const hypothesisFiles = [
+        "hypotheses/SEG01/LAI_SEG01-Sergeev_01.json",
+        "hypotheses/SEG01/LAI_SEG01-Sklyarov_01.json"
+        // Добавляйте сюда остальные гипотезы
+    ];
+
+    const authorFiles = [
+        "authors/Sklyarov.json",
+        "authors/AUTH-Siparov.json"
+        // Добавляйте сюда остальных авторов
+    ];
+
+    const sourceFiles = [
+        "sources/Zhukov/README.md",
+"sources/Zhukov/ZHukov_01_vBazuNeudobnyeArtefakty.txt",
+"sources/Zhukov/ZHukov_02_vBazuZHnetsyChelovechestva.txt",
+"sources/Zhukov/ZHukov_03_daryBogov.txt",
+"sources/Zhukov/ZHukov_04_NovyeDrevnieArtefakty.txt",
+"sources/Zhukov/ZHukov_05_ZadolgoDoKolumba.txt",
+"sources/Zhukov/ZHukov_06_CHemBogiRezaliSkaly.txt",
+"sources/Zhukov/ZHukov_07_CHelovekIdinozavrNeumestnye.txt",
+"sources/Zhukov/ZHukov_08_KontaktySnovymmSvetomDoKolumba.txt",
+"sources/Zhukov/ZHukov_09_ZapretnyeTemyIstoriiASkljarova.txt",
+"sources/Zhukov/ZHukov_10_GigantyBritanskikhOstrovov.txt",
+"sources/Zhukov/ZHukov_11_NeizvestnajaIstorijaArtefaktyMednogoVeka.txt",
+"sources/Zhukov/ZHukov_12_JAsonIargonavnyCHVKzevsa.txt",
+"sources/Zhukov/ZHukov_13_al'ternatVzgljadMezhduFaktamiImifami.txt",
+"sources/Zhukov/ZHukov_14_KamniIkiDrevnjajaMeditsina.txt",
+"sources/Zhukov/ZHukov_15_OsnovnyeProblemyPiramidologii.txt",
+"sources/Zhukov/ZHukov_16_MificheskijZmej.txt",
+"sources/Zhukov/ZHukov_17_TajnaPiramidyDzhosera.txt",
+"sources/Zhukov/ZHukov_18_arktida.txt",
+"sources/Zhukov/ZHukov_19_TeotiuakanZagadkiGorodaBogov.txt",
+"sources/Zhukov/ZHukov_20_VelikijPotopRubezhTSivilizatsii.txt",
+"sources/Zhukov/ZHukov_21_ArtefaktyVrukakhBogov.txt",
+"sources/Zhukov/ZHukov_22_BogiTSivilizatoryCHelovekAmfibija.txt",
+"sources/Zhukov/ZHukov_23_DarujushchieSakral'nyeZnanijaFaktorZmeja.txt",
+"sources/Zhukov/ZHukov_24_kul'tPernatogoZmeja.txt",
+"sources/Zhukov/ZHukov_25_DrevnjajaPis'mennost'PeruKHronikiMontesinosa.txt",
+"sources/Zhukov/ZHukov_26_BosnijskajaPiramida.txt",
+"sources/Zhukov/ZHukov_27_DrevniePrishel'tsyIgenezisCHeloveka.txt",
+"sources/Zhukov/ZHukov_28_VelikajaPiramidaCHochulyMeksika.txt",
+"sources/Zhukov/ZHukov_29_SumkiDrevnikhBogov.txt",
+"sources/Zhukov/ZHukov_30_KollektsijaDzhul'sruda.txt"
+        // Добавляйте сюда .md без кода JSON или  любые .txt файлы
+    ];
+
+    let finalContent = "";
+    let isReady = false;
+
+    function log(msg, type = 'normal') {
+        const logDiv = document.getElementById('log');
+        const className = type === 'error' ? 'error' : (type === 'success' ? 'success' : '');
+        logDiv.innerHTML += `<div class="${className}">${msg}</div>`;
+        logDiv.scrollTop = logDiv.scrollHeight;
+    }
+
+    // Универсальная функция загрузки любого текста
+    async function loadData(fileList, sectionName) {
+        if (fileList.length === 0) {
+            log(`⚠️ Список "${sectionName}" пуст. Добавьте пути в код.`, 'error');
+            return;
+        }
+
+        log(`🚀 Загрузка раздела: ${sectionName}...`, 'normal');
+        
+        // Если это первый загружаемый раздел, добавим шапку
+        if (!finalContent.includes("SNAPSHOT START")) {
+            finalContent = `# LAI HYPOTHESIS BANK - RAW DATA SNAPSHOT\n`;
+            finalContent += `# Generated: ${new Date().toLocaleString('ru-RU')}\n\n`;
+            finalContent += `<!-- SNAPSHOT START -->\n\n`;
+        }
+
+        finalContent += `## SECTION: ${sectionName.toUpperCase()}\n\n`;
+        let count = 0;
+
+        for (const file of fileList) {
+            try {
+                const response = await fetch(file);
+                if (!response.ok) throw new Error(`Status ${response.status}`);
+                
+                // Читаем ВСЁ как простой текст. Нейросеть сама разберется.
+                const textData = await response.text(); 
+                
+                finalContent += `### FILE: ${file}\n\`\`\`\n${textData}\n\`\`\`\n\n`;
+                count++;
+            } catch (error) {
+                log(`❌ Ошибка ${file}: ${error.message}`, 'error');
+            }
+        }
+
+        if (count > 0) {
+            log(`✅ Раздел "${sectionName}" обработан. Файлов: ${count}`, 'success');
+            isReady = true;
+            document.getElementById('saveBtn').disabled = false;
+            document.getElementById('copyBtn').disabled = false;
+        } else {
+            log(`⚠️ В разделе "${sectionName}" не найдено доступных файлов.`, 'error');
+        }
+    }
+
+    // --- ЭКСПОРТ ---
+    function createFullHTML(content) {
+        return `<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>LAI Full Data Snapshot</title>
+<style>body { font-family: monospace; white-space: pre-wrap; padding: 20px; line-height: 1.5; color: #333; }</style>
+</head>
+<body>
+<h1>LAI HYPOTHESIS BANK - STATIC SNAPSHOT</h1>
+<pre>${content.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>
+</body>
+</html>`;
+    }
+
+    function downloadFile() {
+        if (!isReady) return;
+        const blob = new Blob([createFullHTML(finalContent)], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'lai_full_snapshot.html';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+
+    function copyHTMLCode() {
+        if (!isReady) return;
+        navigator.clipboard.writeText(createFullHTML(finalContent)).then(() => {
+            alert('✅ Код скопирован! Вставьте его в файл репозитория.');
+        }).catch(err => {
+            log('❌ Ошибка копирования: ' + err, 'error');
+        });
+    }
+</script>
+
+</body>
+</html>
