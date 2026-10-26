@@ -1,1 +1,6 @@
 include: []
+defaults:
+  - scope:
+      path: "sources"
+    values:
+      layout: null
