@@ -1,4 +1,4 @@
----
+---"
 source_url: https://www.youtube.com/watch?v=FYzKs5whSHw
 channel: Научно-исследовательский центр ЛАИ
 title: "Алексей Тесленко - Фальсификация исторических источников"
@@ -12,7 +12,7 @@ other_speakers: []
 preliminary_segments: ["SEG01", "SEG08"]
 processed_by: С.Сергеев z2934@yandex.ru
 date_processed: 2026-09-28
----
+---"
 
 # Синопсис лекции: К вопросу о фальсификации исторических документов
 
