@@ -1,4 +1,4 @@
----
+---"
 source_url: https://www.youtube.com/watch?v=lE3Osmq0HK4
 channel: Научно-исследовательский центр ЛАИ
 title: "Алексей Тесленко: Ложные артефакты и следы Древней высокоразвитой цивилизации"
@@ -12,7 +12,7 @@ other_speakers: []
 preliminary_segments: ["SEG01", "SEG03", "SEG09"]
 processed_by: С.Сергеев z2934@yandex.ru
 date_processed: 2026-09-28
----
+---"
 
 # Синопсис лекции: Критический анализ артефактов ДВЦ и проблема верификации
 
