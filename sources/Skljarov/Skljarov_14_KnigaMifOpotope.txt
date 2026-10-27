@@ -1,8 +1,8 @@
 ---"
-source_url: https://lah.ru/text/sklyarov/sklyarov.htm
+source_url: https://lah.ru/potop-text/
 channel: ЛАИ (Лаборатория Альтернативной Истории)
 title: "Миф о Потопе: расчеты и реальность"
-publication_date: UNKNOWN
+publication_date: 10.01.2010
 content_type: Article
 language: ru
 primary_speaker:
